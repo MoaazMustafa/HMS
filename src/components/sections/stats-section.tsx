@@ -1,7 +1,8 @@
 'use client';
 
-import { StatCounter } from '@/components/ui/stat-counter';
 import { TrendingUp } from 'lucide-react';
+
+import { StatCounter } from '@/components/ui/stat-counter';
 
 const stats = [
   { value: 99.5, label: 'System Uptime', suffix: '%', delay: 0 },

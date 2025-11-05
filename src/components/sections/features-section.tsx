@@ -14,6 +14,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+
 import { FeatureCard } from '@/components/ui/feature-card';
 
 const features = [

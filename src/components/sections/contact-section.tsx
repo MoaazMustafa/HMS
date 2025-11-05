@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Mail, MessageSquare, Phone, Send } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 
 export function ContactSection() {

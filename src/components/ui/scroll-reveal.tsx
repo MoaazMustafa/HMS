@@ -1,7 +1,9 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+// eslint-disable-next-line no-duplicate-imports
+import { useRef } from 'react';
 
 interface ScrollRevealProps {
   children: ReactNode;
