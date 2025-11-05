@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { ContactSection } from '@/components/sections/contact-section';
+// import { ContactSection } from '@/components/sections/contact-section';
 import { FeaturesSection } from '@/components/sections/features-section';
 import { Footer } from '@/components/sections/footer';
 import { HeroSection } from '@/components/sections/hero-section';
@@ -22,7 +22,7 @@ export default async function Home() {
       <FeaturesSection />
       <ModulesSection />
       <StatsSection />
-      <ContactSection />
+      {/* <ContactSection /> */}
       <Footer />
     </div>
   );
