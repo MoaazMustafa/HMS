@@ -1,0 +1,184 @@
+Health Management System (HMS)
+Software Requirements Specification - Simplified Version
+Version: 1.0
+Date: November 5, 2025
+
+1. Introduction
+1.1 Purpose
+The Health Management System (HMS) is a digital healthcare platform that enables healthcare providers to manage patient information, prescriptions, appointments, and medical records efficiently.
+1.2 Scope
+HMS includes four core modules:
+* Patient Management
+* Prescription Management
+* Appointment Scheduling
+* Medical Records
+
+2. System Features & Functional Requirements
+Module 1: Patient Management
+Description: Manage patient information, registration, and profiles.
+Key Requirements:
+FR-1.1: Patient Registration
+* System shall capture patient demographics (name, DOB, gender, blood group)
+* System shall record contact information (phone, email, address)
+* System shall collect emergency contact details
+* System shall validate email format and phone number via OTP
+* System shall generate unique Patient ID automatically
+FR-1.2: Patient Profile Management
+* Patients shall view and update their profile information
+* System shall maintain version history of profile changes
+* Admin/Doctor shall update critical information only
+FR-1.3: Patient Search
+* System shall provide search by Patient ID, name, phone, or email
+* System shall return results within 2 seconds
+* System shall support partial name matching
+
+Module 2: Prescription Management
+Description: Electronic prescription system for creating and managing medications.
+Key Requirements:
+FR-2.1: Create Prescription
+* Doctors shall create prescriptions with medication name, dosage, frequency, and duration
+* System shall provide searchable drug database with auto-complete
+* System shall check drug-drug interactions and allergies
+* System shall display warnings for interactions
+* System shall generate prescription with digital signature and QR code
+FR-2.2: View Prescriptions
+* Patients shall view all their prescriptions (active and historical)
+* Patients shall download prescription as PDF
+* System shall display refills remaining
+FR-2.3: Prescription Modification
+* Doctors shall modify or discontinue prescriptions
+* System shall maintain version history
+* System shall notify patient of changes via SMS/email
+
+Module 3: Appointment Scheduling
+Description: Appointment booking and management system.
+Key Requirements:
+FR-3.1: Book Appointment
+* Patients shall book appointments by selecting doctor, date, and time
+* System shall display available time slots based on doctor schedule
+* System shall send confirmation via SMS and email
+* System shall prevent double-booking
+FR-3.2: Manage Schedule
+* Doctors shall configure availability (working days, hours, breaks)
+* System shall support blocking time for leave or emergencies
+* Receptionist shall register walk-in patients
+FR-3.3: Reschedule/Cancel
+* Patients shall reschedule up to 24 hours before appointment
+* System shall process cancellations with refund (if applicable)
+* System shall track no-shows
+FR-3.4: Reminders
+* System shall send reminders 24 hours and 2 hours before appointment
+* System shall send reminders via SMS, email, and push notification
+
+Module 4: Medical Records
+Description: Comprehensive electronic health record system.
+Key Requirements:
+FR-4.1: Clinical Notes
+* Doctors shall document clinical notes in SOAP format (Subjective, Objective, Assessment, Plan)
+* System shall auto-populate patient demographics and previous diagnoses
+* System shall require digital signature before finalizing
+* System shall prevent modification of finalized notes
+FR-4.2: Diagnosis Management
+* Doctors shall add diagnoses with ICD-10 codes
+* System shall maintain active problem list
+* System shall link diagnoses to prescriptions and lab orders
+FR-4.3: Vital Signs
+* Nurses/Doctors shall record vital signs (BP, heart rate, temperature, weight, height)
+* System shall flag abnormal values with color coding
+* System shall display vital signs trends over time
+FR-4.4: Lab Reports
+* Doctors shall order lab tests
+* Lab technicians shall upload results
+* System shall flag critical values and alert doctor immediately
+* Patients shall view results after doctor review
+* System shall display trends with graphs
+FR-4.5: Medical History
+* System shall maintain complete medical history
+* Doctors shall record allergies (medications, food, environmental)
+* System shall display prominent allergy alerts
+* System shall track immunization records
+
+3. Non-Functional Requirements
+3.1 Performance
+* Page load time: ? 3 seconds
+* Support 10,000 concurrent users
+* Search results: ? 1 second
+3.2 Security
+* Multi-factor authentication for doctors and admin
+* AES-256 encryption for data at rest
+* TLS 1.3 for data in transit
+* Role-based access control (RBAC)
+* Audit logging for all critical activities
+3.3 Availability
+* System uptime: 99.5%
+* Daily automated backups
+* Recovery Time: 4 hours
+* Recovery Point: 1 hour
+3.4 Usability
+* Intuitive interface requiring minimal training
+* Mobile responsive design
+* WCAG 2.1 Level AA accessibility compliance
+* Multi-language support
+
+4. User Roles and Permissions
+4.1 Patient
+* View own health records
+* Book/manage appointments
+* View prescriptions and lab reports
+* Update profile information
+4.2 Doctor
+* View patient records
+* Create prescriptions and clinical notes
+* Order lab tests
+* Manage schedule
+4.3 Nurse
+* Record vital signs
+* View patient records (read-only)
+* Update patient status
+4.4 Admin
+* Manage user accounts
+* Assign roles
+* View system reports
+* Configure system settings
+
+5. System Interfaces
+5.1 External Integrations
+* SMS service (Twilio) for notifications
+* Email service (SendGrid) for communications
+* Payment gateway (Stripe/PayPal) for billing
+* Laboratory Information Systems (HL7 protocol)
+5.2 Technical Requirements
+* Database: PostgreSQL or MySQL
+* Backend: RESTful API (Node.js or Python)
+* Frontend: Responsive web application
+* Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+* Mobile: iOS 12+ and Android 8+
+
+6. Data Models (Key Entities)
+Patient
+* patient_id, name, DOB, gender, blood_group
+* contact info, emergency contacts
+* insurance info, status
+Prescription
+* prescription_id, patient_id, doctor_id
+* medications, dosage, frequency
+* issue_date, status
+Appointment
+* appointment_id, patient_id, doctor_id
+* date, time, duration
+* type, status, reason
+Medical_Record
+* record_id, patient_id, doctor_id
+* clinical_notes, diagnoses
+* vital_signs, lab_results
+* date, status
+
+7. Success Criteria
+* System uptime ? 99.5%
+* 80% patient registration within 6 months
+* 90% doctor adoption rate
+* User satisfaction ? 4.0/5.0
+* Zero critical security breaches
+
+End of Document
+
