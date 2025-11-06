@@ -42,7 +42,7 @@ export function PatientSidebar() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed top-4 left-4 z-50 lg:hidden bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white"
+        className="fixed top-4 left-4 z-50 lg:hidden bg-background-900 border border-background-800 rounded-lg p-2 text-foreground"
       >
         {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
@@ -58,7 +58,7 @@ export function PatientSidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 z-40 w-72 h-screen bg-zinc-950 border-r border-zinc-800
+          fixed top-0 left-0 z-40 w-72 h-screen bg-background-950 border-r border-background-800
           lg:sticky lg:top-0 lg:z-auto
           transition-transform duration-300 ease-in-out
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -66,25 +66,25 @@ export function PatientSidebar() {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center gap-3 p-6 border-b border-zinc-800">
+          <div className="flex items-center gap-3 p-6 border-b border-background-800">
             <Activity className="w-8 h-8 text-primary" />
             <div>
-              <h1 className="text-xl font-bold text-white">HMS</h1>
-              <p className="text-xs text-zinc-500">Patient Portal</p>
+              <h1 className="text-xl font-bold text-foreground">HMS</h1>
+              <p className="text-xs text-background-500">Patient Portal</p>
             </div>
           </div>
 
           {/* User Info */}
-          <div className="p-4 border-b border-zinc-800">
+          <div className="p-4 border-b border-background-800">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
                 <User className="w-5 h-5 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-white truncate">
+                <p className="text-sm font-semibold text-foreground truncate">
                   {session?.user?.name || 'Patient'}
                 </p>
-                <p className="text-xs text-zinc-500 truncate">{session?.user?.email}</p>
+                <p className="text-xs text-background-500 truncate">{session?.user?.email}</p>
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@ export function PatientSidebar() {
                     ${
                       isActive
                         ? 'bg-primary/10 text-primary border border-primary/20'
-                        : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
+                        : 'text-background-400 hover:text-foreground hover:bg-background-900'
                     }
                   `}
                 >
@@ -117,11 +117,11 @@ export function PatientSidebar() {
           </nav>
 
           {/* Logout Button */}
-          <div className="p-4 border-t border-zinc-800">
+          <div className="p-4 border-t border-background-800">
             <Button
               variant="ghost"
               onClick={handleLogout}
-              className="w-full justify-start text-zinc-400 hover:text-white hover:bg-zinc-900"
+              className="w-full justify-start text-background-400 hover:text-foreground hover:bg-background-900"
             >
               <LogOut className="w-5 h-5 mr-3" />
               Logout

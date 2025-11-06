@@ -75,7 +75,7 @@ export function LabResultsPage({ labTests }: Props) {
       case 'CANCELLED':
         return 'bg-red-500/20 text-red-500 border-red-500/20';
       default:
-        return 'bg-zinc-500/20 text-zinc-500 border-zinc-500/20';
+        return 'bg-background-500/20 text-background-500 border-background-500/20';
     }
   };
 
@@ -104,8 +104,8 @@ export function LabResultsPage({ labTests }: Props) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Lab Results</h1>
-          <p className="text-zinc-400">View your laboratory test results and trends</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Lab Results</h1>
+          <p className="text-background-400">View your laboratory test results and trends</p>
         </div>
       </div>
 
@@ -163,20 +163,20 @@ export function LabResultsPage({ labTests }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
             >
               <div className="flex items-center justify-between mb-2">
                 <Icon className={`w-5 h-5 ${stat.color}`} />
                 <span className={`text-2xl font-bold ${stat.color}`}>{stat.value}</span>
               </div>
-              <p className="text-sm text-zinc-400">{stat.label}</p>
+              <p className="text-sm text-background-400">{stat.label}</p>
             </motion.div>
           );
         })}
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-4">
+      <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-4">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Filter Tabs */}
           <div className="flex gap-2">
@@ -190,8 +190,8 @@ export function LabResultsPage({ labTests }: Props) {
                 onClick={() => setFilter(tab.value as 'all' | 'completed' | 'pending')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   filter === tab.value
-                    ? 'bg-primary text-black'
-                    : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                    ? 'bg-primary text-background'
+                    : 'bg-background-800 text-background-400 hover:text-foreground'
                 }`}
               >
                 {tab.label}
@@ -201,13 +201,13 @@ export function LabResultsPage({ labTests }: Props) {
 
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-background-500" />
             <input
               type="text"
               placeholder="Search by test name, type, or ID..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full pl-10 pr-4 py-2 bg-background-800 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         </div>
@@ -216,10 +216,10 @@ export function LabResultsPage({ labTests }: Props) {
       {/* Lab Tests List */}
       <div className="space-y-4">
         {filteredTests.length === 0 ? (
-          <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-12 text-center">
-            <FlaskConical className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">No lab results found</h3>
-            <p className="text-zinc-400">
+          <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
+            <FlaskConical className="w-12 h-12 text-background-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">No lab results found</h3>
+            <p className="text-background-400">
               {searchQuery ? 'Try adjusting your search criteria' : 'No lab tests available'}
             </p>
           </div>
@@ -230,10 +230,10 @@ export function LabResultsPage({ labTests }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className={`bg-zinc-900/50 backdrop-blur-xl border rounded-lg p-6 transition-all ${
+              className={`bg-background-900/50 backdrop-blur-xl border rounded-lg p-6 transition-all ${
                 test.isCritical
                   ? 'border-red-500/50 hover:border-red-500'
-                  : 'border-zinc-800 hover:border-zinc-700'
+                  : 'border-background-800 hover:border-background-700'
               }`}
             >
               <div className="space-y-4">
@@ -243,7 +243,7 @@ export function LabResultsPage({ labTests }: Props) {
                     <FlaskConical className="w-5 h-5 text-primary shrink-0 mt-1" />
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-semibold text-white">{test.testName}</h3>
+                        <h3 className="text-lg font-semibold text-foreground">{test.testName}</h3>
                         {test.isCritical && (
                           <span className="px-2 py-1 bg-red-500/20 text-red-500 border border-red-500/20 rounded text-xs font-medium flex items-center gap-1">
                             <AlertCircle className="w-3 h-3" />
@@ -251,8 +251,8 @@ export function LabResultsPage({ labTests }: Props) {
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-zinc-400 mb-1">{test.testType}</p>
-                      <p className="text-xs text-zinc-500 font-mono">Test ID: {test.testId}</p>
+                      <p className="text-sm text-background-400 mb-1">{test.testType}</p>
+                      <p className="text-xs text-background-500 font-mono">Test ID: {test.testId}</p>
                     </div>
                   </div>
                   <span
@@ -266,14 +266,14 @@ export function LabResultsPage({ labTests }: Props) {
 
                 {/* Result Display */}
                 {test.results && test.status === 'COMPLETED' && (
-                  <div className="p-4 bg-zinc-800/50 rounded-lg">
+                  <div className="p-4 bg-background-800/50 rounded-lg">
                     <div className="grid md:grid-cols-3 gap-4">
                       <div>
-                        <p className="text-xs text-zinc-500 mb-1">Result</p>
+                        <p className="text-xs text-background-500 mb-1">Result</p>
                         <div className="flex items-center gap-2">
-                          <p className="text-xl font-bold text-white">
+                          <p className="text-xl font-bold text-foreground">
                             {test.results}
-                            {test.unit && <span className="text-sm text-zinc-400 ml-1">{test.unit}</span>}
+                            {test.unit && <span className="text-sm text-background-400 ml-1">{test.unit}</span>}
                           </p>
                           {test.referenceRange && isResultAbnormal(test.results, test.referenceRange) && (
                             <>
@@ -289,16 +289,16 @@ export function LabResultsPage({ labTests }: Props) {
                       </div>
                       {test.referenceRange && (
                         <div>
-                          <p className="text-xs text-zinc-500 mb-1">Reference Range</p>
-                          <p className="text-white font-medium">
+                          <p className="text-xs text-background-500 mb-1">Reference Range</p>
+                          <p className="text-foreground font-medium">
                             {test.referenceRange}
-                            {test.unit && <span className="text-sm text-zinc-400 ml-1">{test.unit}</span>}
+                            {test.unit && <span className="text-sm text-background-400 ml-1">{test.unit}</span>}
                           </p>
                         </div>
                       )}
                       <div>
-                        <p className="text-xs text-zinc-500 mb-1">Status</p>
-                        <p className="text-white font-medium">
+                        <p className="text-xs text-background-500 mb-1">Status</p>
+                        <p className="text-foreground font-medium">
                           {isResultAbnormal(test.results, test.referenceRange || '')
                             ? 'Abnormal'
                             : 'Normal'}
@@ -317,7 +317,7 @@ export function LabResultsPage({ labTests }: Props) {
                 )}
 
                 {/* Details */}
-                <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400">
+                <div className="flex flex-wrap items-center gap-4 text-sm text-background-400">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4" />
                     <span>Dr. {test.doctor.user.name}</span>

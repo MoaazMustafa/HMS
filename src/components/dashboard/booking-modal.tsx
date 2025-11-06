@@ -32,7 +32,7 @@ type Props = {
   onSuccess?: () => void;
 };
 
-export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
+export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
@@ -145,32 +145,32 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-background/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-zinc-900 border border-zinc-800 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+            className="bg-background border border-background-800 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-zinc-800">
+            <div className="flex items-center justify-between p-6 border-b border-background">
               <div>
-                <h2 className="text-2xl font-bold text-white">Book Appointment</h2>
-                <p className="text-sm text-zinc-400 mt-1">
+                <h2 className="text-2xl font-bold text-foreground">Book Appointment</h2>
+                <p className="text-sm text-background-400 mt-1">
                   Step {step} of 3:{' '}
                   {step === 1 ? 'Select Doctor' : step === 2 ? 'Choose Date & Time' : 'Confirm Details'}
                 </p>
               </div>
               <button
                 onClick={handleClose}
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-background-400 hover:text-foreground transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             {/* Progress Bar */}
-            <div className="h-1 bg-zinc-800">
+            <div className="h-1 bg-background-800">
               <motion.div
                 initial={{ width: '0%' }}
                 animate={{ width: `${(step / 3) * 100}%` }}
@@ -192,13 +192,13 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
                 <div className="space-y-4">
                   {/* Search */}
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-background-500" />
                     <input
                       type="text"
                       placeholder="Search by doctor name or specialization..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="w-full pl-10 pr-4 py-3 bg-background-800 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
                     />
                   </div>
 
@@ -206,9 +206,9 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
                   <div className="space-y-3">
                     {filteredDoctors.length === 0 ? (
                       <div className="text-center py-12">
-                        <User className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-                        <p className="text-zinc-400">No doctors available at the moment</p>
-                        <p className="text-sm text-zinc-500 mt-2">
+                        <User className="w-12 h-12 text-background-600 mx-auto mb-4" />
+                        <p className="text-background-400">No doctors available at the moment</p>
+                        <p className="text-sm text-background-500 mt-2">
                           Please check back later or contact support
                         </p>
                       </div>
@@ -220,18 +220,18 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
                             setSelectedDoctor(doctor);
                             setStep(2);
                           }}
-                          className="w-full p-4 bg-zinc-800 hover:bg-zinc-750 border border-zinc-700 hover:border-primary/50 rounded-lg text-left transition-all group"
+                          className="w-full p-4 bg-background-800 hover:bg-background-750 border border-background-700 hover:border-primary/50 rounded-lg text-left transition-all group"
                         >
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <h3 className="text-lg font-semibold text-white group-hover:text-primary transition-colors">
+                              <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                                 Dr. {doctor.user.name}
                               </h3>
-                              <p className="text-sm text-zinc-400 mt-1">{doctor.specialization}</p>
-                              <p className="text-xs text-zinc-500 mt-2">{doctor.user.email}</p>
+                              <p className="text-sm text-background-400 mt-1">{doctor.specialization}</p>
+                              <p className="text-xs text-background-500 mt-2">{doctor.user.email}</p>
                             </div>
                             <div className="text-right">
-                              <p className="text-sm text-zinc-400">Consultation Fee</p>
+                              <p className="text-sm text-background-400">Consultation Fee</p>
                               <p className="text-lg font-bold text-primary mt-1">
                                 ${doctor.consultationFee.toFixed(2)}
                               </p>
@@ -248,15 +248,15 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
               {step === 2 && selectedDoctor && (
                 <div className="space-y-6">
                   {/* Selected Doctor Info */}
-                  <div className="p-4 bg-zinc-800 border border-zinc-700 rounded-lg">
-                    <p className="text-sm text-zinc-400 mb-1">Selected Doctor</p>
-                    <p className="text-lg font-semibold text-white">Dr. {selectedDoctor.user.name}</p>
-                    <p className="text-sm text-zinc-400">{selectedDoctor.specialization}</p>
+                  <div className="p-4 bg-background-800 border border-background-700 rounded-lg">
+                    <p className="text-sm text-background-400 mb-1">Selected Doctor</p>
+                    <p className="text-lg font-semibold text-foreground">Dr. {selectedDoctor.user.name}</p>
+                    <p className="text-sm text-background-400">{selectedDoctor.specialization}</p>
                   </div>
 
                   {/* Date Selection */}
                   <div>
-                    <label className="block text-sm font-medium text-white mb-2">
+                    <label className="block text-sm font-medium text-foreground mb-2">
                       <Calendar className="w-4 h-4 inline mr-2" />
                       Select Date
                     </label>
@@ -269,22 +269,22 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
                       }}
                       min={minDate}
                       max={maxDate}
-                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="w-full px-4 py-3 bg-background-800 border border-background-700 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                     />
                   </div>
 
                   {/* Time Slots */}
                   {selectedDate && (
                     <div>
-                      <label className="block text-sm font-medium text-white mb-2">
+                      <label className="block text-sm font-medium text-foreground mb-2">
                         <Clock className="w-4 h-4 inline mr-2" />
                         Select Time
                       </label>
                       <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
                         {getAvailableTimeSlots().length === 0 ? (
                           <div className="col-span-full text-center py-8">
-                            <AlertCircle className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
-                            <p className="text-sm text-zinc-400">
+                            <AlertCircle className="w-8 h-8 text-background-600 mx-auto mb-2" />
+                            <p className="text-sm text-background-400">
                               No available slots for this date
                             </p>
                           </div>
@@ -295,8 +295,8 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
                               onClick={() => setSelectedTime(time)}
                               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                                 selectedTime === time
-                                  ? 'bg-primary text-black'
-                                  : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+                                  ? 'bg-primary text-background'
+                                  : 'bg-background-800 text-background-400 hover:bg-background-700 hover:text-foreground'
                               }`}
                             >
                               {time}
@@ -309,7 +309,7 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
 
                   {/* Reason */}
                   <div>
-                    <label className="block text-sm font-medium text-white mb-2">
+                    <label className="block text-sm font-medium text-foreground mb-2">
                       <FileText className="w-4 h-4 inline mr-2" />
                       Reason for Visit (Optional)
                     </label>
@@ -318,7 +318,7 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
                       onChange={(e) => setReason(e.target.value)}
                       rows={3}
                       placeholder="Describe your symptoms or reason for visit..."
-                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                      className="w-full px-4 py-3 bg-background-800 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
                     />
                   </div>
                 </div>
@@ -327,24 +327,24 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
               {/* Step 3: Confirm */}
               {step === 3 && selectedDoctor && (
                 <div className="space-y-4">
-                  <div className="p-6 bg-zinc-800 border border-zinc-700 rounded-lg space-y-4">
-                    <h3 className="text-lg font-semibold text-white mb-4">Confirm Appointment Details</h3>
+                  <div className="p-6 bg-background-800 border border-background-700 rounded-lg space-y-4">
+                    <h3 className="text-lg font-semibold text-foreground mb-4">Confirm Appointment Details</h3>
 
                     <div className="space-y-3">
                       <div className="flex items-start gap-3">
                         <User className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-sm text-zinc-400">Doctor</p>
-                          <p className="text-white font-medium">Dr. {selectedDoctor.user.name}</p>
-                          <p className="text-sm text-zinc-400">{selectedDoctor.specialization}</p>
+                          <p className="text-sm text-background-400">Doctor</p>
+                          <p className="text-foreground font-medium">Dr. {selectedDoctor.user.name}</p>
+                          <p className="text-sm text-background-400">{selectedDoctor.specialization}</p>
                         </div>
                       </div>
 
                       <div className="flex items-start gap-3">
                         <Calendar className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-sm text-zinc-400">Date</p>
-                          <p className="text-white font-medium">
+                          <p className="text-sm text-background-400">Date</p>
+                          <p className="text-foreground font-medium">
                             {new Date(selectedDate).toLocaleDateString('en-US', {
                               weekday: 'long',
                               year: 'numeric',
@@ -358,8 +358,8 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
                       <div className="flex items-start gap-3">
                         <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-sm text-zinc-400">Time</p>
-                          <p className="text-white font-medium">{selectedTime}</p>
+                          <p className="text-sm text-background-400">Time</p>
+                          <p className="text-foreground font-medium">{selectedTime}</p>
                         </div>
                       </div>
 
@@ -367,15 +367,15 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
                         <div className="flex items-start gap-3">
                           <FileText className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                           <div>
-                            <p className="text-sm text-zinc-400">Reason</p>
-                            <p className="text-white">{reason}</p>
+                            <p className="text-sm text-background-400">Reason</p>
+                            <p className="text-foreground">{reason}</p>
                           </div>
                         </div>
                       )}
                     </div>
 
-                    <div className="pt-4 border-t border-zinc-700 flex items-center justify-between">
-                      <span className="text-zinc-400">Consultation Fee</span>
+                    <div className="pt-4 border-t border-background-700 flex items-center justify-between">
+                      <span className="text-background-400">Consultation Fee</span>
                       <span className="text-2xl font-bold text-primary">
                         ${selectedDoctor.consultationFee.toFixed(2)}
                       </span>
@@ -394,7 +394,7 @@ export function BookingModal({ isOpen, onClose, patientId, onSuccess }: Props) {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between gap-3 p-6 border-t border-zinc-800">
+            <div className="flex items-center justify-between gap-3 p-6 border-t border-background-800">
               {step > 1 && (
                 <Button variant="outline" onClick={() => setStep((step - 1) as any)} disabled={isLoading}>
                   Back

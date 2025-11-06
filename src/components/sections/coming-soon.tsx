@@ -36,7 +36,7 @@ export default function ComingSoon({
         <div className="mx-auto max-w-4xl text-center">
           {/* Animated Icon */}
           <div className="relative mb-8">
-            <div className="from-primary/20 to-primary/10 relative inline-flex rounded-full bg-gradient-to-br p-6">
+            <div className="from-primary/20 to-primary/10 relative inline-flex rounded-full bg-linear-to-br p-6">
               <Sparkles className="text-primary h-12 w-12 animate-pulse" />
               <div className="absolute -top-2 -right-2">
                 <Star className="fill-primary-400 text-primary-500 h-6 w-6 animate-bounce" />

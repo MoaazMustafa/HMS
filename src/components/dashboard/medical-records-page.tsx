@@ -90,7 +90,7 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
       case 'MILD':
         return 'bg-green-500/20 text-green-500 border-green-500/20';
       default:
-        return 'bg-zinc-500/20 text-zinc-500 border-zinc-500/20';
+        return 'bg-background-500/20 text-background-500 border-background-500/20';
     }
   };
 
@@ -127,12 +127,12 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Medical Records</h1>
-          <p className="text-zinc-400">View your complete medical history and health information</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Medical Records</h1>
+          <p className="text-background-400">View your complete medical history and health information</p>
         </div>
-        <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-lg">
+        <div className="p-4 bg-background-900/50 border border-background-800 rounded-lg">
           <Shield className="w-6 h-6 text-primary mb-2" />
-          <p className="text-xs text-zinc-500">Read-only Access</p>
+          <p className="text-xs text-background-500">Read-only Access</p>
         </div>
       </div>
 
@@ -146,20 +146,20 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-4"
+              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-4"
             >
               <div className="flex items-center justify-between mb-2">
                 <Icon className="w-5 h-5 text-primary" />
-                <span className="text-2xl font-bold text-white">{tab.count}</span>
+                <span className="text-2xl font-bold text-foreground">{tab.count}</span>
               </div>
-              <p className="text-sm text-zinc-400">{tab.label}</p>
+              <p className="text-sm text-background-400">{tab.label}</p>
             </motion.div>
           );
         })}
       </div>
 
       {/* Tabs and Search */}
-      <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-4">
+      <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-4">
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Tabs */}
           <div className="flex gap-2 flex-wrap">
@@ -174,8 +174,8 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                   }}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
                     activeTab === tab.id
-                      ? 'bg-primary text-black'
-                      : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                      ? 'bg-primary text-background'
+                      : 'bg-background-800 text-background-400 hover:text-foreground'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -187,13 +187,13 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
 
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-background-500" />
             <input
               type="text"
               placeholder={`Search ${tabs.find((t) => t.id === activeTab)?.label.toLowerCase()}...`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full pl-10 pr-4 py-2 bg-background-800 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         </div>
@@ -205,10 +205,10 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
         {activeTab === 'records' && (
           <>
             {filteredData().length === 0 ? (
-              <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-12 text-center">
-                <FileText className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-white mb-2">No records found</h3>
-                <p className="text-zinc-400">
+              <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
+                <FileText className="w-12 h-12 text-background-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No records found</h3>
+                <p className="text-background-400">
                   {searchQuery
                     ? 'Try adjusting your search criteria'
                     : 'No medical records available yet'}
@@ -221,7 +221,7 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+                  className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
                 >
                   <div className="space-y-4">
                     {/* Header */}
@@ -230,7 +230,7 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                         <FileText className="w-5 h-5 text-primary shrink-0 mt-1" />
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className="text-lg font-semibold text-white">
+                            <h3 className="text-lg font-semibold text-foreground">
                               Record #{record.recordId}
                             </h3>
                             {record.isFinalized && (
@@ -240,7 +240,7 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                               </span>
                             )}
                           </div>
-                          <div className="flex flex-wrap items-center gap-2 text-sm text-zinc-400">
+                          <div className="flex flex-wrap items-center gap-2 text-sm text-background-400">
                             <span>Dr. {record.doctor.user.name}</span>
                             <span>•</span>
                             <span>
@@ -257,17 +257,17 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
 
                     {/* Diagnoses */}
                     {record.diagnoses.length > 0 && (
-                      <div className="p-4 bg-zinc-800/50 rounded-lg">
+                      <div className="p-4 bg-background-800/50 rounded-lg">
                         <h4 className="text-sm font-semibold text-primary mb-3">Diagnoses</h4>
                         <div className="space-y-2">
                           {record.diagnoses.map((diagnosis) => (
                             <div
                               key={diagnosis.id}
-                              className="flex items-start justify-between gap-4 p-3 bg-zinc-900/50 rounded"
+                              className="flex items-start justify-between gap-4 p-3 bg-background-900/50 rounded"
                             >
                               <div className="flex-1">
-                                <p className="text-white font-medium">{diagnosis.description}</p>
-                                <p className="text-xs text-zinc-500 font-mono mt-1">
+                                <p className="text-foreground font-medium">{diagnosis.description}</p>
+                                <p className="text-xs text-background-500 font-mono mt-1">
                                   ICD-10: {diagnosis.icd10Code}
                                 </p>
                               </div>
@@ -290,27 +290,27 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                     {(record.chiefComplaint || record.physicalExam || record.assessment || record.plan) && (
                       <div className="grid md:grid-cols-2 gap-4">
                         {record.chiefComplaint && (
-                          <div className="p-4 bg-zinc-800/50 rounded-lg">
+                          <div className="p-4 bg-background-800/50 rounded-lg">
                             <h4 className="text-sm font-semibold text-primary mb-2">S - Subjective</h4>
-                            <p className="text-sm text-zinc-300">{record.chiefComplaint}</p>
+                            <p className="text-sm text-background-300">{record.chiefComplaint}</p>
                           </div>
                         )}
                         {record.physicalExam && (
-                          <div className="p-4 bg-zinc-800/50 rounded-lg">
+                          <div className="p-4 bg-background-800/50 rounded-lg">
                             <h4 className="text-sm font-semibold text-primary mb-2">O - Objective</h4>
-                            <p className="text-sm text-zinc-300">{record.physicalExam}</p>
+                            <p className="text-sm text-background-300">{record.physicalExam}</p>
                           </div>
                         )}
                         {record.assessment && (
-                          <div className="p-4 bg-zinc-800/50 rounded-lg">
+                          <div className="p-4 bg-background-800/50 rounded-lg">
                             <h4 className="text-sm font-semibold text-primary mb-2">A - Assessment</h4>
-                            <p className="text-sm text-zinc-300">{record.assessment}</p>
+                            <p className="text-sm text-background-300">{record.assessment}</p>
                           </div>
                         )}
                         {record.plan && (
-                          <div className="p-4 bg-zinc-800/50 rounded-lg">
+                          <div className="p-4 bg-background-800/50 rounded-lg">
                             <h4 className="text-sm font-semibold text-primary mb-2">P - Plan</h4>
-                            <p className="text-sm text-zinc-300">{record.plan}</p>
+                            <p className="text-sm text-background-300">{record.plan}</p>
                           </div>
                         )}
                       </div>
@@ -339,10 +339,10 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
               </div>
             )}
             {filteredData().length === 0 ? (
-              <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-12 text-center">
-                <AlertTriangle className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-white mb-2">No allergies found</h3>
-                <p className="text-zinc-400">
+              <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
+                <AlertTriangle className="w-12 h-12 text-background-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No allergies found</h3>
+                <p className="text-background-400">
                   {searchQuery ? 'Try adjusting your search criteria' : 'No known allergies recorded'}
                 </p>
               </div>
@@ -354,14 +354,14 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+                    className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
                   >
                     <div className="flex items-start gap-3 mb-3">
                       <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-1" />
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-white mb-2">{allergy.allergen}</h3>
+                        <h3 className="text-lg font-semibold text-foreground mb-2">{allergy.allergen}</h3>
                         <div className="flex flex-wrap items-center gap-2 mb-3">
-                          <span className="px-2 py-1 bg-zinc-800 text-zinc-300 rounded text-xs font-medium">
+                          <span className="px-2 py-1 bg-background-800 text-background-300 rounded text-xs font-medium">
                             {allergy.type}
                           </span>
                           {allergy.severity && (
@@ -375,12 +375,12 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                           )}
                         </div>
                         {allergy.reaction && (
-                          <p className="text-sm text-zinc-400 mb-2">
+                          <p className="text-sm text-background-400 mb-2">
                             <span className="font-semibold">Reaction:</span> {allergy.reaction}
                           </p>
                         )}
                         {allergy.diagnosedAt && (
-                          <p className="text-xs text-zinc-500">
+                          <p className="text-xs text-background-500">
                             Diagnosed:{' '}
                             {new Date(allergy.diagnosedAt).toLocaleDateString('en-US', {
                               month: 'short',
@@ -390,7 +390,7 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                           </p>
                         )}
                         {allergy.notes && (
-                          <p className="text-xs text-zinc-400 mt-2 p-2 bg-zinc-800/50 rounded">
+                          <p className="text-xs text-background-400 mt-2 p-2 bg-background-800/50 rounded">
                             {allergy.notes}
                           </p>
                         )}
@@ -407,10 +407,10 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
         {activeTab === 'immunizations' && (
           <>
             {filteredData().length === 0 ? (
-              <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-12 text-center">
-                <Syringe className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-white mb-2">No immunizations found</h3>
-                <p className="text-zinc-400">
+              <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
+                <Syringe className="w-12 h-12 text-background-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No immunizations found</h3>
+                <p className="text-background-400">
                   {searchQuery
                     ? 'Try adjusting your search criteria'
                     : 'No immunization records available'}
@@ -423,18 +423,18 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+                  className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
                 >
                   <div className="flex items-start gap-3">
                     <Syringe className="w-5 h-5 text-primary shrink-0 mt-1" />
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <h3 className="text-lg font-semibold text-white mb-1">
+                          <h3 className="text-lg font-semibold text-foreground mb-1">
                             {immunization.vaccineName}
                           </h3>
                           {immunization.doseNumber && (
-                            <p className="text-sm text-zinc-400">Dose #{immunization.doseNumber}</p>
+                            <p className="text-sm text-background-400">Dose #{immunization.doseNumber}</p>
                           )}
                         </div>
                         {immunization.nextDueDate && new Date(immunization.nextDueDate) > new Date() && (
@@ -450,10 +450,10 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                       </div>
                       <div className="grid sm:grid-cols-2 gap-3 text-sm">
                         <div>
-                          <p className="text-zinc-500">Administered</p>
+                          <p className="text-background-500">Administered</p>
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-zinc-500" />
-                            <p className="text-white">
+                            <Calendar className="w-4 h-4 text-background-500" />
+                            <p className="text-foreground">
                               {new Date(immunization.dateAdministered).toLocaleDateString('en-US', {
                                 month: 'long',
                                 day: 'numeric',
@@ -464,28 +464,28 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                         </div>
                         {immunization.administeredBy && (
                           <div>
-                            <p className="text-zinc-500">Administered By</p>
+                            <p className="text-background-500">Administered By</p>
                             <div className="flex items-center gap-2">
-                              <User className="w-4 h-4 text-zinc-500" />
-                              <p className="text-white">{immunization.administeredBy}</p>
+                              <User className="w-4 h-4 text-background-500" />
+                              <p className="text-foreground">{immunization.administeredBy}</p>
                             </div>
                           </div>
                         )}
                         {immunization.site && (
                           <div>
-                            <p className="text-zinc-500">Site</p>
-                            <p className="text-white">{immunization.site}</p>
+                            <p className="text-background-500">Site</p>
+                            <p className="text-foreground">{immunization.site}</p>
                           </div>
                         )}
                         {immunization.lotNumber && (
                           <div>
-                            <p className="text-zinc-500">Lot Number</p>
-                            <p className="text-white font-mono text-xs">{immunization.lotNumber}</p>
+                            <p className="text-background-500">Lot Number</p>
+                            <p className="text-foreground font-mono text-xs">{immunization.lotNumber}</p>
                           </div>
                         )}
                       </div>
                       {immunization.notes && (
-                        <p className="text-sm text-zinc-400 mt-3 p-3 bg-zinc-800/50 rounded">
+                        <p className="text-sm text-background-400 mt-3 p-3 bg-background-800/50 rounded">
                           {immunization.notes}
                         </p>
                       )}

@@ -75,9 +75,9 @@ export function PrescriptionsPage({ prescriptions }: Props) {
       case 'CANCELLED':
         return 'bg-red-500/20 text-red-500 border-red-500/20';
       case 'EXPIRED':
-        return 'bg-zinc-500/20 text-zinc-500 border-zinc-500/20';
+        return 'bg-background-500/20 text-background-500 border-background-500/20';
       default:
-        return 'bg-zinc-500/20 text-zinc-500 border-zinc-500/20';
+        return 'bg-background-500/20 text-background-500 border-background-500/20';
     }
   };
 
@@ -99,8 +99,8 @@ export function PrescriptionsPage({ prescriptions }: Props) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Prescriptions</h1>
-          <p className="text-zinc-400">View and manage your prescription medications</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Prescriptions</h1>
+          <p className="text-background-400">View and manage your prescription medications</p>
         </div>
       </div>
 
@@ -139,20 +139,20 @@ export function PrescriptionsPage({ prescriptions }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
             >
               <div className="flex items-center justify-between mb-2">
                 <Icon className={`w-5 h-5 ${stat.color}`} />
                 <span className={`text-2xl font-bold ${stat.color}`}>{stat.value}</span>
               </div>
-              <p className="text-sm text-zinc-400">{stat.label}</p>
+              <p className="text-sm text-background-400">{stat.label}</p>
             </motion.div>
           );
         })}
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-4">
+      <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-4">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Filter Tabs */}
           <div className="flex gap-2">
@@ -166,8 +166,8 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                 onClick={() => setFilter(tab.value as any)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   filter === tab.value
-                    ? 'bg-primary text-black'
-                    : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                    ? 'bg-primary text-background'
+                    : 'bg-background-800 text-background-400 hover:text-foreground'
                 }`}
               >
                 {tab.label}
@@ -177,13 +177,13 @@ export function PrescriptionsPage({ prescriptions }: Props) {
 
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-background-500" />
             <input
               type="text"
               placeholder="Search by medication, prescription ID, or doctor..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full pl-10 pr-4 py-2 bg-background-800 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         </div>
@@ -192,10 +192,10 @@ export function PrescriptionsPage({ prescriptions }: Props) {
       {/* Prescriptions List */}
       <div className="space-y-4">
         {filteredPrescriptions.length === 0 ? (
-          <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-12 text-center">
-            <Pill className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">No prescriptions found</h3>
-            <p className="text-zinc-400">
+          <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
+            <Pill className="w-12 h-12 text-background-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">No prescriptions found</h3>
+            <p className="text-background-400">
               {searchQuery
                 ? 'Try adjusting your search criteria'
                 : 'No prescriptions available at the moment'}
@@ -208,7 +208,7 @@ export function PrescriptionsPage({ prescriptions }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6 hover:border-zinc-700 transition-all"
+              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6 hover:border-background-700 transition-all"
             >
               <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                 {/* Prescription Info */}
@@ -218,7 +218,7 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                     <div>
                       <div className="flex items-center gap-3 mb-2">
                         <Pill className="w-5 h-5 text-primary" />
-                        <h3 className="text-lg font-semibold text-white">
+                        <h3 className="text-lg font-semibold text-foreground">
                           {prescription.medicationName}
                         </h3>
                         <span
@@ -229,29 +229,29 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                           {prescription.status}
                         </span>
                       </div>
-                      <p className="text-xs text-zinc-500 font-mono mb-2">
+                      <p className="text-xs text-background-500 font-mono mb-2">
                         Rx: {prescription.prescriptionId}
                       </p>
                     </div>
                   </div>
 
                   {/* Dosage Info */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-zinc-800/50 rounded-lg">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-background-800/50 rounded-lg">
                     <div>
-                      <p className="text-xs text-zinc-500 mb-1">Dosage</p>
-                      <p className="text-sm text-white font-semibold">{prescription.dosage}</p>
+                      <p className="text-xs text-background-500 mb-1">Dosage</p>
+                      <p className="text-sm text-foreground font-semibold">{prescription.dosage}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-500 mb-1">Frequency</p>
-                      <p className="text-sm text-white font-semibold">{prescription.frequency}</p>
+                      <p className="text-xs text-background-500 mb-1">Frequency</p>
+                      <p className="text-sm text-foreground font-semibold">{prescription.frequency}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-500 mb-1">Duration</p>
-                      <p className="text-sm text-white font-semibold">{prescription.duration}</p>
+                      <p className="text-xs text-background-500 mb-1">Duration</p>
+                      <p className="text-sm text-foreground font-semibold">{prescription.duration}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-zinc-500 mb-1">Refills</p>
-                      <p className="text-sm text-white font-semibold">
+                      <p className="text-xs text-background-500 mb-1">Refills</p>
+                      <p className="text-sm text-foreground font-semibold">
                         {prescription.refillsRemaining} of {prescription.refillsAllowed}
                       </p>
                     </div>
@@ -266,7 +266,7 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                   )}
 
                   {/* Details */}
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400">
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-background-400">
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4" />
                       <span>Dr. {prescription.doctor.user.name}</span>

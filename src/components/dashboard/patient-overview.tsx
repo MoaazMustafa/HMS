@@ -67,14 +67,14 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
           className="bg-red-500/10 border border-red-500/20 rounded-lg p-4"
         >
           <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
             <div className="flex-1">
               <h3 className="text-sm font-semibold text-red-500 mb-1">Active Allergies</h3>
               <div className="space-y-1">
                 {activeAllergies.map((allergy: any) => (
-                  <p key={allergy.id} className="text-sm text-zinc-300">
+                  <p key={allergy.id} className="text-sm text-background-300">
                     <span className="font-medium">{allergy.allergen}</span> -{' '}
-                    <span className="text-zinc-400">{allergy.type}</span>
+                    <span className="text-background-400">{allergy.type}</span>
                     {allergy.severity && (
                       <span
                         className={`ml-2 text-xs px-2 py-0.5 rounded ${
@@ -106,7 +106,7 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`bg-zinc-900/50 backdrop-blur-xl border ${stat.borderColor} rounded-lg p-6`}
+              className={`bg-background-900/50 backdrop-blur-xl border ${stat.borderColor} rounded-lg p-6`}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className={`${stat.bgColor} ${stat.borderColor} border rounded-lg p-3`}>
@@ -114,7 +114,7 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
                 </div>
                 <span className={`text-3xl font-bold ${stat.color}`}>{stat.value}</span>
               </div>
-              <p className="text-sm text-zinc-400">{stat.label}</p>
+              <p className="text-sm text-background-400">{stat.label}</p>
             </motion.div>
           );
         })}
@@ -126,10 +126,10 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+          className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Calendar className="w-5 h-5 text-blue-500" />
               Upcoming Appointments
             </h3>
@@ -142,19 +142,19 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
 
           <div className="space-y-3">
             {upcomingAppointments.length === 0 ? (
-              <p className="text-sm text-zinc-500 text-center py-8">No upcoming appointments</p>
+              <p className="text-sm text-background-500 text-center py-8">No upcoming appointments</p>
             ) : (
               upcomingAppointments.map((appointment: any) => (
                 <div
                   key={appointment.id}
-                  className="bg-zinc-800/50 border border-zinc-700 rounded-lg p-4"
+                  className="bg-background-800/50 border border-background-700 rounded-lg p-4"
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="font-semibold text-white">
+                      <p className="font-semibold text-foreground">
                         Dr. {appointment.doctor.user.name}
                       </p>
-                      <p className="text-sm text-zinc-400">{appointment.doctor.specialization}</p>
+                      <p className="text-sm text-background-400">{appointment.doctor.specialization}</p>
                     </div>
                     <span
                       className={`text-xs px-2 py-1 rounded ${
@@ -166,7 +166,7 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
                       {appointment.status}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-zinc-400">
+                  <div className="flex items-center gap-4 text-sm text-background-400">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
                       {new Date(appointment.scheduledDate).toLocaleDateString()}
@@ -193,10 +193,10 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+          className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Pill className="w-5 h-5 text-primary" />
               Active Prescriptions
             </h3>
@@ -209,23 +209,23 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
 
           <div className="space-y-3">
             {activePrescriptions.length === 0 ? (
-              <p className="text-sm text-zinc-500 text-center py-8">No active prescriptions</p>
+              <p className="text-sm text-background-500 text-center py-8">No active prescriptions</p>
             ) : (
               activePrescriptions.map((prescription: any) => (
                 <div
                   key={prescription.id}
-                  className="bg-zinc-800/50 border border-zinc-700 rounded-lg p-4"
+                  className="bg-background-800/50 border border-background-700 rounded-lg p-4"
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="font-semibold text-white">{prescription.medicationName}</p>
-                      <p className="text-sm text-zinc-400">
+                      <p className="font-semibold text-foreground">{prescription.medicationName}</p>
+                      <p className="text-sm text-background-400">
                         {prescription.dosage} - {prescription.frequency}
                       </p>
                     </div>
                     <CheckCircle className="w-5 h-5 text-primary" />
                   </div>
-                  <div className="flex items-center justify-between text-sm text-zinc-400 mt-2">
+                  <div className="flex items-center justify-between text-sm text-background-400 mt-2">
                     <span>Prescribed by Dr. {prescription.doctor.user.name}</span>
                     {prescription.refillsRemaining !== null && (
                       <span className="text-primary">{prescription.refillsRemaining} refills</span>
@@ -244,10 +244,10 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+          className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <FlaskConical className="w-5 h-5 text-purple-500" />
               Recent Lab Results
             </h3>
@@ -262,11 +262,11 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
             {recentLabTests.map((test: any) => (
               <div
                 key={test.id}
-                className="bg-zinc-800/50 border border-zinc-700 rounded-lg p-4"
+                className="bg-background-800/50 border border-background-700 rounded-lg p-4"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <FileText className="w-4 h-4 text-purple-500" />
-                  <p className="font-semibold text-white text-sm">{test.testName}</p>
+                  <p className="font-semibold text-foreground text-sm">{test.testName}</p>
                 </div>
                 {test.isCritical && (
                   <span className="inline-flex items-center gap-1 text-xs px-2 py-1 bg-red-500/20 text-red-500 rounded mb-2">
@@ -274,7 +274,7 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
                     Critical
                   </span>
                 )}
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-background-400">
                   {new Date(test.createdAt).toLocaleDateString()}
                 </p>
               </div>
@@ -288,9 +288,9 @@ export function PatientOverview({ patient }: { patient: PatientWithRelations }) 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+        className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
       >
-        <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link href="/dashboard/appointments">
             <Button className="w-full" variant="outline">

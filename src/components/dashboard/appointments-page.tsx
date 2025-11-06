@@ -82,7 +82,7 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
       case 'NO_SHOW':
         return 'bg-gray-500/20 text-gray-500 border-gray-500/20';
       default:
-        return 'bg-zinc-500/20 text-zinc-500 border-zinc-500/20';
+        return 'bg-background-500/20 text-background-500 border-background-500/20';
     }
   };
 
@@ -119,8 +119,8 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Appointments</h1>
-          <p className="text-zinc-400">Manage your appointments and book new ones</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Appointments</h1>
+          <p className="text-background-400">Manage your appointments and book new ones</p>
         </div>
         <Button onClick={() => setShowBookingModal(true)} className="gap-2">
           <Plus className="w-4 h-4" />
@@ -167,20 +167,20 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
             >
               <div className="flex items-center justify-between mb-2">
                 <Icon className={`w-5 h-5 ${stat.color}`} />
                 <span className={`text-2xl font-bold ${stat.color}`}>{stat.value}</span>
               </div>
-              <p className="text-sm text-zinc-400">{stat.label}</p>
+              <p className="text-sm text-background-400">{stat.label}</p>
             </motion.div>
           );
         })}
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-4">
+      <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-4">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Filter Tabs */}
           <div className="flex gap-2">
@@ -194,8 +194,8 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
                 onClick={() => setFilter(tab.value as 'all' | 'upcoming' | 'past')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   filter === tab.value
-                    ? 'bg-primary text-black'
-                    : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                    ? 'bg-primary text-background'
+                    : 'bg-background-800 text-background-400 hover:text-foreground'
                 }`}
               >
                 {tab.label}
@@ -205,13 +205,13 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
 
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-background-500" />
             <input
               type="text"
               placeholder="Search by doctor, specialization, or ID..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full pl-10 pr-4 py-2 bg-background-800 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         </div>
@@ -220,10 +220,10 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
       {/* Appointments List */}
       <div className="space-y-4">
         {filteredAppointments.length === 0 ? (
-          <div className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-12 text-center">
-            <Calendar className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">No appointments found</h3>
-            <p className="text-zinc-400 mb-4">
+          <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
+            <Calendar className="w-12 h-12 text-background-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">No appointments found</h3>
+            <p className="text-background-400 mb-4">
               {searchQuery
                 ? 'Try adjusting your search criteria'
                 : 'Book your first appointment to get started'}
@@ -237,7 +237,7 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6 hover:border-zinc-700 transition-all"
+              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6 hover:border-background-700 transition-all"
             >
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 {/* Appointment Info */}
@@ -246,7 +246,7 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-white">
+                        <h3 className="text-lg font-semibold text-foreground">
                           Dr. {appointment.doctor.user.name}
                         </h3>
                         <span
@@ -258,16 +258,16 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
                           {appointment.status}
                         </span>
                       </div>
-                      <p className="text-sm text-zinc-400">{appointment.doctor.specialization}</p>
+                      <p className="text-sm text-background-400">{appointment.doctor.specialization}</p>
                     </div>
-                    <span className="text-xs text-zinc-500 font-mono">{appointment.appointmentId}</span>
+                    <span className="text-xs text-background-500 font-mono">{appointment.appointmentId}</span>
                   </div>
 
                   {/* Details Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                     <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="w-4 h-4 text-zinc-500" />
-                      <span className="text-zinc-300">
+                      <Calendar className="w-4 h-4 text-background-500" />
+                      <span className="text-background-300">
                         {new Date(appointment.scheduledDate).toLocaleDateString('en-US', {
                           weekday: 'short',
                           month: 'short',
@@ -278,19 +278,19 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
-                      <Clock className="w-4 h-4 text-zinc-500" />
-                      <span className="text-zinc-300">{appointment.scheduledTime}</span>
+                      <Clock className="w-4 h-4 text-background-500" />
+                      <span className="text-background-300">{appointment.scheduledTime}</span>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
-                      <DollarSign className="w-4 h-4 text-zinc-500" />
-                      <span className="text-zinc-300">${appointment.fee.toFixed(2)}</span>
+                      <DollarSign className="w-4 h-4 text-background-500" />
+                      <span className="text-background-300">${appointment.fee.toFixed(2)}</span>
                     </div>
 
                     {appointment.reason && (
                       <div className="flex items-center gap-2 text-sm col-span-full">
-                        <AlertCircle className="w-4 h-4 text-zinc-500" />
-                        <span className="text-zinc-300">{appointment.reason}</span>
+                        <AlertCircle className="w-4 h-4 text-background-500" />
+                        <span className="text-background-300">{appointment.reason}</span>
                       </div>
                     )}
                   </div>

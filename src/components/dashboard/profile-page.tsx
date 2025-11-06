@@ -121,8 +121,8 @@ export function ProfilePage({ userData }: Props) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Profile</h1>
-          <p className="text-zinc-400">Manage your personal information and settings</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Profile</h1>
+          <p className="text-muted-foreground">Manage your personal information and settings</p>
         </div>
         {!isEditing ? (
           <Button onClick={() => setIsEditing(true)} className="gap-2">
@@ -176,81 +176,81 @@ export function ProfilePage({ userData }: Props) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+            className="bg-muted/50 backdrop-blur-xl border border-muted rounded-lg p-6"
           >
             <div className="flex items-center gap-3 mb-6">
               <User className="w-5 h-5 text-primary" />
-              <h2 className="text-xl font-semibold text-white">Personal Information</h2>
+              <h2 className="text-xl font-semibold text-foreground">Personal Information</h2>
             </div>
 
             <div className="space-y-4">
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Full Name</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Full Name</label>
                 {isEditing ? (
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 ) : (
-                  <p className="text-white">{userData.name}</p>
+                  <p className="text-foreground">{userData.name}</p>
                 )}
               </div>
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Email</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Email</label>
                 <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-zinc-500" />
+                  <Mail className="w-4 h-4 text-muted-foreground" />
                   {isEditing ? (
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="flex-1 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="flex-1 px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                     />
                   ) : (
-                    <p className="text-white">{userData.email}</p>
+                    <p className="text-foreground">{userData.email}</p>
                   )}
                 </div>
               </div>
 
               {/* Phone */}
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Phone Number</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Phone Number</label>
                 <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-zinc-500" />
+                  <Phone className="w-4 h-4 text-muted-foreground" />
                   {isEditing ? (
                     <input
                       type="tel"
                       value={formData.phoneNumber}
                       onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                      className="flex-1 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="flex-1 px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       placeholder="Enter phone number"
                     />
                   ) : (
-                    <p className="text-white">{userData.phoneNumber || 'Not provided'}</p>
+                    <p className="text-foreground">{userData.phoneNumber || 'Not provided'}</p>
                   )}
                 </div>
               </div>
 
               {/* Address */}
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Street Address</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Street Address</label>
                 <div className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 text-zinc-500 mt-2" />
+                  <MapPin className="w-4 h-4 text-muted-foreground mt-2" />
                   {isEditing ? (
                     <input
                       type="text"
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                      className="flex-1 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="flex-1 px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       placeholder="Enter street address"
                     />
                   ) : (
-                    <p className="text-white">{userData.patient.address || 'Not provided'}</p>
+                    <p className="text-foreground">{userData.patient.address || 'Not provided'}</p>
                   )}
                 </div>
               </div>
@@ -258,45 +258,45 @@ export function ProfilePage({ userData }: Props) {
               {/* City, State, Zip */}
               <div className="grid md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">City</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">City</label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="w-full px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       placeholder="City"
                     />
                   ) : (
-                    <p className="text-white">{userData.patient.city || 'N/A'}</p>
+                    <p className="text-foreground">{userData.patient.city || 'N/A'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">State</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">State</label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={formData.state}
                       onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                      className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="w-full px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       placeholder="State"
                     />
                   ) : (
-                    <p className="text-white">{userData.patient.state || 'N/A'}</p>
+                    <p className="text-foreground">{userData.patient.state || 'N/A'}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">ZIP Code</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">ZIP Code</label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={formData.zipCode}
                       onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
-                      className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="w-full px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       placeholder="ZIP"
                     />
                   ) : (
-                    <p className="text-white">{userData.patient.zipCode || 'N/A'}</p>
+                    <p className="text-foreground">{userData.patient.zipCode || 'N/A'}</p>
                   )}
                 </div>
               </div>
@@ -308,12 +308,12 @@ export function ProfilePage({ userData }: Props) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+            className="bg-muted/50 backdrop-blur-xl border border-muted rounded-lg p-6"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <Users className="w-5 h-5 text-primary" />
-                <h2 className="text-xl font-semibold text-white">Emergency Contacts</h2>
+                <h2 className="text-xl font-semibold text-foreground">Emergency Contacts</h2>
               </div>
               <Button variant="outline" size="sm" className="gap-2">
                 <Edit className="w-4 h-4" />
@@ -323,22 +323,22 @@ export function ProfilePage({ userData }: Props) {
 
             {!userData.patient.emergencyContactName ? (
               <div className="text-center py-8">
-                <Users className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-                <p className="text-zinc-400">No emergency contact added yet</p>
+                <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No emergency contact added yet</p>
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="p-4 bg-zinc-800/50 rounded-lg">
-                  <h3 className="text-white font-semibold mb-2">
+                <div className="p-4 bg-muted/50 rounded-lg">
+                  <h3 className="text-foreground font-semibold mb-2">
                     {userData.patient.emergencyContactName}
                   </h3>
                   <div className="space-y-1 text-sm">
-                    <p className="text-zinc-400">
-                      <span className="text-zinc-500">Relationship:</span>{' '}
+                    <p className="text-muted-foreground">
+                      <span className="text-muted-foreground">Relationship:</span>{' '}
                       {userData.patient.emergencyContactRelation || 'Not specified'}
                     </p>
-                    <p className="text-zinc-400">
-                      <span className="text-zinc-500">Phone:</span>{' '}
+                    <p className="text-muted-foreground">
+                      <span className="text-muted-foreground">Phone:</span>{' '}
                       {userData.patient.emergencyContactPhone || 'Not provided'}
                     </p>
                   </div>
@@ -355,24 +355,24 @@ export function ProfilePage({ userData }: Props) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+            className="bg-muted/50 backdrop-blur-xl border border-muted rounded-lg p-6"
           >
             <div className="flex items-center gap-3 mb-6">
               <Activity className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-white">Medical Information</h2>
+              <h2 className="text-lg font-semibold text-foreground">Medical Information</h2>
             </div>
 
             <div className="space-y-4">
               <div>
-                <p className="text-xs text-zinc-500 mb-1">Patient ID</p>
-                <p className="text-white font-mono text-sm">{userData.patient.patientId}</p>
+                <p className="text-xs text-muted-foreground mb-1">Patient ID</p>
+                <p className="text-foreground font-mono text-sm">{userData.patient.patientId}</p>
               </div>
 
               <div>
-                <p className="text-xs text-zinc-500 mb-1">Date of Birth</p>
+                <p className="text-xs text-muted-foreground mb-1">Date of Birth</p>
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-zinc-500" />
-                  <p className="text-white text-sm">
+                  <Calendar className="w-4 h-4 text-muted-foreground" />
+                  <p className="text-foreground text-sm">
                     {new Date(userData.patient.dateOfBirth).toLocaleDateString('en-US', {
                       month: 'long',
                       day: 'numeric',
@@ -380,20 +380,20 @@ export function ProfilePage({ userData }: Props) {
                     })}
                   </p>
                 </div>
-                <p className="text-xs text-zinc-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Age: {calculateAge(userData.patient.dateOfBirth)} years
                 </p>
               </div>
 
               <div>
-                <p className="text-xs text-zinc-500 mb-1">Gender</p>
-                <p className="text-white text-sm">{userData.patient.gender}</p>
+                <p className="text-xs text-muted-foreground mb-1">Gender</p>
+                <p className="text-foreground text-sm">{userData.patient.gender}</p>
               </div>
 
               {userData.patient.bloodGroup && (
                 <div>
-                  <p className="text-xs text-zinc-500 mb-1">Blood Group</p>
-                  <p className="text-white text-sm font-semibold">{userData.patient.bloodGroup}</p>
+                  <p className="text-xs text-muted-foreground mb-1">Blood Group</p>
+                  <p className="text-foreground text-sm font-semibold">{userData.patient.bloodGroup}</p>
                 </div>
               )}
             </div>
@@ -404,17 +404,17 @@ export function ProfilePage({ userData }: Props) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 rounded-lg p-6"
+            className="bg-muted/50 backdrop-blur-xl border border-muted rounded-lg p-6"
           >
             <div className="flex items-center gap-3 mb-6">
               <Shield className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold text-white">Account Security</h2>
+              <h2 className="text-lg font-semibold text-foreground">Account Security</h2>
             </div>
 
             <div className="space-y-4">
               <div>
-                <p className="text-xs text-zinc-500 mb-1">Member Since</p>
-                <p className="text-white text-sm">
+                <p className="text-xs text-muted-foreground mb-1">Member Since</p>
+                <p className="text-foreground text-sm">
                   {new Date(userData.createdAt).toLocaleDateString('en-US', {
                     month: 'long',
                     day: 'numeric',
@@ -423,7 +423,7 @@ export function ProfilePage({ userData }: Props) {
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-zinc-800">
+              <div className="pt-4 border-t border-muted">
                 <Button variant="outline" className="w-full gap-2" size="sm">
                   <Shield className="w-4 h-4" />
                   Change Password
