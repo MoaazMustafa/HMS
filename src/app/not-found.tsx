@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowLeft, Home, Search } from 'lucide-react';
+import { Home, Search } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -60,8 +60,7 @@ export default function NotFound() {
                 been moved.
               </p>
               <p className="text-muted-foreground">
-                Don&apos;t worry, let&apos;s get you back on track with our
-                software house services.
+                Don&apos;t worry, let&apos;s get you back to the health management system.
               </p>
             </motion.div>
 
@@ -80,67 +79,16 @@ export default function NotFound() {
                 </Button>
               </Link>
 
-              <Link href="/projects">
+              <Link href="/login">
                 <Button
                   variant="outline"
                   size="lg"
                   className="flex items-center gap-2"
                 >
                   <Search className="h-4 w-4" />
-                  Browse Projects
+                  Login to Dashboard
                 </Button>
               </Link>
-            </motion.div>
-
-            {/* Quick Links */}
-            <motion.div
-              variants={fadeInUp}
-              className="border-border/20 rounded-lg border p-6"
-            >
-              <h3 className="text-foreground mb-4 text-lg font-semibold">
-                Quick Links
-              </h3>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <Link
-                  href="/services"
-                  className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
-                >
-                  <ArrowLeft className="h-4 w-4 rotate-180" />
-                  Our Services
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
-                >
-                  <ArrowLeft className="h-4 w-4 rotate-180" />
-                  About Upvave
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
-                >
-                  <ArrowLeft className="h-4 w-4 rotate-180" />
-                  Contact Us
-                </Link>
-                <Link
-                  href="/meeting"
-                  className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
-                >
-                  <ArrowLeft className="h-4 w-4 rotate-180" />
-                  Schedule Meeting
-                </Link>
-              </div>
-            </motion.div>
-
-            {/* Company Info */}
-            <motion.div variants={fadeInUp} className="text-center">
-              <p className="text-muted-foreground text-sm">
-                Upvave LLC - US-registered software house
-              </p>
-              <p className="text-muted-foreground text-xs">
-                Delivering innovative web applications, mobile development, and
-                AI-integrated solutions
-              </p>
             </motion.div>
           </motion.div>
         </div>
