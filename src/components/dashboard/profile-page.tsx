@@ -20,14 +20,6 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 
-type EmergencyContact = {
-  id: string;
-  name: string;
-  relationship: string;
-  phoneNumber: string;
-  email?: string;
-};
-
 type Patient = {
   id: string;
   patientId: string;
@@ -38,7 +30,9 @@ type Patient = {
   city?: string;
   state?: string;
   zipCode?: string;
-  emergencyContacts: EmergencyContact[];
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
+  emergencyContactRelation?: string;
 };
 
 type UserData = {
@@ -327,31 +321,28 @@ export function ProfilePage({ userData }: Props) {
               </Button>
             </div>
 
-            {userData.patient.emergencyContacts.length === 0 ? (
+            {!userData.patient.emergencyContactName ? (
               <div className="text-center py-8">
                 <Users className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-                <p className="text-zinc-400">No emergency contacts added yet</p>
+                <p className="text-zinc-400">No emergency contact added yet</p>
               </div>
             ) : (
               <div className="space-y-4">
-                {userData.patient.emergencyContacts.map((contact) => (
-                  <div key={contact.id} className="p-4 bg-zinc-800/50 rounded-lg">
-                    <h3 className="text-white font-semibold mb-2">{contact.name}</h3>
-                    <div className="space-y-1 text-sm">
-                      <p className="text-zinc-400">
-                        <span className="text-zinc-500">Relationship:</span> {contact.relationship}
-                      </p>
-                      <p className="text-zinc-400">
-                        <span className="text-zinc-500">Phone:</span> {contact.phoneNumber}
-                      </p>
-                      {contact.email && (
-                        <p className="text-zinc-400">
-                          <span className="text-zinc-500">Email:</span> {contact.email}
-                        </p>
-                      )}
-                    </div>
+                <div className="p-4 bg-zinc-800/50 rounded-lg">
+                  <h3 className="text-white font-semibold mb-2">
+                    {userData.patient.emergencyContactName}
+                  </h3>
+                  <div className="space-y-1 text-sm">
+                    <p className="text-zinc-400">
+                      <span className="text-zinc-500">Relationship:</span>{' '}
+                      {userData.patient.emergencyContactRelation || 'Not specified'}
+                    </p>
+                    <p className="text-zinc-400">
+                      <span className="text-zinc-500">Phone:</span>{' '}
+                      {userData.patient.emergencyContactPhone || 'Not provided'}
+                    </p>
                   </div>
-                ))}
+                </div>
               </div>
             )}
           </motion.div>
