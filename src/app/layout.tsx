@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 
 import { ThemeProvider } from '@/components';
+import { AuthProvider } from '@/components/auth-provider';
 import { AOSInit } from '@/components/ui/aos-init';
 import { defaultMetadata } from '@/lib/metadata';
 
@@ -45,23 +46,25 @@ export default function RootLayout({
           height={4}
           showSpinner={true}
         />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AOSInit />
-          <ClickSpark
-            sparkColor="#ACEC00"
-            sparkSize={10}
-            sparkRadius={15}
-            sparkCount={8}
-            duration={400}
+        <AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
           >
-            {children}
-          </ClickSpark>
-        </ThemeProvider>
+            <AOSInit />
+            <ClickSpark
+              sparkColor="#ACEC00"
+              sparkSize={10}
+              sparkRadius={15}
+              sparkCount={8}
+              duration={400}
+            >
+              {children}
+            </ClickSpark>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

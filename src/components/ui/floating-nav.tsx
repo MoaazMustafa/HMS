@@ -1,7 +1,9 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Menu, X, LogOut, LogIn } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 
 import { ThemeToggle } from '../theme-toggle';
@@ -18,17 +20,8 @@ const navItems = [
 
 export function FloatingNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const { scrollY } = useScroll();
-  const backgroundColor = useTransform(
-    scrollY,
-    [0, 100],
-    ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.8)'],
-  );
-  const borderColor = useTransform(
-    scrollY,
-    [0, 100],
-    ['rgba(172, 236, 0, 0)', 'rgba(172, 236, 0, 0.2)'],
-  );
+  const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (isOpen) {
@@ -37,6 +30,19 @@ export function FloatingNav() {
       document.body.style.overflow = 'unset';
     }
   }, [isOpen]);
+
+  const handleAuth = () => {
+    if (session) {
+      router.push('/dashboard');
+    } else {
+      router.push('/login');
+    }
+    setIsOpen(false);
+  };
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' });
+  };
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -48,13 +54,7 @@ export function FloatingNav() {
 
   return (
     <>
-      <motion.nav
-        style={{
-          backgroundColor,
-          borderColor,
-        }}
-        className="fixed top-0 z-50 w-full border-b backdrop-blur-md"
-      >
+      <motion.nav className="fixed top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -73,20 +73,42 @@ export function FloatingNav() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-primary text-sm font-medium transition-colors"
+                className="text-sm font-medium text-foreground transition-colors hover:text-primary"
               >
                 {item.name}
               </motion.button>
             ))}
-          </div>
-          <div className="flex gap-4">
             <ThemeToggle />
-            <Button
-              size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
-            >
-              Get Started
-            </Button>
+            {session ? (
+              <>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleAuth}
+                  className="border-primary/20 text-primary hover:bg-primary/10"
+                >
+                  Dashboard
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={handleLogout}
+                  className="text-foreground hover:text-primary"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button
+                size="sm"
+                onClick={handleAuth}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Sign In
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -119,9 +141,22 @@ export function FloatingNav() {
               {item.name}
             </button>
           ))}
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-            Get Started
-          </Button>
+          {session ? (
+            <>
+              <Button onClick={handleAuth} className="bg-primary text-primary-foreground hover:bg-primary/90">
+                Dashboard
+              </Button>
+              <Button onClick={handleLogout} variant="outline" className="border-primary/20">
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Button onClick={handleAuth} className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <LogIn className="mr-2 h-4 w-4" />
+              Sign In
+            </Button>
+          )}
         </div>
       </motion.div>
     </>
