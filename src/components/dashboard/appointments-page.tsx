@@ -30,7 +30,7 @@ type Appointment = {
     lastName: string;
     specialization: string;
     user: {
-      name: string;
+      email: string;
     };
   };
 };
@@ -57,8 +57,9 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
     // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
+      const doctorName = `${apt.doctor.firstName} ${apt.doctor.lastName}`;
       return (
-        apt.doctor.user.name.toLowerCase().includes(query) ||
+        doctorName.toLowerCase().includes(query) ||
         apt.doctor.specialization.toLowerCase().includes(query) ||
         apt.appointmentId.toLowerCase().includes(query)
       );
@@ -247,7 +248,7 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
                     <div>
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="text-lg font-semibold text-foreground">
-                          Dr. {appointment.doctor.user.name}
+                          Dr. {appointment.doctor.firstName} {appointment.doctor.lastName}
                         </h3>
                         <span
                           className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border ${getStatusColor(

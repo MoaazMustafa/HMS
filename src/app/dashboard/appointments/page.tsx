@@ -23,9 +23,15 @@ export default async function PatientAppointmentsPage() {
             include: {
               doctor: {
                 include: {
-                  user: true,
+                  user: {
+                    select: {
+                      id: true,
+                      email: true,
+                    },
+                  },
                 },
               },
+              billing: true,
             },
             orderBy: {
               scheduledDate: 'desc',
@@ -40,10 +46,21 @@ export default async function PatientAppointmentsPage() {
     redirect('/login');
   }
 
-  return (
-    <AppointmentsPage
-      appointments={user.patient.appointments as any}
-      patientId={user.patient.id}
-    />
-  );
+  // Convert appointments with proper fee handling
+  const appointments = user.patient.appointments.map((apt) => {
+    // Get fee from billing, customFee, or doctor's defaultAppointmentFee
+    const feeValue = apt.billing?.amount 
+      ? apt.billing.amount 
+      : apt.customFee 
+      ? apt.customFee 
+      : apt.doctor.defaultAppointmentFee;
+    
+    return {
+      ...apt,
+      fee: typeof feeValue === 'number' ? feeValue : feeValue.toNumber(),
+      scheduledTime: apt.startTime, // Use startTime as scheduledTime for display
+    };
+  });
+
+  return <AppointmentsPage appointments={appointments as any} patientId={user.patient.id} />;
 }

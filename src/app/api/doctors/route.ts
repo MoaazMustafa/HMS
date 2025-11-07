@@ -35,10 +35,12 @@ export async function GET() {
       },
     });
 
-    // Add full name to each doctor
+    // Add full name and convert Decimal types to numbers
     const doctorsWithName = doctors.map((doctor) => ({
       ...doctor,
       name: `${doctor.firstName} ${doctor.lastName}`,
+      defaultAppointmentFee: doctor.defaultAppointmentFee.toNumber(),
+      defaultSessionFee: doctor.defaultSessionFee.toNumber(),
     }));
 
     return NextResponse.json({ doctors: doctorsWithName }, { status: 200 });
