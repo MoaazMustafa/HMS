@@ -58,7 +58,7 @@ export function PatientSidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 z-40 w-72 h-screen bg-background-950 border-r border-background-800
+          fixed top-0 left-0 z-40 w-64 h-screen bg-card border-r border-border
           lg:sticky lg:top-0 lg:z-auto
           transition-transform duration-300 ease-in-out
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -66,31 +66,31 @@ export function PatientSidebar() {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center gap-3 p-6 border-b border-background-800">
-            <Activity className="w-8 h-8 text-primary" />
+          <div className="flex items-center gap-2.5 px-4 py-3 border-b border-border">
+            <Activity className="w-5 h-5 text-primary" />
             <div>
-              <h1 className="text-xl font-bold text-foreground">HMS</h1>
-              <p className="text-xs text-background-500">Patient Portal</p>
+              <h1 className="text-sm font-semibold text-foreground">HMS</h1>
+              <p className="text-[10px] text-muted-foreground">Patient Portal</p>
             </div>
           </div>
 
           {/* User Info */}
-          <div className="p-4 border-b border-background-800">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-                <User className="w-5 h-5 text-primary" />
+          <div className="px-3 py-3 border-b border-border">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-muted border border-border flex items-center justify-center">
+                <User className="w-3.5 h-3.5 text-muted-foreground" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-foreground truncate">
+                <p className="text-xs font-medium text-foreground truncate">
                   {session?.user?.name || 'Patient'}
                 </p>
-                <p className="text-xs text-background-500 truncate">{session?.user?.email}</p>
+                <p className="text-[10px] text-muted-foreground truncate">{session?.user?.email}</p>
               </div>
             </div>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
             {patientMenuItems.map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
@@ -101,29 +101,30 @@ export function PatientSidebar() {
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`
-                    flex items-center gap-3 px-4 py-3 rounded-lg transition-all
+                    flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-all text-xs font-medium
                     ${
                       isActive
-                        ? 'bg-primary/10 text-primary border border-primary/20'
-                        : 'text-background-400 hover:text-foreground hover:bg-background-900'
+                        ? 'bg-accent text-accent-foreground'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
                     }
                   `}
                 >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.name}</span>
+                  <Icon className="w-4 h-4" />
+                  <span>{item.name}</span>
                 </Link>
               );
             })}
           </nav>
 
           {/* Logout Button */}
-          <div className="p-4 border-t border-background-800">
+          <div className="px-3 py-3 border-t border-border">
             <Button
               variant="ghost"
+              size="sm"
               onClick={handleLogout}
-              className="w-full justify-start text-background-400 hover:text-foreground hover:bg-background-900"
+              className="w-full justify-start h-7"
             >
-              <LogOut className="w-5 h-5 mr-3" />
+              <LogOut className="w-4 h-4 mr-2.5" />
               Logout
             </Button>
           </div>

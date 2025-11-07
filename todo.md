@@ -1,0 +1,5 @@
+- add password reset page 
+- book appointment dialog not showing available doctors 
+- profile page is not loading all the data and the details are not taken at time of account creation and the user can not edit his details as its just changing on frontend and not in database 
+- cant manage the emergency contact details in profile page
+- cant change the password in profile page

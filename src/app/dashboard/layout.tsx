@@ -19,26 +19,26 @@ export default async function DashboardLayout({
   // Patient-specific layout
   if (session.user.role === UserRole.PATIENT) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-background-900 via-background to-background-900">
+      <div className="min-h-screen bg-background">
         <div className="flex min-h-screen">
           <PatientSidebar />
           <main className="flex-1 min-h-screen">
             {/* Top Bar */}
-            <div className="sticky top-0 z-30 bg-background-900/50 backdrop-blur-xl border-b border-background-800">
-              <div className="px-4 lg:px-8 py-4">
+            <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
+              <div className="px-4 lg:px-6 py-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 ml-12 lg:ml-0">
+                  <div className="flex items-center gap-3 ml-12 lg:ml-0">
                     <div>
-                      <h2 className="text-xl font-bold text-foreground">
-                        Welcome back, {session.user.name?.split(' ')[0]}!
+                      <h2 className="text-sm font-semibold text-foreground">
+                        Welcome back, {session.user.name?.split(' ')[0]}
                       </h2>
-                      <p className="text-sm text-background-400">
+                      <p className="text-xs text-muted-foreground">
                         Manage your health records and appointments
                       </p>
                     </div>
                   </div>
                   <div className="hidden md:flex items-center gap-2">
-                    <span className="px-3 py-1 text-xs font-semibold bg-primary/10 text-primary rounded-full border border-primary/20">
+                    <span className="px-2 py-0.5 text-[10px] font-medium bg-muted text-muted-foreground rounded border border-border">
                       Patient
                     </span>
                   </div>
@@ -47,7 +47,7 @@ export default async function DashboardLayout({
             </div>
 
             {/* Page Content */}
-            <div className="p-4 lg:p-8">{children}</div>
+            <div className="p-4 lg:p-6">{children}</div>
           </main>
         </div>
       </div>
