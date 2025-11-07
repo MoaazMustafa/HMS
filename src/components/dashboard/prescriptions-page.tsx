@@ -83,12 +83,12 @@ export function PrescriptionsPage({ prescriptions }: Props) {
 
   const handleDownloadPDF = (prescriptionId: string) => {
     // TODO: Implement PDF download
-    console.log('Download PDF for prescription:', prescriptionId);
+    void prescriptionId; // Suppress unused variable warning
   };
 
   const handleShowQR = (prescriptionId: string) => {
     // TODO: Implement QR code display
-    console.log('Show QR code for prescription:', prescriptionId);
+    void prescriptionId; // Suppress unused variable warning
   };
 
   const activePrescriptions = prescriptions.filter((rx) => rx.isActive).length;
@@ -163,7 +163,7 @@ export function PrescriptionsPage({ prescriptions }: Props) {
             ].map((tab) => (
               <button
                 key={tab.value}
-                onClick={() => setFilter(tab.value as any)}
+                onClick={() => setFilter(tab.value as 'all' | 'active' | 'expired')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   filter === tab.value
                     ? 'bg-primary text-background'
@@ -260,7 +260,7 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                   {/* Instructions */}
                   {prescription.instructions && (
                     <div className="flex items-start gap-2 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                      <FileText className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
+                      <FileText className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
                       <p className="text-sm text-blue-400">{prescription.instructions}</p>
                     </div>
                   )}
@@ -302,7 +302,7 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                     prescription.refillsRemaining > 0 &&
                     prescription.refillsRemaining <= 2 && (
                       <div className="flex items-start gap-2 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                        <AlertCircle className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" />
+                        <AlertCircle className="w-4 h-4 text-yellow-500 shrink-0 mt-0.5" />
                         <p className="text-sm text-yellow-400">
                           Low refills remaining. Contact your doctor if you need additional refills.
                         </p>

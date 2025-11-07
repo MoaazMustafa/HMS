@@ -25,5 +25,14 @@ export default async function PatientProfilePage() {
     redirect('/login');
   }
 
-  return <ProfilePage userData={userData as any} />;
+  return (
+    <ProfilePage
+      userData={{
+        id: userData.id,
+        email: userData.email,
+        createdAt: userData.createdAt,
+        patient: userData.patient,
+      }}
+    />
+  );
 }

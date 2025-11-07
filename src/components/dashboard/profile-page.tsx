@@ -15,31 +15,35 @@ import {
   CheckCircle,
   Users,
   Activity,
+  KeyRound,
 } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 
+import { PasswordChangeModal } from './password-change-modal';
+
 type Patient = {
   id: string;
   patientId: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
   dateOfBirth: Date;
   gender: string;
-  bloodGroup?: string;
-  address?: string;
-  city?: string;
-  state?: string;
-  zipCode?: string;
-  emergencyContactName?: string;
-  emergencyContactPhone?: string;
-  emergencyContactRelation?: string;
+  bloodGroup?: string | null;
+  address?: string | null;
+  city?: string | null;
+  state?: string | null;
+  zipCode?: string | null;
+  emergencyContactName?: string | null;
+  emergencyContactPhone?: string | null;
+  emergencyContactRelation?: string | null;
 };
 
 type UserData = {
   id: string;
-  name: string;
   email: string;
-  phoneNumber?: string;
   createdAt: Date;
   patient: Patient;
 };
@@ -53,15 +57,20 @@ export function ProfilePage({ userData }: Props) {
   const [isSaving, setIsSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: userData.name,
+    firstName: userData.patient.firstName,
+    lastName: userData.patient.lastName,
     email: userData.email,
-    phoneNumber: userData.phoneNumber || '',
+    phone: userData.patient.phone,
     address: userData.patient.address || '',
     city: userData.patient.city || '',
     state: userData.patient.state || '',
     zipCode: userData.patient.zipCode || '',
+    emergencyContactName: userData.patient.emergencyContactName || '',
+    emergencyContactPhone: userData.patient.emergencyContactPhone || '',
+    emergencyContactRelation: userData.patient.emergencyContactRelation || '',
   });
 
   const handleSave = async () => {
@@ -70,20 +79,34 @@ export function ProfilePage({ userData }: Props) {
     setSuccessMessage('');
 
     try {
-      // TODO: Implement API call to update profile
-      // const response = await fetch('/api/patient/profile', {
-      //   method: 'PATCH',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData),
-      // });
-      // if (!response.ok) throw new Error('Failed to update profile');
+      const response = await fetch('/api/patient/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zipCode: formData.zipCode,
+          emergencyContactName: formData.emergencyContactName,
+          emergencyContactPhone: formData.emergencyContactPhone,
+          emergencyContactRelation: formData.emergencyContactRelation,
+        }),
+      });
 
-      // Mock success
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to update profile');
+      }
 
       setSuccessMessage('Profile updated successfully');
       setIsEditing(false);
       setTimeout(() => setSuccessMessage(''), 3000);
+
+      // Refresh the page to show updated data
+      window.location.reload();
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Failed to update profile');
     } finally {
@@ -93,13 +116,17 @@ export function ProfilePage({ userData }: Props) {
 
   const handleCancel = () => {
     setFormData({
-      name: userData.name,
+      firstName: userData.patient.firstName,
+      lastName: userData.patient.lastName,
       email: userData.email,
-      phoneNumber: userData.phoneNumber || '',
+      phone: userData.patient.phone,
       address: userData.patient.address || '',
       city: userData.patient.city || '',
       state: userData.patient.state || '',
       zipCode: userData.patient.zipCode || '',
+      emergencyContactName: userData.patient.emergencyContactName || '',
+      emergencyContactPhone: userData.patient.emergencyContactPhone || '',
+      emergencyContactRelation: userData.patient.emergencyContactRelation || '',
     });
     setIsEditing(false);
     setErrorMessage('');
@@ -125,10 +152,16 @@ export function ProfilePage({ userData }: Props) {
           <p className="text-muted-foreground">Manage your personal information and settings</p>
         </div>
         {!isEditing ? (
-          <Button onClick={() => setIsEditing(true)} className="gap-2">
-            <Edit className="w-4 h-4" />
-            Edit Profile
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={() => setIsPasswordModalOpen(true)} variant="outline" className="gap-2">
+              <KeyRound className="w-4 h-4" />
+              Change Password
+            </Button>
+            <Button onClick={() => setIsEditing(true)} className="gap-2">
+              <Edit className="w-4 h-4" />
+              Edit Profile
+            </Button>
+          </div>
         ) : (
           <div className="flex gap-2">
             <Button
@@ -184,18 +217,33 @@ export function ProfilePage({ userData }: Props) {
             </div>
 
             <div className="space-y-4">
-              {/* Name */}
+              {/* First Name */}
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Full Name</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">First Name</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    value={formData.firstName}
+                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                     className="w-full px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 ) : (
-                  <p className="text-foreground">{userData.name}</p>
+                  <p className="text-foreground">{userData.patient.firstName}</p>
+                )}
+              </div>
+
+              {/* Last Name */}
+              <div>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Last Name</label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={formData.lastName}
+                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    className="w-full px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  />
+                ) : (
+                  <p className="text-foreground">{userData.patient.lastName}</p>
                 )}
               </div>
 
@@ -204,16 +252,7 @@ export function ProfilePage({ userData }: Props) {
                 <label className="block text-sm font-medium text-muted-foreground mb-2">Email</label>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-muted-foreground" />
-                  {isEditing ? (
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="flex-1 px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  ) : (
-                    <p className="text-foreground">{userData.email}</p>
-                  )}
+                  <p className="text-foreground">{userData.email}</p>
                 </div>
               </div>
 
@@ -225,13 +264,13 @@ export function ProfilePage({ userData }: Props) {
                   {isEditing ? (
                     <input
                       type="tel"
-                      value={formData.phoneNumber}
-                      onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="flex-1 px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       placeholder="Enter phone number"
                     />
                   ) : (
-                    <p className="text-foreground">{userData.phoneNumber || 'Not provided'}</p>
+                    <p className="text-foreground">{userData.patient.phone}</p>
                   )}
                 </div>
               </div>
@@ -315,13 +354,54 @@ export function ProfilePage({ userData }: Props) {
                 <Users className="w-5 h-5 text-primary" />
                 <h2 className="text-xl font-semibold text-foreground">Emergency Contacts</h2>
               </div>
-              <Button variant="outline" size="sm" className="gap-2">
-                <Edit className="w-4 h-4" />
-                Manage
-              </Button>
             </div>
 
-            {!userData.patient.emergencyContactName ? (
+            {isEditing ? (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">
+                    Contact Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.emergencyContactName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, emergencyContactName: e.target.value })
+                    }
+                    className="w-full px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="Enter contact name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">
+                    Relationship
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.emergencyContactRelation}
+                    onChange={(e) =>
+                      setFormData({ ...formData, emergencyContactRelation: e.target.value })
+                    }
+                    className="w-full px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="e.g., Spouse, Parent, Sibling"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    value={formData.emergencyContactPhone}
+                    onChange={(e) =>
+                      setFormData({ ...formData, emergencyContactPhone: e.target.value })
+                    }
+                    className="w-full px-4 py-2 bg-muted border border-muted rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="Enter phone number"
+                  />
+                </div>
+              </div>
+            ) : !formData.emergencyContactName && !userData.patient.emergencyContactName ? (
               <div className="text-center py-8">
                 <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-muted-foreground">No emergency contact added yet</p>
@@ -422,17 +502,16 @@ export function ProfilePage({ userData }: Props) {
                   })}
                 </p>
               </div>
-
-              <div className="pt-4 border-t border-muted">
-                <Button variant="outline" className="w-full gap-2" size="sm">
-                  <Shield className="w-4 h-4" />
-                  Change Password
-                </Button>
-              </div>
             </div>
           </motion.div>
         </div>
       </div>
+
+      {/* Password Change Modal */}
+      <PasswordChangeModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </div>
   );
 }

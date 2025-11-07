@@ -11,16 +11,17 @@ type Doctor = {
   firstName: string;
   lastName: string;
   specialization: string;
-  consultationFee: number;
+  defaultAppointmentFee: number;
+  name?: string; // Computed field from API
   workingHours?: {
     id: string;
-    dayOfWeek: string;
+    dayOfWeek: number;
     startTime: string;
     endTime: string;
-    isAvailable: boolean;
+    isActive: boolean;
   }[];
   user: {
-    name: string;
+    id: string;
     email: string;
   };
 };
@@ -43,19 +44,38 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
-  // Mock data for doctors (replace with API call)
+  // Fetch doctors from API
   useEffect(() => {
     if (isOpen) {
-      // TODO: Fetch doctors from API
-      setDoctors([]);
+      const fetchDoctors = async () => {
+        try {
+          setIsLoading(true);
+          const response = await fetch('/api/doctors');
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch doctors');
+          }
+          
+          const data = await response.json();
+          setDoctors(data.doctors || []);
+        } catch {
+          setError('Failed to load doctors. Please try again.');
+          setDoctors([]);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchDoctors();
     }
   }, [isOpen]);
 
   const filteredDoctors = doctors.filter((doctor) => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
+    const doctorName = doctor.name || `${doctor.firstName} ${doctor.lastName}`;
     return (
-      doctor.user.name.toLowerCase().includes(query) ||
+      doctorName.toLowerCase().includes(query) ||
       doctor.specialization.toLowerCase().includes(query)
     );
   });
@@ -63,9 +83,9 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
   const getAvailableTimeSlots = () => {
     if (!selectedDoctor || !selectedDate) return [];
 
-    const selectedDay = new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' });
+    const selectedDayNum = new Date(selectedDate).getDay(); // 0-6 (Sunday-Saturday)
     const workingHour = selectedDoctor.workingHours?.find(
-      (wh) => wh.dayOfWeek === selectedDay.toUpperCase() && wh.isAvailable
+      (wh) => wh.dayOfWeek === selectedDayNum && wh.isActive
     );
 
     if (!workingHour) return [];
@@ -101,24 +121,24 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
     setError('');
 
     try {
-      // TODO: Call API to book appointment
-      // const response = await fetch('/api/appointments/book', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     patientId,
-      //     doctorId: selectedDoctor.id,
-      //     scheduledDate: selectedDate,
-      //     scheduledTime: selectedTime,
-      //     reason: reason || undefined,
-      //   }),
-      // });
+      const response = await fetch('/api/appointments/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          doctorId: selectedDoctor.id,
+          scheduledDate: selectedDate,
+          scheduledTime: selectedTime,
+          reason: reason || undefined,
+        }),
+      });
 
-      // if (!response.ok) throw new Error('Failed to book appointment');
+      const data = await response.json();
 
-      // Mock success for now
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to book appointment');
+      }
 
+      // Success! Call the onSuccess callback and close modal
       onSuccess?.();
       handleClose();
     } catch (err) {
@@ -182,7 +202,7 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
             <div className="flex-1 overflow-y-auto p-4">
               {error && (
                 <div className="mb-3 p-3 bg-red-950/50 border border-red-900/50 rounded-md flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                  <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
                   <p className="text-xs text-red-400">{error}</p>
                 </div>
               )}
@@ -204,11 +224,16 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
 
                   {/* Doctors List */}
                   <div className="space-y-2">
-                    {filteredDoctors.length === 0 ? (
+                    {isLoading ? (
                       <div className="text-center py-12">
-                        <User className="w-10 h-10 text-zinc-600 mx-auto mb-3" />
-                        <p className="text-xs text-zinc-400">No doctors available at the moment</p>
-                        <p className="text-[10px] text-zinc-500 mt-1">
+                        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-3"></div>
+                        <p className="text-xs text-muted-foreground">Loading doctors...</p>
+                      </div>
+                    ) : filteredDoctors.length === 0 ? (
+                      <div className="text-center py-12">
+                        <User className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+                        <p className="text-xs text-muted-foreground">No doctors available at the moment</p>
+                        <p className="text-[10px] text-muted-foreground mt-1">
                           Please check back later or contact support
                         </p>
                       </div>
@@ -225,7 +250,7 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
                               <h3 className="text-sm font-semibold text-white group-hover:text-primary transition-colors">
-                                Dr. {doctor.user.name}
+                                Dr. {doctor.name || `${doctor.firstName} ${doctor.lastName}`}
                               </h3>
                               <p className="text-xs text-zinc-400 mt-0.5">{doctor.specialization}</p>
                               <p className="text-[10px] text-zinc-500 mt-1">{doctor.user.email}</p>
@@ -233,7 +258,7 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
                             <div className="text-right">
                               <p className="text-[10px] text-zinc-400">Consultation Fee</p>
                               <p className="text-sm font-bold text-primary mt-0.5">
-                                ${doctor.consultationFee.toFixed(2)}
+                                ${doctor.defaultAppointmentFee.toFixed(2)}
                               </p>
                             </div>
                           </div>
@@ -250,7 +275,9 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
                   {/* Selected Doctor Info */}
                   <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-md">
                     <p className="text-[10px] text-zinc-400 mb-1">Selected Doctor</p>
-                    <p className="text-sm font-semibold text-white">Dr. {selectedDoctor.user.name}</p>
+                    <p className="text-sm font-semibold text-white">
+                      Dr. {selectedDoctor.name || `${selectedDoctor.firstName} ${selectedDoctor.lastName}`}
+                    </p>
                     <p className="text-xs text-zinc-400">{selectedDoctor.specialization}</p>
                   </div>
 
@@ -332,16 +359,18 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
 
                     <div className="space-y-2.5">
                       <div className="flex items-start gap-2.5">
-                        <User className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                        <User className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                         <div>
                           <p className="text-[10px] text-zinc-400">Doctor</p>
-                          <p className="text-xs text-white font-medium">Dr. {selectedDoctor.user.name}</p>
+                          <p className="text-xs text-white font-medium">
+                            Dr. {selectedDoctor.name || `${selectedDoctor.firstName} ${selectedDoctor.lastName}`}
+                          </p>
                           <p className="text-[10px] text-zinc-400">{selectedDoctor.specialization}</p>
                         </div>
                       </div>
 
                       <div className="flex items-start gap-2.5">
-                        <Calendar className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                        <Calendar className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                         <div>
                           <p className="text-[10px] text-zinc-400">Date</p>
                           <p className="text-xs text-white font-medium">
@@ -377,7 +406,7 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
                     <div className="pt-3 border-t border-zinc-700 flex items-center justify-between">
                       <span className="text-xs text-zinc-400">Consultation Fee</span>
                       <span className="text-lg font-bold text-primary">
-                        ${selectedDoctor.consultationFee.toFixed(2)}
+                        ${selectedDoctor.defaultAppointmentFee.toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -396,7 +425,12 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
             {/* Footer */}
             <div className="flex items-center justify-between gap-2 p-4 border-t border-zinc-800">
               {step > 1 && (
-                <Button variant="outline" size="sm" onClick={() => setStep((step - 1) as any)} disabled={isLoading}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setStep((prev) => (prev > 1 ? ((prev - 1) as 1 | 2 | 3) : 1))}
+                  disabled={isLoading}
+                >
                   Back
                 </Button>
               )}
@@ -404,7 +438,7 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
               {step < 3 ? (
                 <Button
                   size="sm"
-                  onClick={() => setStep((step + 1) as any)}
+                  onClick={() => setStep((prev) => (prev < 3 ? ((prev + 1) as 1 | 2 | 3) : 3))}
                   disabled={step === 1 ? !selectedDoctor : !selectedDate || !selectedTime}
                 >
                   Next

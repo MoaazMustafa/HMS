@@ -14,20 +14,16 @@ export async function GET() {
 
     // Fetch all doctors with their user info and working hours
     const doctors = await prisma.doctor.findMany({
-      where: {
-        isActive: true, // Only fetch active doctors
-      },
       include: {
         user: {
           select: {
             id: true,
-            name: true,
             email: true,
           },
         },
         workingHours: {
           where: {
-            isAvailable: true,
+            isActive: true,
           },
           orderBy: {
             dayOfWeek: 'asc',
@@ -39,9 +35,14 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json({ doctors }, { status: 200 });
-  } catch (error) {
-    console.error('Error fetching doctors:', error);
+    // Add full name to each doctor
+    const doctorsWithName = doctors.map((doctor) => ({
+      ...doctor,
+      name: `${doctor.firstName} ${doctor.lastName}`,
+    }));
+
+    return NextResponse.json({ doctors: doctorsWithName }, { status: 200 });
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch doctors' }, { status: 500 });
   }
 }
