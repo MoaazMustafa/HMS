@@ -54,28 +54,61 @@ export async function POST(request: NextRequest) {
     const [hours, minutes] = scheduledTime.split(':');
     appointmentDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
 
+    // **VALIDATION 1: Prevent booking in the past**
+    const now = new Date();
+    if (appointmentDate <= now) {
+      return NextResponse.json(
+        { error: 'Cannot book appointments in the past. Please select a future date and time.' },
+        { status: 400 }
+      );
+    }
+
     // Calculate appointment duration (default 30 minutes) and end time
     const appointmentDuration = duration || 30;
     const endTime = new Date(appointmentDate.getTime() + appointmentDuration * 60000);
     const endTimeStr = `${String(endTime.getHours()).padStart(2, '0')}:${String(endTime.getMinutes()).padStart(2, '0')}`;
 
-    // Check for conflicting appointments
-    const conflict = await prisma.appointment.findFirst({
+    // **VALIDATION 2: Prevent double-booking (check for overlapping time slots)**
+    // Get all appointments for this doctor on this date with active statuses
+    const existingAppointments = await prisma.appointment.findMany({
       where: {
         doctorId,
         scheduledDate: appointmentDate,
-        startTime: scheduledTime,
         status: {
           in: ['SCHEDULED', 'CONFIRMED', 'IN_PROGRESS'],
         },
       },
+      select: {
+        id: true,
+        startTime: true,
+        endTime: true,
+        duration: true,
+      },
     });
 
-    if (conflict) {
-      return NextResponse.json(
-        { error: 'This time slot is already booked' },
-        { status: 409 }
-      );
+    // Check for time slot conflicts
+    for (const existing of existingAppointments) {
+      const existingStart = existing.startTime;
+      const existingEnd = existing.endTime;
+
+      // Check if the new appointment overlaps with any existing appointment
+      // Overlap conditions:
+      // 1. New appointment starts during an existing appointment
+      // 2. New appointment ends during an existing appointment
+      // 3. New appointment completely encompasses an existing appointment
+      const hasOverlap =
+        (scheduledTime >= existingStart && scheduledTime < existingEnd) || // New starts during existing
+        (endTimeStr > existingStart && endTimeStr <= existingEnd) || // New ends during existing
+        (scheduledTime <= existingStart && endTimeStr >= existingEnd); // New encompasses existing
+
+      if (hasOverlap) {
+        return NextResponse.json(
+          {
+            error: `This time slot conflicts with an existing appointment (${existingStart} - ${existingEnd}). Please choose a different time.`,
+          },
+          { status: 409 }
+        );
+      }
     }
 
     // Create appointment

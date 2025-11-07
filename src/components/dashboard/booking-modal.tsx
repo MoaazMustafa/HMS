@@ -43,6 +43,8 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
   const [reason, setReason] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const [bookedSlots, setBookedSlots] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
 
   // Fetch doctors from API
   useEffect(() => {
@@ -70,6 +72,38 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
     }
   }, [isOpen]);
 
+  // Fetch booked time slots when doctor and date are selected
+  useEffect(() => {
+    if (selectedDoctor && selectedDate) {
+      const fetchBookedSlots = async () => {
+        try {
+          setLoadingSlots(true);
+          const response = await fetch(
+            `/api/appointments/booked-slots?doctorId=${selectedDoctor.id}&date=${selectedDate}`
+          );
+          
+          if (response.ok) {
+            const data = await response.json();
+            setBookedSlots(data.bookedSlots || []);
+          } else {
+            // If API fails, continue without filtering (backend will still prevent double-booking)
+            setBookedSlots([]);
+          }
+        } catch {
+          // Silent fail - backend validation will catch conflicts
+          setBookedSlots([]);
+        } finally {
+          setLoadingSlots(false);
+        }
+      };
+
+      fetchBookedSlots();
+    } else {
+      setBookedSlots([]);
+      setLoadingSlots(false);
+    }
+  }, [selectedDoctor, selectedDate]);
+
   const filteredDoctors = doctors.filter((doctor) => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
@@ -80,7 +114,7 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
     );
   });
 
-  const getAvailableTimeSlots = () => {
+  const getAllTimeSlots = () => {
     if (!selectedDoctor || !selectedDate) return [];
 
     const selectedDayNum = new Date(selectedDate).getDay(); // 0-6 (Sunday-Saturday)
@@ -90,16 +124,40 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
 
     if (!workingHour) return [];
 
-    // Generate time slots between start and end time (30-minute intervals)
-    const slots: string[] = [];
+    // Generate ALL time slots between start and end time (30-minute intervals)
+    const slots: Array<{ time: string; isDisabled: boolean; reason?: string }> = [];
     const start = workingHour.startTime.split(':').map(Number);
     const end = workingHour.endTime.split(':').map(Number);
     let currentHour = start[0];
     let currentMinute = start[1];
 
+    const isToday = new Date(selectedDate).toDateString() === new Date().toDateString();
+    const now = new Date();
+
     while (currentHour < end[0] || (currentHour === end[0] && currentMinute < end[1])) {
       const timeString = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
-      slots.push(timeString);
+      
+      let isDisabled = false;
+      let reason = '';
+
+      // Check 1: Is it in the past or too soon? (for today only)
+      if (isToday) {
+        const slotDate = new Date(selectedDate);
+        slotDate.setHours(currentHour, currentMinute, 0, 0);
+        
+        if (slotDate.getTime() <= now.getTime() + 60 * 60 * 1000) {
+          isDisabled = true;
+          reason = 'Past time or too soon';
+        }
+      }
+
+      // Check 2: Is it already booked?
+      if (bookedSlots.includes(timeString)) {
+        isDisabled = true;
+        reason = 'Already booked';
+      }
+
+      slots.push({ time: timeString, isDisabled, reason });
 
       currentMinute += 30;
       if (currentMinute >= 60) {
@@ -292,7 +350,8 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
                       value={selectedDate}
                       onChange={(e) => {
                         setSelectedDate(e.target.value);
-                        setSelectedTime('');
+                        setSelectedTime(''); // Clear selected time when date changes
+                        setError(''); // Clear any previous errors
                       }}
                       min={minDate}
                       max={maxDate}
@@ -307,30 +366,42 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
                         <Clock className="w-3.5 h-3.5 inline mr-1.5" />
                         Select Time
                       </label>
-                      <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
-                        {getAvailableTimeSlots().length === 0 ? (
-                          <div className="col-span-full text-center py-8">
-                            <AlertCircle className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
-                            <p className="text-xs text-muted-foreground">
-                              No available slots for this date
-                            </p>
-                          </div>
-                        ) : (
-                          getAvailableTimeSlots().map((time) => (
-                            <button
-                              key={time}
-                              onClick={() => setSelectedTime(time)}
-                              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                                selectedTime === time
-                                  ? 'bg-primary text-white'
-                                  : 'bg-background text-muted-foreground hover:bg-muted hover:text-foreground border border-muted'
-                              }`}
-                            >
-                              {time}
-                            </button>
-                          ))
-                        )}
-                      </div>
+                      {loadingSlots ? (
+                        <div className="text-center py-8">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                          <p className="text-xs text-muted-foreground">Loading available slots...</p>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+                          {getAvailableTimeSlots().length === 0 ? (
+                            <div className="col-span-full text-center py-8">
+                              <AlertCircle className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
+                              <p className="text-xs text-muted-foreground">
+                                No available slots for this date
+                              </p>
+                              <p className="text-[10px] text-muted-foreground mt-1">
+                                {new Date(selectedDate).toDateString() === new Date().toDateString()
+                                  ? 'All slots are either booked or in the past'
+                                  : 'All slots are booked or doctor is not available'}
+                              </p>
+                            </div>
+                          ) : (
+                            getAvailableTimeSlots().map((time) => (
+                              <button
+                                key={time}
+                                onClick={() => setSelectedTime(time)}
+                                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                                  selectedTime === time
+                                    ? 'bg-primary text-white'
+                                    : 'bg-background text-muted-foreground hover:bg-muted hover:text-foreground border border-muted'
+                                }`}
+                              >
+                                {time}
+                              </button>
+                            ))
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
 
