@@ -5,6 +5,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { ThemeProvider } from '@/components';
 import { AuthProvider } from '@/components/auth-provider';
 import { AOSInit } from '@/components/ui/aos-init';
+import { Toaster } from '@/components/ui/sonner';
 import { defaultMetadata } from '@/lib/metadata';
 
 import '@/styles/globals.css';
@@ -63,6 +64,7 @@ export default function RootLayout({
             >
               {children}
             </ClickSpark>
+            <Toaster richColors closeButton position="top-right" />
           </ThemeProvider>
         </AuthProvider>
       </body>

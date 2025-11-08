@@ -43,8 +43,12 @@ export async function GET() {
       defaultSessionFee: doctor.defaultSessionFee.toNumber(),
     }));
 
-    return NextResponse.json({ doctors: doctorsWithName }, { status: 200 });
+    return NextResponse.json({
+      success: true,
+      data: doctorsWithName,
+      count: doctorsWithName.length,
+    });
   } catch {
-    return NextResponse.json({ error: 'Failed to fetch doctors' }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Failed to fetch doctors' }, { status: 500 });
   }
 }
