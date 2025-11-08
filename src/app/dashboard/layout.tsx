@@ -2,6 +2,7 @@ import { UserRole } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth/next';
 
+import { DoctorSidebar } from '@/components/dashboard/doctor-sidebar';
 import { PatientSidebar } from '@/components/dashboard/patient-sidebar';
 import { authOptions } from '@/lib/auth';
 
@@ -40,6 +41,44 @@ export default async function DashboardLayout({
                   <div className="hidden md:flex items-center gap-2">
                     <span className="px-2 py-0.5 text-[10px] font-medium bg-muted text-muted-foreground rounded border border-border">
                       Patient
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Page Content */}
+            <div className="p-4 lg:p-6">{children}</div>
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  // Doctor-specific layout
+  if (session.user.role === UserRole.DOCTOR) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="flex min-h-screen">
+          <DoctorSidebar />
+          <main className="flex-1 min-h-screen">
+            {/* Top Bar */}
+            <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
+              <div className="px-4 lg:px-6 py-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3 ml-12 lg:ml-0">
+                    <div>
+                      <h2 className="text-sm font-semibold text-foreground">
+                        Dr. {session.user.name?.split(' ')[1] || session.user.name}
+                      </h2>
+                      <p className="text-xs text-muted-foreground">
+                        Manage patients, appointments, and medical records
+                      </p>
+                    </div>
+                  </div>
+                  <div className="hidden md:flex items-center gap-2">
+                    <span className="px-2 py-0.5 text-[10px] font-medium bg-primary/10 text-primary rounded border border-primary/20">
+                      Doctor
                     </span>
                   </div>
                 </div>
