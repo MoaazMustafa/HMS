@@ -1,12 +1,15 @@
 'use client';
 
 import type { Decimal } from '@prisma/client/runtime/library';
-import { Loader2, Save, User, Mail, Phone, Stethoscope, DollarSign, Shield } from 'lucide-react';
+import { Save, User, Mail, Phone, Stethoscope, DollarSign, Shield, KeyRound, Edit, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+
+import { PasswordChangeModal } from './password-change-modal';
 
 interface DoctorProfileData {
   id: string;
@@ -38,6 +41,8 @@ const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 export function DoctorProfilePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [profile, setProfile] = useState<DoctorProfileData | null>(null);
@@ -112,8 +117,10 @@ export function DoctorProfilePage() {
       const result = await response.json();
 
       if (result.success) {
+        toast.success('Profile updated successfully!');
         setSuccess('Profile updated successfully!');
         setProfile(result.data);
+        setIsEditing(false);
         // Update form data with new values
         setFormData({
           firstName: result.data.firstName,
@@ -126,9 +133,11 @@ export function DoctorProfilePage() {
         });
       } else {
         setError(result.error || 'Failed to update profile');
+        toast.error(result.error || 'Failed to update profile');
       }
     } catch (err) {
       setError('Failed to update profile');
+      toast.error('Failed to update profile');
       // Log error for debugging
       if (err instanceof Error) {
         // eslint-disable-next-line no-console
@@ -137,6 +146,23 @@ export function DoctorProfilePage() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleCancel = () => {
+    if (profile) {
+      setFormData({
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        phone: profile.phone,
+        email: profile.user.email,
+        phoneNumber: profile.user.phoneNumber || profile.phone,
+        defaultAppointmentFee: profile.defaultAppointmentFee.toString(),
+        defaultSessionFee: profile.defaultSessionFee.toString(),
+      });
+    }
+    setIsEditing(false);
+    setError(null);
+    setSuccess(null);
   };
 
   if (loading) {
@@ -181,9 +207,38 @@ export function DoctorProfilePage() {
             Manage your personal and professional information
           </p>
         </div>
-        <Badge variant={profile.isActive ? 'default' : 'secondary'} className="text-xs">
-          {profile.isActive ? 'Active' : 'Inactive'}
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant={profile.isActive ? 'default' : 'secondary'} className="text-xs">
+            {profile.isActive ? 'Active' : 'Inactive'}
+          </Badge>
+          {!isEditing ? (
+            <>
+              <Button onClick={() => setIsPasswordModalOpen(true)} variant="outline" className="gap-2">
+                <KeyRound className="w-4 h-4" />
+                Change Password
+              </Button>
+              <Button onClick={() => setIsEditing(true)} className="gap-2">
+                <Edit className="w-4 h-4" />
+                Edit Profile
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                onClick={handleSubmit}
+                disabled={saving}
+                className="gap-2 bg-green-600 hover:bg-green-700"
+              >
+                <Save className="w-4 h-4" />
+                {saving ? 'Saving...' : 'Save Changes'}
+              </Button>
+              <Button onClick={handleCancel} variant="outline" className="gap-2">
+                <X className="w-4 h-4" />
+                Cancel
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Success/Error Messages */}
@@ -200,8 +255,7 @@ export function DoctorProfilePage() {
       )}
 
       {/* Profile Form */}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Personal Information */}
+      <div className="space-y-6">{/* Personal Information */}
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
             <User className="w-5 h-5 text-primary" />
@@ -219,8 +273,11 @@ export function DoctorProfilePage() {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
+                disabled={!isEditing}
                 required
-                className="w-full px-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className={`w-full px-3 py-2 border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  !isEditing ? 'bg-muted cursor-not-allowed' : 'bg-background'
+                }`}
               />
             </div>
 
@@ -234,8 +291,11 @@ export function DoctorProfilePage() {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
+                disabled={!isEditing}
                 required
-                className="w-full px-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className={`w-full px-3 py-2 border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  !isEditing ? 'bg-muted cursor-not-allowed' : 'bg-background'
+                }`}
               />
             </div>
 
@@ -251,8 +311,9 @@ export function DoctorProfilePage() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
+                  disabled
                   required
-                  className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full pl-10 pr-3 py-2 bg-muted border border-border rounded-md text-sm text-muted-foreground cursor-not-allowed"
                 />
               </div>
             </div>
@@ -269,8 +330,11 @@ export function DoctorProfilePage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
+                  disabled={!isEditing}
                   required
-                  className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className={`w-full pl-10 pr-3 py-2 border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    !isEditing ? 'bg-muted cursor-not-allowed' : 'bg-background'
+                  }`}
                 />
               </div>
             </div>
@@ -434,33 +498,13 @@ export function DoctorProfilePage() {
             Manage your working hours in the Schedule section to configure availability.
           </p>
         </div>
+      </div>
 
-        {/* Submit Button */}
-        <div className="flex items-center justify-end gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={fetchProfile}
-            disabled={saving}
-            className="min-w-[100px]"
-          >
-            Reset
-          </Button>
-          <Button type="submit" disabled={saving} className="min-w-[120px]">
-            {saving ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4 mr-2" />
-                Save Changes
-              </>
-            )}
-          </Button>
-        </div>
-      </form>
+      {/* Password Change Modal */}
+      <PasswordChangeModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </div>
   );
 }

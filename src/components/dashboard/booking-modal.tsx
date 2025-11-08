@@ -56,8 +56,8 @@ export function BookingModal({ isOpen, onClose, onSuccess }: Props) {
             throw new Error('Failed to fetch doctors');
           }
           
-          const data = await response.json();
-          setDoctors(data.doctors || []);
+          const result = await response.json();
+          setDoctors(result.data || []);
         } catch {
           setError('Failed to load doctors. Please try again.');
           setDoctors([]);

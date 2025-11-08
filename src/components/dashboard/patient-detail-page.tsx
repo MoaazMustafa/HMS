@@ -13,22 +13,13 @@ import {
   Phone,
   Pill,
   User,
-  UserPlus,
+  UserPlus
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -53,10 +44,8 @@ type PatientDetailPageProps = {
 };
 
 export function PatientDetailPage({ patient }: PatientDetailPageProps) {
-  const [reassignDialogOpen, setReassignDialogOpen] = useState(false);
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [addDoctorDialogOpen, setAddDoctorDialogOpen] = useState(false);
   const [selectedDoctorId, setSelectedDoctorId] = useState<string>('');
-  const [reassignNotes, setReassignNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [doctors, setDoctors] = useState<any[]>([]);
   const getStatusColor = (status: string) => {
@@ -91,21 +80,25 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
     return age;
   };
 
-  const handleOpenReassignDialog = async () => {
-    setReassignDialogOpen(true);
+  const handleOpenAddDoctorDialog = async () => {
+    setAddDoctorDialogOpen(true);
+    setSelectedDoctorId('');
     // Fetch available doctors
     try {
       const response = await fetch('/api/doctors');
       const result = await response.json();
       if (result.success) {
-        setDoctors(result.data);
+        // Filter out already assigned doctors
+        const assignedDoctorIds = patient.activeAssignments?.map((a: any) => a.doctorId) || [];
+        const availableDoctors = result.data.filter((d: any) => !assignedDoctorIds.includes(d.id));
+        setDoctors(availableDoctors);
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to load doctors list');
     }
   };
 
-  const handleReassignPatient = async () => {
+  const handleAddDoctor = async () => {
     if (!selectedDoctorId) {
       toast.error('Please select a doctor');
       return;
@@ -113,12 +106,12 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
 
     setLoading(true);
     try {
-      const response = await fetch(`/api/patients/${patient.id}/reassign`, {
+      const response = await fetch(`/api/patients/${patient.id}/assign-doctor`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          newDoctorId: selectedDoctorId,
-          notes: reassignNotes,
+          doctorId: selectedDoctorId,
+          notes: 'Added to care team',
         }),
       });
 
@@ -126,28 +119,18 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
 
       if (result.success) {
         toast.success(result.message);
-        setReassignDialogOpen(false);
-        setConfirmDialogOpen(false);
+        setAddDoctorDialogOpen(false);
         setTimeout(() => {
-          window.location.href = '/dashboard/patients';
-        }, 1500);
+          window.location.reload();
+        }, 1000);
       } else {
-        toast.error(result.error || 'Failed to reassign patient');
+        toast.error(result.error || 'Failed to add doctor');
       }
-    } catch (error) {
-      toast.error('Failed to reassign patient');
+    } catch {
+      toast.error('Failed to add doctor');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleConfirmReassignment = () => {
-    if (!selectedDoctorId) {
-      toast.error('Please select a doctor');
-      return;
-    }
-    setReassignDialogOpen(false);
-    setConfirmDialogOpen(true);
   };
 
   return (
@@ -161,10 +144,6 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={handleOpenReassignDialog}>
-            <UserPlus className="h-4 w-4 mr-2" />
-            Reassign Patient
-          </Button>
           <Link href="/dashboard/patients">
             <Button variant="outline">Back to Patients</Button>
           </Link>
@@ -199,12 +178,14 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{patient.user.phoneNumber}</span>
+                <span className="text-sm">{patient.phone || patient.user.phoneNumber}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Activity className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Blood: {patient.bloodType}</span>
-              </div>
+              {patient.bloodGroup && (
+                <div className="flex items-center gap-2">
+                  <Activity className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">Blood: {patient.bloodGroup}</span>
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">
@@ -214,19 +195,59 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
             </div>
 
             {patient.allergies && patient.allergies.length > 0 && (
-              <div className="flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 text-red-500 mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-red-500">Allergies:</p>
-                  <p className="text-sm text-muted-foreground">
-                    {patient.allergies.join(', ')}
-                  </p>
+              <div className="flex items-start gap-2 mt-4 p-3 bg-red-500/10 rounded-md border border-red-500/20">
+                <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-red-500">Known Allergies:</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {patient.allergies.map((allergy: any) => (
+                      <Badge key={allergy.id} className="bg-red-500/10 text-red-500 border-red-500/20">
+                        {allergy.allergen} ({allergy.type})
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
           </div>
         </div>
       </Card>
+
+      {/* Care Team */}
+      {patient.activeAssignments && patient.activeAssignments.length > 0 && (
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <User className="h-5 w-5 text-primary" />
+              <h3 className="text-lg font-semibold">Care Team</h3>
+              <Badge variant="outline">{patient.activeAssignments.length} doctor{patient.activeAssignments.length !== 1 ? 's' : ''}</Badge>
+            </div>
+            <Button variant="outline" size="sm" onClick={handleOpenAddDoctorDialog}>
+              <UserPlus className="h-4 w-4 mr-2" />
+              Add Doctor
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {patient.activeAssignments.map((assignment: any) => (
+              <div key={assignment.id} className="p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <p className="font-medium">
+                      Dr. {assignment.doctor.firstName} {assignment.doctor.lastName}
+                    </p>
+                    {assignment.doctor.specialization && (
+                      <p className="text-sm text-muted-foreground">{assignment.doctor.specialization}</p>
+                    )}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Assigned {format(new Date(assignment.assignedAt), 'MMM d, yyyy')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
 
       {/* Medical History & Vitals */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -261,20 +282,24 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
             <AlertCircle className="h-5 w-5 text-primary" />
             <h3 className="text-lg font-semibold">Emergency Contact</h3>
           </div>
-          {patient.emergencyContact ? (
+          {patient.emergencyContactName ? (
             <div className="space-y-2">
               <div>
                 <p className="text-sm font-medium">
-                  {patient.emergencyContact.name}
+                  {patient.emergencyContactName}
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  {patient.emergencyContact.relationship}
-                </p>
+                {patient.emergencyContactRelation && (
+                  <p className="text-xs text-muted-foreground">
+                    {patient.emergencyContactRelation}
+                  </p>
+                )}
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4" />
-                {patient.emergencyContact.phone}
-              </div>
+              {patient.emergencyContactPhone && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Phone className="h-4 w-4" />
+                  {patient.emergencyContactPhone}
+                </div>
+              )}
             </div>
           ) : (
             <p className="text-sm text-muted-foreground">
@@ -492,24 +517,23 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
         )}
       </Card>
 
-      {/* Reassign Patient Dialog */}
-      <Dialog open={reassignDialogOpen} onOpenChange={setReassignDialogOpen}>
+      {/* Add Doctor Dialog */}
+      <Dialog open={addDoctorDialogOpen} onOpenChange={setAddDoctorDialogOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <UserPlus className="h-5 w-5 text-primary" />
-              Reassign Patient
+              Add Doctor to Care Team
             </DialogTitle>
             <DialogDescription>
-              Transfer {patient.user.name} to another doctor. This action will update
-              the patient&apos;s assigned doctor and notify both parties.
+              Assign {patient.user.name} to another doctor. The selected doctor will need to accept the assignment before they can access this patient&apos;s records.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Select New Doctor <span className="text-destructive">*</span>
+                Select Doctor <span className="text-destructive">*</span>
               </label>
               <Select value={selectedDoctorId} onValueChange={setSelectedDoctorId}>
                 <SelectTrigger>
@@ -521,23 +545,16 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
                     .map((doctor) => (
                       <SelectItem key={doctor.id} value={doctor.id}>
                         Dr. {doctor.firstName} {doctor.lastName} -{' '}
-                        {doctor.specialization}
+                        {doctor.specialization || 'General'}
                       </SelectItem>
                     ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Notes (Optional)
-              </label>
-              <textarea
-                value={reassignNotes}
-                onChange={(e) => setReassignNotes(e.target.value)}
-                placeholder="Add notes about this reassignment..."
-                className="w-full min-h-[100px] px-3 py-2 rounded-md border border-input bg-background text-sm resize-none"
-              />
+              {doctors.length === 0 && (
+                <p className="text-sm text-muted-foreground mt-2">
+                  No available doctors to add. All doctors are already assigned to this patient.
+                </p>
+              )}
             </div>
           </div>
 
@@ -545,49 +562,19 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
             <Button
               variant="outline"
               onClick={() => {
-                setReassignDialogOpen(false);
+                setAddDoctorDialogOpen(false);
                 setSelectedDoctorId('');
-                setReassignNotes('');
               }}
+              disabled={loading}
             >
               Cancel
             </Button>
-            <Button onClick={handleConfirmReassignment}>Continue</Button>
+            <Button onClick={handleAddDoctor} disabled={loading || !selectedDoctorId}>
+              {loading ? 'Adding...' : 'Add Doctor'}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* Confirmation Dialog */}
-      <AlertDialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirm Patient Reassignment</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to reassign{' '}
-              <strong>{patient.user.name}</strong> to{' '}
-              <strong>
-                Dr.{' '}
-                {doctors.find((d) => d.id === selectedDoctorId)?.firstName}{' '}
-                {doctors.find((d) => d.id === selectedDoctorId)?.lastName}
-              </strong>
-              ? This patient will no longer appear in your patients list.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel
-              onClick={() => {
-                setConfirmDialogOpen(false);
-                setReassignDialogOpen(true);
-              }}
-            >
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction onClick={handleReassignPatient} disabled={loading}>
-              {loading ? 'Reassigning...' : 'Confirm Reassignment'}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

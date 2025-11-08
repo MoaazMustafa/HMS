@@ -36,6 +36,27 @@ export default async function DashboardPatientDetailPage({
           createdAt: true,
         },
       },
+      activeAssignments: {
+        where: {
+          status: 'ACTIVE',
+        },
+        include: {
+          doctor: {
+            include: {
+              user: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      allergies: {
+        orderBy: {
+          diagnosedAt: 'desc',
+        },
+      },
       appointments: {
         include: {
           doctor: {

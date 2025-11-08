@@ -17,10 +17,19 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
@@ -65,6 +74,10 @@ export function DoctorAppointmentsPage() {
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | 'upcoming' | 'past'>('upcoming');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState<AppointmentData | null>(null);
+  const [newStatus, setNewStatus] = useState<string>('');
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     fetchAppointments();
@@ -149,6 +162,65 @@ export function DoctorAppointmentsPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleOpenUpdateDialog = (appointment: AppointmentData) => {
+    setSelectedAppointment(appointment);
+    setNewStatus(appointment.status);
+    setUpdateDialogOpen(true);
+  };
+
+  const handleUpdateStatus = async () => {
+    if (!selectedAppointment || !newStatus) {
+      toast.error('Please select a status');
+      return;
+    }
+
+    if (newStatus === selectedAppointment.status) {
+      toast.error('Please select a different status');
+      return;
+    }
+
+    setUpdating(true);
+    try {
+      const response = await fetch(`/api/appointments/${selectedAppointment.id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Appointment status updated successfully');
+        setUpdateDialogOpen(false);
+        fetchAppointments(); // Refresh the list
+      } else {
+        toast.error(result.error || 'Failed to update status');
+      }
+    } catch {
+      toast.error('Failed to update appointment status');
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const getStatusOptions = (currentStatus: string) => {
+    const allStatuses = [
+      { value: 'SCHEDULED', label: 'Scheduled' },
+      { value: 'CONFIRMED', label: 'Confirmed' },
+      { value: 'IN_PROGRESS', label: 'In Progress' },
+      { value: 'COMPLETED', label: 'Completed' },
+      { value: 'CANCELLED', label: 'Cancelled' },
+      { value: 'NO_SHOW', label: 'No Show' },
+    ];
+
+    // Filter out invalid transitions
+    if (currentStatus === 'COMPLETED' || currentStatus === 'CANCELLED' || currentStatus === 'NO_SHOW') {
+      return [allStatuses.find(s => s.value === currentStatus)!];
+    }
+
+    return allStatuses;
   };
 
   const getStatusBadge = (status: string) => {
@@ -517,7 +589,12 @@ export function DoctorAppointmentsPage() {
                         </Button>
                       </Link>
                       {appointment.canUpdateStatus && (
-                        <Button variant="default" size="sm" className="h-8 w-full">
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          className="h-8 w-full"
+                          onClick={() => handleOpenUpdateDialog(appointment)}
+                        >
                           Update
                         </Button>
                       )}
@@ -528,6 +605,68 @@ export function DoctorAppointmentsPage() {
             </div>
           )}
         </div>
+
+      {/* Update Status Dialog */}
+      <Dialog open={updateDialogOpen} onOpenChange={setUpdateDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Update Appointment Status</DialogTitle>
+            <DialogDescription>
+              Change the status of this appointment. The patient will be notified of the update.
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedAppointment && (
+            <div className="space-y-4 py-4">
+              {/* Appointment Info */}
+              <div className="p-3 bg-accent/50 rounded-lg space-y-2">
+                <p className="text-sm font-medium">
+                  {selectedAppointment.patient.user.name || 'Unnamed Patient'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {format(new Date(selectedAppointment.scheduledDate), 'MMM d, yyyy')} at{' '}
+                  {formatTime(selectedAppointment.startTime)}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Current Status: <span className="font-medium">{selectedAppointment.status}</span>
+                </p>
+              </div>
+
+              {/* Status Selection */}
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  New Status <span className="text-destructive">*</span>
+                </label>
+                <Select value={newStatus} onValueChange={setNewStatus}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select new status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {getStatusOptions(selectedAppointment.status).map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setUpdateDialogOpen(false)}
+              disabled={updating}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleUpdateStatus} disabled={updating}>
+              {updating ? 'Updating...' : 'Update Status'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
