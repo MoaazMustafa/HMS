@@ -12,8 +12,12 @@ import {
   CheckCircle,
   Clock,
   FileText,
+  Eye,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 type LabTest = {
   id: string;
@@ -239,9 +243,9 @@ export function LabResultsPage({ labTests }: Props) {
               <div className="space-y-4">
                 {/* Header */}
                 <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-3 flex-1">
                     <FlaskConical className="w-5 h-5 text-primary shrink-0 mt-1" />
-                    <div>
+                    <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="text-lg font-semibold text-foreground">{test.testName}</h3>
                         {test.isCritical && (
@@ -255,13 +259,21 @@ export function LabResultsPage({ labTests }: Props) {
                       <p className="text-xs text-background-500 font-mono">Test ID: {test.testId}</p>
                     </div>
                   </div>
-                  <span
-                    className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border ${getStatusColor(
-                      test.status
-                    )}`}
-                  >
-                    {test.status}
-                  </span>
+                  <div className="flex flex-col items-end gap-2">
+                    <span
+                      className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border ${getStatusColor(
+                        test.status
+                      )}`}
+                    >
+                      {test.status}
+                    </span>
+                    <Link href={`/dashboard/lab-results/${test.id}`}>
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <Eye className="w-4 h-4" />
+                        Details
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
 
                 {/* Result Display */}

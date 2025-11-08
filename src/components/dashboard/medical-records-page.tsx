@@ -10,8 +10,12 @@ import {
   Shield,
   Search,
   CheckCircle,
+  Eye,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 type MedicalRecord = {
   id: string;
@@ -226,9 +230,9 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                   <div className="space-y-4">
                     {/* Header */}
                     <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3">
+                      <div className="flex items-start gap-3 flex-1">
                         <FileText className="w-5 h-5 text-primary shrink-0 mt-1" />
-                        <div>
+                        <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <h3 className="text-lg font-semibold text-foreground">
                               Record #{record.recordId}
@@ -253,6 +257,12 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                           </div>
                         </div>
                       </div>
+                      <Link href={`/dashboard/medical-records/${record.id}`}>
+                        <Button variant="outline" size="sm" className="gap-2">
+                          <Eye className="w-4 h-4" />
+                          Details
+                        </Button>
+                      </Link>
                     </div>
 
                     {/* Diagnoses */}

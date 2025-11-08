@@ -13,6 +13,7 @@ import {
   User,
   X,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -450,10 +451,12 @@ export default function DoctorPrescriptionsPage() {
                     {prescription.status}
                   </Badge>
 
-                  <Button variant="outline" size="sm" className="gap-2">
-                    <Eye className="h-4 w-4" />
-                    View Details
-                  </Button>
+                  <Link href={`/dashboard/prescriptions/${prescription.id}`}>
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <Eye className="h-4 w-4" />
+                      View Details
+                    </Button>
+                  </Link>
 
                   <p className="text-xs text-muted-foreground">
                     ID: {prescription.prescriptionId}
