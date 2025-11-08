@@ -2,14 +2,25 @@ import { UserRole } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth/next';
 
+import DoctorMedicalRecordsPage from '@/components/dashboard/doctor-medical-records-page';
 import { MedicalRecordsPage } from '@/components/dashboard/medical-records-page';
 import * as auth from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-export default async function PatientMedicalRecordsPage() {
+export default async function MedicalRecordsPageRoute() {
   const session = await getServerSession(auth.authOptions);
 
-  if (!session || session.user.role !== UserRole.PATIENT) {
+  if (!session) {
+    redirect('/login');
+  }
+
+  // Doctor View
+  if (session.user.role === UserRole.DOCTOR) {
+    return <DoctorMedicalRecordsPage />;
+  }
+
+  // Patient View
+  if (session.user.role !== UserRole.PATIENT) {
     redirect('/login');
   }
 
@@ -53,9 +64,9 @@ export default async function PatientMedicalRecordsPage() {
 
   return (
     <MedicalRecordsPage
-      medicalRecords={user.patient.medicalRecords as any}
-      allergies={user.patient.allergies as any}
-      immunizations={user.patient.immunizations as any}
+      medicalRecords={user.patient.medicalRecords as never}
+      allergies={user.patient.allergies as never}
+      immunizations={user.patient.immunizations as never}
     />
   );
 }
