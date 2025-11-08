@@ -1,6 +1,8 @@
 import { UserRole } from '@prisma/client';
+import type { NextRequest} from 'next/server';
+// eslint-disable-next-line no-duplicate-imports
+import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { NextRequest, NextResponse } from 'next/server';
 
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
