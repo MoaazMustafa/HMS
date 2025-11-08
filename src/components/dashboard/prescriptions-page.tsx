@@ -13,7 +13,9 @@ import {
   FileText,
   Search,
   RefreshCw,
+  Eye,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -312,6 +314,12 @@ export function PrescriptionsPage({ prescriptions }: Props) {
 
                 {/* Actions */}
                 <div className="flex lg:flex-col gap-2">
+                  <Link href={`/dashboard/prescriptions/${prescription.id}`}>
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <Eye className="w-4 h-4" />
+                      Details
+                    </Button>
+                  </Link>
                   <Button
                     variant="outline"
                     size="sm"
