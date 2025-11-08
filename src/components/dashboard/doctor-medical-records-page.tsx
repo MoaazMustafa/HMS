@@ -86,6 +86,7 @@ export default function DoctorMedicalRecordsPage() {
   const [creating, setCreating] = useState(false);
   const [formData, setFormData] = useState({
     patientId: '',
+    visitDate: new Date().toISOString().split('T')[0], // Default to today
     chiefComplaint: '',
     subjective: '',
     objective: '',
@@ -202,10 +203,20 @@ export default function DoctorMedicalRecordsPage() {
 
     setCreating(true);
     try {
+      // Map form data to API expected format
+      const payload = {
+        patientId: formData.patientId,
+        visitDate: formData.visitDate,
+        chiefComplaint: formData.chiefComplaint,
+        physicalExam: `Subjective: ${formData.subjective || 'N/A'}\n\nObjective: ${formData.objective || 'N/A'}`,
+        assessment: formData.assessment,
+        plan: formData.plan,
+      };
+
       const response = await fetch('/api/medical-records/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
@@ -215,6 +226,7 @@ export default function DoctorMedicalRecordsPage() {
         setCreateDialogOpen(false);
         setFormData({
           patientId: '',
+          visitDate: new Date().toISOString().split('T')[0],
           chiefComplaint: '',
           subjective: '',
           objective: '',
@@ -484,6 +496,20 @@ export default function DoctorMedicalRecordsPage() {
                   No assigned patients found. Complete an appointment first.
                 </p>
               )}
+            </div>
+
+            {/* Visit Date */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Visit Date *</label>
+              <input
+                type="date"
+                value={formData.visitDate}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, visitDate: e.target.value }))
+                }
+                max={new Date().toISOString().split('T')[0]}
+                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
             </div>
 
             {/* Chief Complaint */}
