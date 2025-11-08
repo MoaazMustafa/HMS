@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
-// import { ContactSection } from '@/components/sections/contact-section';
-import { FeaturesSection } from '@/components/sections/features-section';
+import { CoreModulesSection } from '@/components/sections/core-modules-section';
+import { CTASection } from '@/components/sections/cta-section';
 import { Footer } from '@/components/sections/footer';
-import { HeroSection } from '@/components/sections/hero-section';
-import { ModulesSection } from '@/components/sections/modules-section';
-import { StatsSection } from '@/components/sections/stats-section';
+import { HeroNew } from '@/components/sections/hero-new';
+import { SecurityPerformanceSection } from '@/components/sections/security-performance-section';
+import { UserRolesSection } from '@/components/sections/user-roles-section';
 import { FloatingNav } from '@/components/ui/floating-nav';
 import { pageMetadata } from '@/lib/metadata';
 
@@ -18,11 +18,11 @@ export default async function Home() {
   return (
     <div className="relative overflow-hidden">
       <FloatingNav />
-      <HeroSection />
-      <FeaturesSection />
-      <ModulesSection />
-      <StatsSection />
-      {/* <ContactSection /> */}
+      <HeroNew />
+      <CoreModulesSection />
+      <UserRolesSection />
+      <SecurityPerformanceSection />
+      <CTASection />
       <Footer />
     </div>
   );
