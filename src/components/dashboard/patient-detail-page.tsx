@@ -12,10 +12,7 @@ import {
   Mail,
   Phone,
   Pill,
-  Plus,
-  Stethoscope,
   User,
-  UserMinus,
   UserPlus,
   X,
 } from 'lucide-react';
@@ -300,7 +297,7 @@ export function PatientDetailPage({ patient }: PatientDetailPageProps) {
 
             {patient.allergies && patient.allergies.length > 0 && (
               <div className="flex items-start gap-2 mt-4 p-3 bg-red-500/10 rounded-md border border-red-500/20">
-                <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 flex-shrink-0" />
+                <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
                 <div className="flex-1">
                   <p className="text-sm font-medium text-red-500">Known Allergies:</p>
                   <div className="flex flex-wrap gap-2 mt-2">

@@ -51,7 +51,7 @@ interface LabTest {
   };
   testName: string;
   testType: string;
-  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+  status: 'ORDERED' | 'IN_PROGRESS' | 'COMPLETED' | 'REVIEWED' | 'CANCELLED';
   isCritical: boolean;
   orderedAt: string;
   completedAt: string | null;
@@ -199,9 +199,10 @@ export default function DoctorLabTestsPage() {
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      PENDING: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
+      ORDERED: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
       IN_PROGRESS: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
       COMPLETED: 'bg-green-500/10 text-green-500 border-green-500/20',
+      REVIEWED: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
       CANCELLED: 'bg-red-500/10 text-red-500 border-red-500/20',
     };
     return colors[status] || 'bg-gray-500/10 text-gray-500 border-gray-500/20';
@@ -257,8 +258,8 @@ export default function DoctorLabTestsPage() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Pending</p>
-              <p className="text-2xl font-bold">{tests.filter((t) => t.status === 'PENDING').length}</p>
+              <p className="text-sm text-muted-foreground">Ordered</p>
+              <p className="text-2xl font-bold">{tests.filter((t) => t.status === 'ORDERED').length}</p>
             </div>
             <FlaskConical className="h-8 w-8 text-yellow-500" />
           </div>
@@ -311,9 +312,10 @@ export default function DoctorLabTestsPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="PENDING">Pending</SelectItem>
+                <SelectItem value="ORDERED">Ordered</SelectItem>
                 <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
                 <SelectItem value="COMPLETED">Completed</SelectItem>
+                <SelectItem value="REVIEWED">Reviewed</SelectItem>
                 <SelectItem value="CANCELLED">Cancelled</SelectItem>
               </SelectContent>
             </Select>

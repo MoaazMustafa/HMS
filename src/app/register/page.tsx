@@ -4,12 +4,14 @@ import { motion } from 'framer-motion';
 import { Eye, EyeOff, Lock, Mail, User, Activity, Phone, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { status } = useSession();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -24,6 +26,14 @@ export default function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/dashboard');
+      router.refresh();
+    }
+  }, [status, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -73,6 +83,23 @@ export default function RegisterPage() {
       setIsLoading(false);
     }
   };
+
+  // Show loading while checking session
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background-900 via-background to-background-900">
+        <div className="text-center">
+          <Activity className="w-12 h-12 text-primary animate-pulse mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render register form if authenticated
+  if (status === 'authenticated') {
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background-900 via-background to-background-900 px-4 py-12">
