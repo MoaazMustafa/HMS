@@ -32,7 +32,7 @@ src/
 ### Design System & Conventions
 
 #### Color Palette
-- **Primary**: `#acec00` (lime green) - Used for CTAs, highlights, and brand elements
+- **Primary**: `#800000` (lime green) - Used for CTAs, highlights, and brand elements
 - **CSS Variables**: Use semantic tokens like `bg-primary`, `text-primary`, `border-primary`
 - **Theme**: Supports dark/light modes via `ThemeProvider`
 

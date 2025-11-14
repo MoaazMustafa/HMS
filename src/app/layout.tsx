@@ -43,8 +43,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextTopLoader
-          color="#acec00"
-          shadow="0 0 10px #acec00, 0 0 5px #acec00"
+          color="#800000"
+          shadow="0 0 10px #800000, 0 0 5px #800000"
           height={4}
           showSpinner={true}
         />
@@ -57,7 +57,7 @@ export default function RootLayout({
           >
             <AOSInit />
             <ClickSpark
-              sparkColor="#ACEC00"
+              sparkColor="#800000"
               sparkSize={10}
               sparkRadius={15}
               sparkCount={8}

@@ -273,7 +273,7 @@ npm run type-check   # Run TypeScript compiler check
 ## 🎨 Design System
 
 ### Color Palette
-- **Primary**: `#acec00` (Lime Green) - Brand color for CTAs and highlights
+- **Primary**: `#800000` (Lime Green) - Brand color for CTAs and highlights
 - **Dark Mode**: Full dark theme support
 - **Semantic Colors**: Success, Error, Warning, Info states
 
