@@ -41,17 +41,17 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-primary: #acec00;
-  --color-primary-50: #cdf06a;
-  --color-primary-100: #c6f051;
-  --color-primary-200: #bff038;
-  --color-primary-300: #b9f11d;
-  --color-primary-400: #aee80c;
-  --color-primary-500: #acec00;
-  --color-primary-600: #8bbc06;
-  --color-primary-700: #7aa503;
-  --color-primary-800: #688d01;
-  --color-primary-900: #567500;
+  --color-primary: #800000;
+ --color-primary-50: #F17474;
+  --color-primary-100: #F15B5B;
+  --color-primary-200: #F14242;
+  --color-primary-300: #F12828;
+  --color-primary-400: #F20D0D;
+  --color-primary-500: #DD0909;
+  --color-primary-600: #C60606;
+  --color-primary-700: #AF0404;
+  --color-primary-800: #980202;
+  --color-primary-900: #800000;
 }
 
 :root {
