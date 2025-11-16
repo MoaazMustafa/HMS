@@ -122,7 +122,7 @@ export default async function DashboardPatientDetailPage({
     redirect('/dashboard');
   }
 
-  // Check if patient is assigned to this doctor
+  // Check if patient is assigned to this doctor OR has appointments with them
   const assignment = await prisma.patientDoctorAssignment.findFirst({
     where: {
       patientId: patient.id,
@@ -131,7 +131,16 @@ export default async function DashboardPatientDetailPage({
     },
   });
 
-  if (!assignment) {
+  // Also check if doctor has any appointments with this patient
+  const hasAppointments = await prisma.appointment.findFirst({
+    where: {
+      patientId: patient.id,
+      doctorId: doctor.id,
+    },
+  });
+
+  // Allow access if either condition is met
+  if (!assignment && !hasAppointments) {
     redirect('/dashboard/patients');
   }
 
