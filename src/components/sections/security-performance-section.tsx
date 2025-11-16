@@ -67,7 +67,7 @@ export function SecurityPerformanceSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-linear-to-b from-muted/30 to-background relative overflow-hidden">
+    <section className="py-24 md:py-32 bg-linear-to-b from-muted/30 to-background flex flex-col items-center justify-center relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--primary)_0%,_transparent_70%)] opacity-5" />
       
