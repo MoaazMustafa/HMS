@@ -77,10 +77,28 @@ export async function PATCH(
       );
     }
 
-    // Check if update is allowed
-    if (!appointment.canUpdateStatus) {
+    // Check if update is allowed based on current status and time
+    // Allow updates unless the appointment is in a final state (COMPLETED, CANCELLED, NO_SHOW)
+    const finalStatuses = ['COMPLETED', 'CANCELLED', 'NO_SHOW'];
+    if (finalStatuses.includes(appointment.status)) {
       return NextResponse.json(
-        { error: 'This appointment status cannot be updated' },
+        { error: `Cannot update appointment that is already ${appointment.status.toLowerCase()}` },
+        { status: 400 }
+      );
+    }
+
+    // Check if the appointment time has passed for non-final transitions
+    const appointmentDateTime = new Date(appointment.scheduledDate);
+    const [hours, minutes] = appointment.endTime.split(':');
+    appointmentDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+    
+    const now = new Date();
+    const isPastAppointment = now > appointmentDateTime;
+
+    // Only restrict time-based updates for marking as NO_SHOW or similar
+    if (isPastAppointment && !appointment.canUpdateStatus && !finalStatuses.includes(status)) {
+      return NextResponse.json(
+        { error: 'This appointment time has passed. You can only mark it as completed or no-show.' },
         { status: 400 }
       );
     }
