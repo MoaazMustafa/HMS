@@ -94,7 +94,7 @@ export function CoreModulesSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-gradient-to-b from-background to-muted/20">
+    <section className="py-24 md:py-32 bg-gradient-to-b flex flex-col items-center justify-center from-background to-muted/20">
       <div className="container px-6">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto mb-16">

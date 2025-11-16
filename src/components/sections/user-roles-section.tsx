@@ -117,7 +117,7 @@ export function UserRolesSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-muted/30">
+    <section className="py-24 md:py-32 bg-muted/30 flex flex-col items-center justify-center">
       <div className="container px-6">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto mb-16">

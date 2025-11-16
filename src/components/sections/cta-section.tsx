@@ -22,7 +22,7 @@ export function CTASection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-linear-to-br from-primary/10 via-background to-background relative overflow-hidden">
+    <section className="flex flex-col items-center justify-center py-24 md:py-32 bg-linear-to-br from-primary/10 via-background to-background relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
