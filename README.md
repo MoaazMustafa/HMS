@@ -1,4 +1,4 @@
-# HMS - Health Management System
+# HMS - Health Management System 
 
 A comprehensive digital healthcare platform built with Next.js 15, TypeScript, Tailwind CSS, and Prisma ORM. HMS provides a complete solution for managing patients, prescriptions, appointments, medical records, and lab tests with HIPAA compliance and security as top priorities.
 
