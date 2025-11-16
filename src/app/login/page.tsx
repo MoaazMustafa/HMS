@@ -70,8 +70,8 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background-900 via-muted to-background-900 px-4">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(172,236,0,0.05),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(172,236,0,0.05),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#80000080,transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,#80000080,transparent_50%)]" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -88,7 +88,7 @@ export default function LoginPage() {
         </Link>
 
         {/* Login Card */}
-        <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-background-900/50 backdrop-blur-4xl border border-background-800 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
             <p className="text-background-400">Sign in to your HMS account</p>
