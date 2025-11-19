@@ -83,17 +83,17 @@ export function FloatingNav() {
               <>
                 <Button
                   size="sm"
-                  variant="outline"
+                  // variant="outline"
                   onClick={handleAuth}
-                  className="border-primary/20 text-primary hover:bg-primary/10"
+                  // className="border-primary/20 text-primary hover:bg-primary/10"
                 >
                   Dashboard
                 </Button>
                 <Button
                   size="sm"
-                  variant="ghost"
+                  // variant="ghost"
                   onClick={handleLogout}
-                  className="text-foreground hover:text-primary"
+                  // className="text-foreground hover:text-primary"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   Logout
