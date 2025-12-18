@@ -12,6 +12,7 @@ import {
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { exportData } from '@/lib/export';
 
 interface AuditLog {
   id: string;
@@ -78,6 +79,33 @@ export function AdminAuditLogsPage() {
     }
   };
 
+  const handleExport = (format: 'csv' | 'excel' | 'pdf') => {
+    if (logs.length === 0) {
+      alert('No logs to export');
+      return;
+    }
+
+    const exportDataArray = logs.map((log) => ({
+      timestamp: new Date(log.timestamp).toLocaleString(),
+      user: log.userName || 'Unknown',
+      action: log.action,
+      resource: log.resource,
+      details: log.details,
+      ipAddress: log.ipAddress,
+    }));
+
+    exportData(exportDataArray, 'audit-logs', format, {
+      headers: [
+        { key: 'timestamp', label: 'Timestamp' },
+        { key: 'user', label: 'User' },
+        { key: 'action', label: 'Action' },
+        { key: 'resource', label: 'Resource' },
+        { key: 'details', label: 'Details' },
+        { key: 'ipAddress', label: 'IP Address' },
+      ],
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -88,10 +116,32 @@ export function AdminAuditLogsPage() {
             Track all system activities and changes
           </p>
         </div>
-        <Button variant="outline" className="gap-2">
-          <Download className="h-4 w-4" />
-          Export
-        </Button>
+        <div className="relative group">
+          <Button variant="outline" className="gap-2">
+            <Download className="h-4 w-4" />
+            Export
+          </Button>
+          <div className="absolute right-0 top-full hidden w-40 rounded-lg border border-border bg-card shadow-lg group-hover:block hover:block z-50">
+            <button
+              onClick={() => handleExport('csv')}
+              className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors rounded-t-lg"
+            >
+              Export as CSV
+            </button>
+            <button
+              onClick={() => handleExport('excel')}
+              className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors"
+            >
+              Export as Excel
+            </button>
+            <button
+              onClick={() => handleExport('pdf')}
+              className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors rounded-b-lg"
+            >
+              Export as PDF
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Filters */}

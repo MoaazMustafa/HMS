@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { exportData, exportToPDF } from '@/lib/export';
 
 type LabTest = {
   id: string;
@@ -76,6 +77,88 @@ export default function LabTestDetailPage({
   labTest,
   userRole,
 }: LabTestDetailPageProps) {
+  const handleDownloadReport = (exportFormat: 'csv' | 'excel' | 'pdf') => {
+    const reportData = [
+      {
+        field: 'Test ID',
+        value: labTest.testId,
+      },
+      {
+        field: 'Test Name',
+        value: labTest.testName,
+      },
+      {
+        field: 'Test Type',
+        value: labTest.testType || 'N/A',
+      },
+      {
+        field: 'Status',
+        value: labTest.status,
+      },
+      {
+        field: 'Patient',
+        value: labTest.patient.user.name || labTest.patient.user.email,
+      },
+      {
+        field: 'Patient ID',
+        value: labTest.patient.patientId,
+      },
+      {
+        field: 'Doctor',
+        value: labTest.doctor.user.name || `${labTest.doctor.firstName} ${labTest.doctor.lastName}`,
+      },
+      {
+        field: 'Ordered At',
+        value: format(new Date(labTest.orderedAt), 'PPP'),
+      },
+      {
+        field: 'Collected At',
+        value: labTest.collectedAt ? format(new Date(labTest.collectedAt), 'PPP') : 'Not collected',
+      },
+      {
+        field: 'Completed At',
+        value: labTest.completedAt ? format(new Date(labTest.completedAt), 'PPP') : 'Not completed',
+      },
+      {
+        field: 'Results',
+        value: labTest.results || 'No results available',
+      },
+      {
+        field: 'Critical',
+        value: labTest.isCritical ? 'Yes' : 'No',
+      },
+      {
+        field: 'Notes',
+        value: labTest.notes || 'No notes',
+      },
+    ];
+
+    if (exportFormat === 'pdf') {
+      // Create formatted HTML for PDF
+      const htmlContent = `
+        <h2>Lab Test Report</h2>
+        <table>
+          <tbody>
+            ${reportData.map((item) => `
+              <tr>
+                <th style="text-align: left; width: 30%;">${item.field}</th>
+                <td>${item.value}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+      exportToPDF(htmlContent, `lab-test-${labTest.testId}`);
+    } else {
+      exportData(reportData, `lab-test-${labTest.testId}`, exportFormat, {
+        headers: [
+          { key: 'field', label: 'Field' },
+          { key: 'value', label: 'Value' },
+        ],
+      });
+    }
+  };
+
   return (
     <div className="container mx-auto max-w-5xl space-y-6 p-6">
       {/* Header */}
@@ -226,26 +309,48 @@ export default function LabTestDetailPage({
               {labTest.results}
             </p>
           </div>
-          {labTest.resultFile && (
-            <div className="mt-4 flex items-center gap-2">
+          <div className="mt-4 flex items-center gap-2">
+            <div className="relative group">
               <Button
                 variant="outline"
                 size="sm"
                 className="flex items-center gap-2"
               >
                 <Download className="h-4 w-4" />
-                Download Full Report
+                Download Report
               </Button>
+              <div className="absolute left-0 top-full hidden w-40 rounded-lg border border-border bg-card shadow-lg group-hover:block hover:block z-50">
+                <button
+                  onClick={() => handleDownloadReport('csv')}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors rounded-t-lg"
+                >
+                  Download as CSV
+                </button>
+                <button
+                  onClick={() => handleDownloadReport('excel')}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors"
+                >
+                  Download as Excel
+                </button>
+                <button
+                  onClick={() => handleDownloadReport('pdf')}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors rounded-b-lg"
+                >
+                  Download as PDF
+                </button>
+              </div>
+            </div>
+            {labTest.resultFile && (
               <Button
                 variant="outline"
                 size="sm"
                 className="flex items-center gap-2"
               >
                 <Eye className="h-4 w-4" />
-                View Report
+                View Full Report
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </Card>
       )}
 

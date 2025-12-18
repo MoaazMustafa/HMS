@@ -8,10 +8,12 @@ import {
   UserPlus,
   Mail,
   Activity,
+  Download,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { exportData } from '@/lib/export';
 
 export function AdminNursesPage() {
   const [nurses, setNurses] = useState<any[]>([]);
@@ -44,6 +46,33 @@ export function AdminNursesPage() {
       nurse.nurse?.department?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
+  const handleExport = (format: 'csv' | 'excel' | 'pdf') => {
+    if (filteredNurses.length === 0) {
+      alert('No nurses to export');
+      return;
+    }
+
+    const exportDataArray = filteredNurses.map((nurse) => ({
+      name: nurse.name || 'N/A',
+      email: nurse.email || 'N/A',
+      department: nurse.nurse?.department || 'N/A',
+      licenseNumber: nurse.nurse?.licenseNumber || 'N/A',
+      verified: nurse.emailVerified ? 'Yes' : 'No',
+      joinedDate: new Date(nurse.createdAt).toLocaleDateString(),
+    }));
+
+    exportData(exportDataArray, 'nurses-list', format, {
+      headers: [
+        { key: 'name', label: 'Name' },
+        { key: 'email', label: 'Email' },
+        { key: 'department', label: 'Department' },
+        { key: 'licenseNumber', label: 'License Number' },
+        { key: 'verified', label: 'Verified' },
+        { key: 'joinedDate', label: 'Joined Date' },
+      ],
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -56,10 +85,38 @@ export function AdminNursesPage() {
             Manage nurse accounts and profiles
           </p>
         </div>
-        <Button className="gap-2">
-          <UserPlus className="h-4 w-4" />
-          Add Nurse
-        </Button>
+        <div className="flex gap-2">
+          <div className="relative group">
+            <Button variant="outline" className="gap-2">
+              <Download className="h-4 w-4" />
+              Export
+            </Button>
+            <div className="absolute right-0 top-full hidden w-40 rounded-lg border border-border bg-card shadow-lg group-hover:block hover:block z-50">
+              <button
+                onClick={() => handleExport('csv')}
+                className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors rounded-t-lg"
+              >
+                Export as CSV
+              </button>
+              <button
+                onClick={() => handleExport('excel')}
+                className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors"
+              >
+                Export as Excel
+              </button>
+              <button
+                onClick={() => handleExport('pdf')}
+                className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors rounded-b-lg"
+              >
+                Export as PDF
+              </button>
+            </div>
+          </div>
+          <Button className="gap-2">
+            <UserPlus className="h-4 w-4" />
+            Add Nurse
+          </Button>
+        </div>
       </div>
 
       {/* Search */}

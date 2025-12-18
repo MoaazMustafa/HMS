@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { exportData, exportToPDF } from '@/lib/export';
 
 type Prescription = {
   id: string;
@@ -83,14 +84,136 @@ export function PrescriptionsPage({ prescriptions }: Props) {
     }
   };
 
-  const handleDownloadPDF = (prescriptionId: string) => {
-    // TODO: Implement PDF download
-    void prescriptionId; // Suppress unused variable warning
+  const handleDownloadPDF = (prescriptionId: string, format: 'csv' | 'excel' | 'pdf' = 'pdf') => {
+    const prescription = prescriptions.find((p) => p.id === prescriptionId);
+    if (!prescription) {
+      alert('Prescription not found');
+      return;
+    }
+
+    const prescriptionData = [
+      {
+        field: 'Prescription ID',
+        value: prescription.prescriptionId,
+      },
+      {
+        field: 'Medication Name',
+        value: prescription.medicationName,
+      },
+      {
+        field: 'Dosage',
+        value: prescription.dosage,
+      },
+      {
+        field: 'Frequency',
+        value: prescription.frequency,
+      },
+      {
+        field: 'Duration',
+        value: prescription.duration,
+      },
+      {
+        field: 'Instructions',
+        value: prescription.instructions || 'No special instructions',
+      },
+      {
+        field: 'Refills Allowed',
+        value: prescription.refillsAllowed.toString(),
+      },
+      {
+        field: 'Refills Remaining',
+        value: prescription.refillsRemaining.toString(),
+      },
+      {
+        field: 'Issued At',
+        value: new Date(prescription.issuedAt).toLocaleDateString(),
+      },
+      {
+        field: 'Expiry Date',
+        value: prescription.expiryDate ? new Date(prescription.expiryDate).toLocaleDateString() : 'N/A',
+      },
+      {
+        field: 'Status',
+        value: prescription.status,
+      },
+      {
+        field: 'Doctor',
+        value: prescription.doctor.user.name,
+      },
+      {
+        field: 'Specialization',
+        value: prescription.doctor.specialization,
+      },
+    ];
+
+    if (format === 'pdf') {
+      const htmlContent = `
+        <h2>Prescription Details</h2>
+        <table>
+          <tbody>
+            ${prescriptionData.map((item) => `
+              <tr>
+                <th style="text-align: left; width: 30%;">${item.field}</th>
+                <td>${item.value}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        <div style="margin-top: 30px; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #800000;">
+          <p style="margin: 0; font-size: 12px; color: #666;">
+            <strong>Important:</strong> This is an electronic prescription. Please verify with your healthcare provider before use.
+          </p>
+        </div>
+      `;
+      exportToPDF(htmlContent, `prescription-${prescription.prescriptionId}`);
+    } else {
+      exportData(prescriptionData, `prescription-${prescription.prescriptionId}`, format, {
+        headers: [
+          { key: 'field', label: 'Field' },
+          { key: 'value', label: 'Value' },
+        ],
+      });
+    }
   };
 
   const handleShowQR = (prescriptionId: string) => {
     // TODO: Implement QR code display
     void prescriptionId; // Suppress unused variable warning
+  };
+
+  const handleExportAll = (format: 'csv' | 'excel' | 'pdf') => {
+    if (filteredPrescriptions.length === 0) {
+      alert('No prescriptions to export');
+      return;
+    }
+
+    const exportDataArray = filteredPrescriptions.map((prescription) => ({
+      prescriptionId: prescription.prescriptionId,
+      medication: prescription.medicationName,
+      dosage: prescription.dosage,
+      frequency: prescription.frequency,
+      duration: prescription.duration,
+      refillsRemaining: prescription.refillsRemaining,
+      issuedAt: new Date(prescription.issuedAt).toLocaleDateString(),
+      expiryDate: prescription.expiryDate ? new Date(prescription.expiryDate).toLocaleDateString() : 'N/A',
+      status: prescription.status,
+      doctor: prescription.doctor.user.name,
+    }));
+
+    exportData(exportDataArray, 'prescriptions-list', format, {
+      headers: [
+        { key: 'prescriptionId', label: 'Prescription ID' },
+        { key: 'medication', label: 'Medication' },
+        { key: 'dosage', label: 'Dosage' },
+        { key: 'frequency', label: 'Frequency' },
+        { key: 'duration', label: 'Duration' },
+        { key: 'refillsRemaining', label: 'Refills Remaining' },
+        { key: 'issuedAt', label: 'Issued At' },
+        { key: 'expiryDate', label: 'Expiry Date' },
+        { key: 'status', label: 'Status' },
+        { key: 'doctor', label: 'Doctor' },
+      ],
+    });
   };
 
   const activePrescriptions = prescriptions.filter((rx) => rx.isActive).length;
@@ -110,6 +233,32 @@ export function PrescriptionsPage({ prescriptions }: Props) {
           <p className="text-background-400">
             View and manage your prescription medications
           </p>
+        </div>
+        <div className="relative group">
+          <Button variant="outline" className="gap-2">
+            <Download className="h-4 w-4" />
+            Export All
+          </Button>
+          <div className="absolute right-0 top-full hidden w-40 rounded-lg border border-border bg-card shadow-lg group-hover:block hover:block z-50">
+            <button
+              onClick={() => handleExportAll('csv')}
+              className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors rounded-t-lg"
+            >
+              Export as CSV
+            </button>
+            <button
+              onClick={() => handleExportAll('excel')}
+              className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors"
+            >
+              Export as Excel
+            </button>
+            <button
+              onClick={() => handleExportAll('pdf')}
+              className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition-colors rounded-b-lg"
+            >
+              Export as PDF
+            </button>
+          </div>
         </div>
       </div>
 
@@ -355,15 +504,36 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                       Details
                     </Button>
                   </Link>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDownloadPDF(prescription.id)}
-                    className="gap-2"
-                  >
-                    <Download className="h-4 w-4" />
-                    PDF
-                  </Button>
+                  <div className="relative group">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-2"
+                    >
+                      <Download className="h-4 w-4" />
+                      Export
+                    </Button>
+                    <div className="absolute left-0 top-full hidden w-32 rounded-lg border border-border bg-card shadow-lg group-hover:block hover:block z-50">
+                      <button
+                        onClick={() => handleDownloadPDF(prescription.id, 'csv')}
+                        className="w-full px-3 py-1.5 text-left text-xs hover:bg-muted transition-colors rounded-t-lg"
+                      >
+                        CSV
+                      </button>
+                      <button
+                        onClick={() => handleDownloadPDF(prescription.id, 'excel')}
+                        className="w-full px-3 py-1.5 text-left text-xs hover:bg-muted transition-colors"
+                      >
+                        Excel
+                      </button>
+                      <button
+                        onClick={() => handleDownloadPDF(prescription.id, 'pdf')}
+                        className="w-full px-3 py-1.5 text-left text-xs hover:bg-muted transition-colors rounded-b-lg"
+                      >
+                        PDF
+                      </button>
+                    </div>
+                  </div>
                   <Button
                     variant="outline"
                     size="sm"
