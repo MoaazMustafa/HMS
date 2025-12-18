@@ -1,9 +1,9 @@
 import type { Gender } from '@prisma/client';
-// eslint-disable-next-line no-duplicate-imports
 import { UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
 
+import { generateOTP, getEmailVerificationTemplate, sendEmail } from '@/lib/email';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
@@ -46,13 +46,13 @@ export async function POST(request: Request) {
     const patientCount = await prisma.patient.count();
     const patientId = `PAT-${String(patientCount + 1).padStart(3, '0')}`;
 
-    // Create user with patient profile
+    // Create user with patient profile (email NOT verified yet)
     const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
         role: UserRole.PATIENT,
-        emailVerified: new Date(), // Auto-verify for now
+        emailVerified: null, // Not verified until OTP confirmed
         patient: {
           create: {
             patientId,
@@ -69,9 +69,36 @@ export async function POST(request: Request) {
       },
     });
 
+    // Generate 6-digit OTP
+    const otp = generateOTP();
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+
+    // Store OTP in database
+    await prisma.emailVerificationToken.create({
+      data: {
+        userId: user.id,
+        otp,
+        expiresAt,
+      },
+    });
+
+    // Send verification email
+    const emailResult = await sendEmail({
+      to: email,
+      subject: 'Verify Your Email - HMS Healthcare',
+      html: getEmailVerificationTemplate(`${firstName} ${lastName}`, otp),
+      text: `Welcome to HMS Healthcare! Your email verification code is: ${otp}. This code expires in 15 minutes.`,
+    });
+
+    if (!emailResult.success) {
+      console.error('Failed to send verification email:', emailResult.error);
+      // Don't fail registration if email fails - user can request new OTP
+    }
+
     return NextResponse.json(
       {
-        message: 'Registration successful',
+        success: true,
+        message: 'Registration successful. Please check your email for verification code.',
         user: {
           id: user.id,
           email: user.email,
@@ -80,7 +107,8 @@ export async function POST(request: Request) {
       },
       { status: 201 },
     );
-  } catch {
+  } catch (error) {
+    console.error('Registration error:', error);
     return NextResponse.json(
       { error: 'Registration failed. Please try again.' },
       { status: 500 },

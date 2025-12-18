@@ -16,7 +16,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Check for verification success
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('verified') === 'true') {
+      setSuccess('Email verified successfully! You can now log in.');
+    }
+  }, []);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -95,6 +104,16 @@ export default function LoginPage() {
             </h1>
             <p className="text-background-400">Sign in to your HMS account</p>
           </div>
+
+          {success && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 rounded-lg border border-green-500/20 bg-green-500/10 p-4 text-sm text-green-500"
+            >
+              {success}
+            </motion.div>
+          )}
 
           {error && (
             <motion.div

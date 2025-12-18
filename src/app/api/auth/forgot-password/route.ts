@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
+import { generateOTP, getPasswordResetEmailTemplate, sendEmail } from '@/lib/email';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(request: NextRequest) {
@@ -14,50 +15,69 @@ export async function POST(request: NextRequest) {
     // Check if user exists
     const user = await prisma.user.findUnique({
       where: { email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
     });
 
     // Always return success to prevent email enumeration
     if (!user) {
       return NextResponse.json(
         {
+          success: true,
           message:
-            'If an account with that email exists, we sent a password reset link',
+            'If an account with that email exists, we sent a password reset code',
         },
         { status: 200 },
       );
     }
 
-    // Generate reset token (commented until PasswordResetToken model is added)
-    // const resetToken = randomBytes(32).toString('hex');
-    // const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now
+    // Delete any existing unused tokens for this user
+    await prisma.passwordResetToken.deleteMany({
+      where: {
+        userId: user.id,
+        isUsed: false,
+      },
+    });
 
-    // Store token in database (you'll need to add this to your schema)
-    // For now, we'll just return success
-    // TODO: Add PasswordResetToken model to schema
-    // await prisma.passwordResetToken.create({
-    //   data: {
-    //     token: resetToken,
-    //     userId: user.id,
-    //     expiresAt: resetTokenExpiry,
-    //   },
-    // });
+    // Generate 6-digit OTP
+    const otp = generateOTP();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    // TODO: Send email with reset link
-    // const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password/${resetToken}`;
-    // await sendEmail({
-    //   to: email,
-    //   subject: 'Password Reset Request',
-    //   html: `Click here to reset your password: ${resetLink}`,
-    // });
+    // Store OTP in database
+    await prisma.passwordResetToken.create({
+      data: {
+        userId: user.id,
+        otp,
+        expiresAt,
+      },
+    });
+
+    // Send email with OTP
+    const emailResult = await sendEmail({
+      to: user.email,
+      subject: 'Password Reset - HMS Healthcare',
+      html: getPasswordResetEmailTemplate(user.name || 'User', otp),
+      text: `Your password reset OTP is: ${otp}. This code expires in 10 minutes.`,
+    });
+
+    if (!emailResult.success) {
+      console.error('Failed to send password reset email:', emailResult.error);
+      // Don't expose email sending failure to prevent information disclosure
+    }
 
     return NextResponse.json(
       {
+        success: true,
         message:
-          'If an account with that email exists, we sent a password reset link',
+          'If an account with that email exists, we sent a password reset code',
       },
       { status: 200 },
     );
-  } catch {
+  } catch (error) {
+    console.error('Password reset request error:', error);
     return NextResponse.json(
       { error: 'Failed to process password reset request' },
       { status: 500 },

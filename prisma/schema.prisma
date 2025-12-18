@@ -133,6 +133,8 @@ model User {
   admin             Admin?
   auditLogs         AuditLog[]
   notifications     Notification[]
+  passwordResetTokens PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
 
   @@map("users")
 }
@@ -724,4 +726,34 @@ model NotificationTemplate {
   updatedAt       DateTime @updatedAt
 
   @@map("notification_templates")
+}
+
+model PasswordResetToken {
+  id              String   @id @default(cuid())
+  userId          String
+  otp             String
+  expiresAt       DateTime
+  isUsed          Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([otp])
+  @@map("password_reset_tokens")
+}
+
+model EmailVerificationToken {
+  id              String   @id @default(cuid())
+  userId          String
+  otp             String
+  expiresAt       DateTime
+  isUsed          Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([otp])
+  @@map("email_verification_tokens")
 }

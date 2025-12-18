@@ -10,6 +10,8 @@ import {
   Activity,
   Phone,
   Calendar,
+  Key,
+  CheckCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -18,9 +20,12 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 
+type Step = 'register' | 'verify';
+
 export default function RegisterPage() {
   const router = useRouter();
   const { status } = useSession();
+  const [step, setStep] = useState<Step>('register');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -31,6 +36,7 @@ export default function RegisterPage() {
     dateOfBirth: '',
     gender: 'MALE',
   });
+  const [otp, setOtp] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
@@ -85,8 +91,41 @@ export default function RegisterPage() {
         throw new Error(data.error || 'Registration failed');
       }
 
-      // Redirect to login
-      router.push('/login?registered=true');
+      // Move to OTP verification step
+      setStep('verify');
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : 'An error occurred. Please try again.';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOtpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/auth/verify-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: formData.email, otp }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Verification failed');
+      }
+
+      // Redirect to login with success message
+      router.push('/login?verified=true');
     } catch (err) {
       const errorMessage =
         err instanceof Error
@@ -136,24 +175,26 @@ export default function RegisterPage() {
 
         {/* Register Card */}
         <div className="bg-background-900/50 border-background-800 rounded-2xl border p-8 shadow-2xl backdrop-blur-xl">
-          <div className="mb-8 text-center">
-            <h1 className="text-foreground mb-2 text-3xl font-bold">
-              Create Account
-            </h1>
-            <p className="text-background-400">Register as a new patient</p>
-          </div>
+          {step === 'register' ? (
+            <>
+              <div className="mb-8 text-center">
+                <h1 className="text-foreground mb-2 text-3xl font-bold">
+                  Create Account
+                </h1>
+                <p className="text-background-400">Register as a new patient</p>
+              </div>
 
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-500"
-            >
-              {error}
-            </motion.div>
-          )}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-500"
+                >
+                  {error}
+                </motion.div>
+              )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name Fields */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
@@ -390,6 +431,83 @@ export default function RegisterPage() {
               </Link>
             </p>
           </div>
+            </>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+            >
+              <div className="mb-8 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <Key className="text-primary h-8 w-8" />
+                </div>
+                <h1 className="text-foreground mb-2 text-3xl font-bold">
+                  Verify Your Email
+                </h1>
+                <p className="text-background-400">
+                  We sent a 6-digit code to <strong className="text-foreground">{formData.email}</strong>
+                </p>
+              </div>
+
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-500"
+                >
+                  {error}
+                </motion.div>
+              )}
+
+              <form onSubmit={handleOtpSubmit} className="space-y-6">
+                <div>
+                  <label
+                    htmlFor="otp"
+                    className="text-background-300 mb-2 block text-sm font-medium"
+                  >
+                    Verification Code
+                  </label>
+                  <input
+                    id="otp"
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    className="bg-background-800/50 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 px-4 text-center text-2xl tracking-widest transition-colors focus:ring-2 focus:outline-none"
+                    placeholder="000000"
+                    maxLength={6}
+                    required
+                    disabled={isLoading}
+                  />
+                  <p className="text-background-500 mt-2 text-xs text-center">
+                    Code expires in 15 minutes
+                  </p>
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isLoading || otp.length !== 6}
+                  className="h-12 w-full text-base font-semibold"
+                >
+                  {isLoading ? 'Verifying...' : 'Verify Email'}
+                </Button>
+              </form>
+
+              <div className="mt-6 text-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep('register');
+                    setOtp('');
+                    setError('');
+                  }}
+                  className="text-background-400 hover:text-foreground text-sm transition-colors"
+                >
+                  Back to registration
+                </button>
+              </div>
+            </motion.div>
+          )}
         </div>
 
         {/* Footer */}
