@@ -11,6 +11,7 @@ import {
   X,
   LogOut,
   Activity,
+  Bell,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -30,6 +31,7 @@ const patientMenuItems = [
   { name: 'Health Records', href: '/dashboard/health-records', icon: Activity },
   { name: 'Prescriptions', href: '/dashboard/prescriptions', icon: Pill },
   { name: 'Lab Results', href: '/dashboard/lab-results', icon: FlaskConical },
+  { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
   { name: 'Profile', href: '/dashboard/profile', icon: User },
 ];
 

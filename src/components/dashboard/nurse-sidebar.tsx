@@ -11,6 +11,7 @@ import {
   X,
   LogOut,
   Stethoscope,
+  Bell,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -29,6 +30,7 @@ const nurseMenuItems = [
     href: '/dashboard/medical-records',
     icon: FileText,
   },
+  { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
   { name: 'Profile', href: '/dashboard/profile', icon: User },
 ];
 

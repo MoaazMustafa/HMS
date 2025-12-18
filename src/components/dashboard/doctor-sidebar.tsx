@@ -15,6 +15,7 @@ import {
   Clock,
   Settings,
   Stethoscope,
+  Bell,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -36,6 +37,7 @@ const doctorMenuItems = [
   { name: 'Vital Signs', href: '/dashboard/vital-signs', icon: Activity },
   { name: 'Prescriptions', href: '/dashboard/prescriptions', icon: Pill },
   { name: 'Lab Orders', href: '/dashboard/lab-orders', icon: FlaskConical },
+  { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
   { name: 'Schedule', href: '/dashboard/schedule', icon: Settings },
   { name: 'Profile', href: '/dashboard/profile', icon: User },
 ];

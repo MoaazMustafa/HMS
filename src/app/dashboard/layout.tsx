@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth/next';
 
 import { AdminSidebar } from '@/components/dashboard/admin-sidebar';
 import { DoctorSidebar } from '@/components/dashboard/doctor-sidebar';
+import { NotificationBell } from '@/components/dashboard/notification-bell';
 import { NurseSidebar } from '@/components/dashboard/nurse-sidebar';
 import { PatientSidebar } from '@/components/dashboard/patient-sidebar';
 import { authOptions } from '@/lib/auth';
@@ -40,8 +41,9 @@ export default async function DashboardLayout({
                       </p>
                     </div>
                   </div>
-                  <div className="hidden items-center gap-2 md:flex">
-                    <span className="bg-muted text-muted-foreground border-border rounded border px-2 py-0.5 text-[10px] font-medium">
+                  <div className="flex items-center gap-2">
+                    <NotificationBell />
+                    <span className="bg-muted text-muted-foreground border-border hidden rounded border px-2 py-0.5 text-[10px] font-medium md:inline">
                       Patient
                     </span>
                   </div>
@@ -79,8 +81,9 @@ export default async function DashboardLayout({
                       </p>
                     </div>
                   </div>
-                  <div className="hidden items-center gap-2 md:flex">
-                    <span className="bg-primary/10 text-primary border-primary/20 rounded border px-2 py-0.5 text-[10px] font-medium">
+                  <div className="flex items-center gap-2">
+                    <NotificationBell />
+                    <span className="bg-primary/10 text-primary border-primary/20 hidden rounded border px-2 py-0.5 text-[10px] font-medium md:inline">
                       Doctor
                     </span>
                   </div>
@@ -117,8 +120,9 @@ export default async function DashboardLayout({
                       </p>
                     </div>
                   </div>
-                  <div className="hidden items-center gap-2 md:flex">
-                    <span className="rounded border border-green-500/20 bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-500">
+                  <div className="flex items-center gap-2">
+                    <NotificationBell />
+                    <span className="hidden rounded border border-green-500/20 bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-500 md:inline">
                       Nurse
                     </span>
                   </div>
@@ -158,8 +162,9 @@ export default async function DashboardLayout({
                       </p>
                     </div>
                   </div>
-                  <div className="hidden items-center gap-2 md:flex">
-                    <span className="rounded border border-red-500/20 bg-red-500/10 px-2 py-0.5 text-[10px] font-medium text-red-500">
+                  <div className="flex items-center gap-2">
+                    <NotificationBell />
+                    <span className="hidden rounded border border-red-500/20 bg-red-500/10 px-2 py-0.5 text-[10px] font-medium text-red-500 md:inline">
                       {session.user.role === UserRole.MAIN_ADMIN
                         ? 'Main Admin'
                         : 'Admin'}
