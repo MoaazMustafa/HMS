@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     if (session.user.role !== UserRole.DOCTOR) {
       return NextResponse.json(
         { error: 'Only doctors can create sessions' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     if (!patientId || !scheduledDate || !startTime || !endTime || !duration) {
       return NextResponse.json(
         { error: 'Missing required fields' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     if (!assignment) {
       return NextResponse.json(
         { error: 'Patient is not assigned to you' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
     if (conflictingSession) {
       return NextResponse.json(
         { error: 'Time slot conflicts with existing session' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -173,7 +173,7 @@ export async function POST(request: Request) {
     console.error('Error creating session:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -49,6 +49,9 @@ export async function GET() {
       count: doctorsWithName.length,
     });
   } catch {
-    return NextResponse.json({ success: false, error: 'Failed to fetch doctors' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch doctors' },
+      { status: 500 },
+    );
   }
 }

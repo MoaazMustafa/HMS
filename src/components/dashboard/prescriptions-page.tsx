@@ -94,20 +94,27 @@ export function PrescriptionsPage({ prescriptions }: Props) {
   };
 
   const activePrescriptions = prescriptions.filter((rx) => rx.isActive).length;
-  const totalRefills = prescriptions.reduce((sum, rx) => sum + rx.refillsRemaining, 0);
+  const totalRefills = prescriptions.reduce(
+    (sum, rx) => sum + rx.refillsRemaining,
+    0,
+  );
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Prescriptions</h1>
-          <p className="text-background-400">View and manage your prescription medications</p>
+          <h1 className="text-foreground mb-2 text-3xl font-bold">
+            Prescriptions
+          </h1>
+          <p className="text-background-400">
+            View and manage your prescription medications
+          </p>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         {[
           {
             label: 'Total Prescriptions',
@@ -141,21 +148,23 @@ export function PrescriptionsPage({ prescriptions }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
+              className="bg-background-900/50 border-background-800 rounded-lg border p-6 backdrop-blur-xl"
             >
-              <div className="flex items-center justify-between mb-2">
-                <Icon className={`w-5 h-5 ${stat.color}`} />
-                <span className={`text-2xl font-bold ${stat.color}`}>{stat.value}</span>
+              <div className="mb-2 flex items-center justify-between">
+                <Icon className={`h-5 w-5 ${stat.color}`} />
+                <span className={`text-2xl font-bold ${stat.color}`}>
+                  {stat.value}
+                </span>
               </div>
-              <p className="text-sm text-background-400">{stat.label}</p>
+              <p className="text-background-400 text-sm">{stat.label}</p>
             </motion.div>
           );
         })}
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-4">
-        <div className="flex flex-col md:flex-row gap-4">
+      <div className="bg-background-900/50 border-background-800 rounded-lg border p-4 backdrop-blur-xl">
+        <div className="flex flex-col gap-4 md:flex-row">
           {/* Filter Tabs */}
           <div className="flex gap-2">
             {[
@@ -165,8 +174,10 @@ export function PrescriptionsPage({ prescriptions }: Props) {
             ].map((tab) => (
               <button
                 key={tab.value}
-                onClick={() => setFilter(tab.value as 'all' | 'active' | 'expired')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                onClick={() =>
+                  setFilter(tab.value as 'all' | 'active' | 'expired')
+                }
+                className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
                   filter === tab.value
                     ? 'bg-primary text-background'
                     : 'bg-background-800 text-background-400 hover:text-foreground'
@@ -178,14 +189,14 @@ export function PrescriptionsPage({ prescriptions }: Props) {
           </div>
 
           {/* Search */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-background-500" />
+          <div className="relative flex-1">
+            <Search className="text-background-500 absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by medication, prescription ID, or doctor..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-background-800 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="bg-background-800 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 w-full rounded-lg border py-2 pr-4 pl-10 focus:ring-2 focus:outline-none"
             />
           </div>
         </div>
@@ -194,9 +205,11 @@ export function PrescriptionsPage({ prescriptions }: Props) {
       {/* Prescriptions List */}
       <div className="space-y-4">
         {filteredPrescriptions.length === 0 ? (
-          <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
-            <Pill className="w-12 h-12 text-background-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">No prescriptions found</h3>
+          <div className="bg-background-900/50 border-background-800 rounded-lg border p-12 text-center backdrop-blur-xl">
+            <Pill className="text-background-600 mx-auto mb-4 h-12 w-12" />
+            <h3 className="text-foreground mb-2 text-lg font-semibold">
+              No prescriptions found
+            </h3>
             <p className="text-background-400">
               {searchQuery
                 ? 'Try adjusting your search criteria'
@@ -210,90 +223,111 @@ export function PrescriptionsPage({ prescriptions }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6 hover:border-background-700 transition-all"
+              className="bg-background-900/50 border-background-800 hover:border-background-700 rounded-lg border p-6 backdrop-blur-xl transition-all"
             >
-              <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+              <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
                 {/* Prescription Info */}
                 <div className="flex-1 space-y-3">
                   {/* Header */}
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <Pill className="w-5 h-5 text-primary" />
-                        <h3 className="text-lg font-semibold text-foreground">
+                      <div className="mb-2 flex items-center gap-3">
+                        <Pill className="text-primary h-5 w-5" />
+                        <h3 className="text-foreground text-lg font-semibold">
                           {prescription.medicationName}
                         </h3>
                         <span
-                          className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border ${getStatusColor(
-                            prescription.status
+                          className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs font-medium ${getStatusColor(
+                            prescription.status,
                           )}`}
                         >
                           {prescription.status}
                         </span>
                       </div>
-                      <p className="text-xs text-background-500 font-mono mb-2">
+                      <p className="text-background-500 mb-2 font-mono text-xs">
                         Rx: {prescription.prescriptionId}
                       </p>
                     </div>
                   </div>
 
                   {/* Dosage Info */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-background-800/50 rounded-lg">
+                  <div className="bg-background-800/50 grid grid-cols-2 gap-3 rounded-lg p-4 md:grid-cols-4">
                     <div>
-                      <p className="text-xs text-background-500 mb-1">Dosage</p>
-                      <p className="text-sm text-foreground font-semibold">{prescription.dosage}</p>
+                      <p className="text-background-500 mb-1 text-xs">Dosage</p>
+                      <p className="text-foreground text-sm font-semibold">
+                        {prescription.dosage}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-xs text-background-500 mb-1">Frequency</p>
-                      <p className="text-sm text-foreground font-semibold">{prescription.frequency}</p>
+                      <p className="text-background-500 mb-1 text-xs">
+                        Frequency
+                      </p>
+                      <p className="text-foreground text-sm font-semibold">
+                        {prescription.frequency}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-xs text-background-500 mb-1">Duration</p>
-                      <p className="text-sm text-foreground font-semibold">{prescription.duration}</p>
+                      <p className="text-background-500 mb-1 text-xs">
+                        Duration
+                      </p>
+                      <p className="text-foreground text-sm font-semibold">
+                        {prescription.duration}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-xs text-background-500 mb-1">Refills</p>
-                      <p className="text-sm text-foreground font-semibold">
-                        {prescription.refillsRemaining} of {prescription.refillsAllowed}
+                      <p className="text-background-500 mb-1 text-xs">
+                        Refills
+                      </p>
+                      <p className="text-foreground text-sm font-semibold">
+                        {prescription.refillsRemaining} of{' '}
+                        {prescription.refillsAllowed}
                       </p>
                     </div>
                   </div>
 
                   {/* Instructions */}
                   {prescription.instructions && (
-                    <div className="flex items-start gap-2 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                      <FileText className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                      <p className="text-sm text-blue-400">{prescription.instructions}</p>
+                    <div className="flex items-start gap-2 rounded-lg border border-blue-500/20 bg-blue-500/10 p-3">
+                      <FileText className="mt-0.5 h-4 w-4 shrink-0 text-blue-500" />
+                      <p className="text-sm text-blue-400">
+                        {prescription.instructions}
+                      </p>
                     </div>
                   )}
 
                   {/* Details */}
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-background-400">
+                  <div className="text-background-400 flex flex-wrap items-center gap-4 text-sm">
                     <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
+                      <User className="h-4 w-4" />
                       <span>Dr. {prescription.doctor.user.name}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="h-4 w-4" />
                       <span>
                         Prescribed:{' '}
-                        {new Date(prescription.issuedAt).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
+                        {new Date(prescription.issuedAt).toLocaleDateString(
+                          'en-US',
+                          {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                          },
+                        )}
                       </span>
                     </div>
                     {prescription.expiryDate && (
                       <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
+                        <Clock className="h-4 w-4" />
                         <span>
                           Expires:{' '}
-                          {new Date(prescription.expiryDate).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                          })}
+                          {new Date(prescription.expiryDate).toLocaleDateString(
+                            'en-US',
+                            {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            },
+                          )}
                         </span>
                       </div>
                     )}
@@ -303,20 +337,21 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                   {prescription.isActive &&
                     prescription.refillsRemaining > 0 &&
                     prescription.refillsRemaining <= 2 && (
-                      <div className="flex items-start gap-2 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                        <AlertCircle className="w-4 h-4 text-yellow-500 shrink-0 mt-0.5" />
+                      <div className="flex items-start gap-2 rounded-lg border border-yellow-500/20 bg-yellow-500/10 p-3">
+                        <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-yellow-500" />
                         <p className="text-sm text-yellow-400">
-                          Low refills remaining. Contact your doctor if you need additional refills.
+                          Low refills remaining. Contact your doctor if you need
+                          additional refills.
                         </p>
                       </div>
                     )}
                 </div>
 
                 {/* Actions */}
-                <div className="flex lg:flex-col gap-2">
+                <div className="flex gap-2 lg:flex-col">
                   <Link href={`/dashboard/prescriptions/${prescription.id}`}>
                     <Button variant="outline" size="sm" className="gap-2">
-                      <Eye className="w-4 h-4" />
+                      <Eye className="h-4 w-4" />
                       Details
                     </Button>
                   </Link>
@@ -326,7 +361,7 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                     onClick={() => handleDownloadPDF(prescription.id)}
                     className="gap-2"
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className="h-4 w-4" />
                     PDF
                   </Button>
                   <Button
@@ -335,7 +370,7 @@ export function PrescriptionsPage({ prescriptions }: Props) {
                     onClick={() => handleShowQR(prescription.id)}
                     className="gap-2"
                   >
-                    <QrCode className="w-4 h-4" />
+                    <QrCode className="h-4 w-4" />
                     QR
                   </Button>
                 </div>

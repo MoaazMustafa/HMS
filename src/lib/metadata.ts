@@ -9,7 +9,8 @@ interface PageMetadata {
   noIndex?: boolean;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hms-health.vercel.app';
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || 'https://hms-health.vercel.app';
 const defaultOgImage = `${baseUrl}/img/og-default.png`;
 
 export function generatePageMetadata({
@@ -63,7 +64,8 @@ export function generatePageMetadata({
 
 export const defaultMetadata: Metadata = generatePageMetadata({
   title: 'HMS - Digital Healthcare Platform',
-  description: 'Comprehensive Health Management System for managing patient information, prescriptions, appointments, and medical records efficiently.',
+  description:
+    'Comprehensive Health Management System for managing patient information, prescriptions, appointments, and medical records efficiently.',
   keywords: [
     'Health Management System',
     'HMS',
@@ -113,32 +115,57 @@ export const pageMetadata = {
     ],
     canonical: '/',
   }),
-  
+
   patients: generatePageMetadata({
     title: 'Patient Management',
-    description: 'Efficiently manage patient information, registrations, and profiles with our comprehensive patient management system.',
-    keywords: ['Patient Management', 'Patient Registration', 'Patient Portal', 'HMS'],
+    description:
+      'Efficiently manage patient information, registrations, and profiles with our comprehensive patient management system.',
+    keywords: [
+      'Patient Management',
+      'Patient Registration',
+      'Patient Portal',
+      'HMS',
+    ],
     canonical: '/patients',
   }),
-  
+
   prescriptions: generatePageMetadata({
     title: 'Prescription Management',
-    description: 'Create, manage, and track prescriptions with drug interaction checking and digital signature support.',
-    keywords: ['Prescription Management', 'E-Prescription', 'Drug Database', 'HMS'],
+    description:
+      'Create, manage, and track prescriptions with drug interaction checking and digital signature support.',
+    keywords: [
+      'Prescription Management',
+      'E-Prescription',
+      'Drug Database',
+      'HMS',
+    ],
     canonical: '/prescriptions',
   }),
-  
+
   appointments: generatePageMetadata({
     title: 'Appointment Scheduling',
-    description: 'Smart appointment scheduling system with automated reminders and calendar management.',
-    keywords: ['Appointment Scheduling', 'Calendar Management', 'SMS Reminders', 'HMS'],
+    description:
+      'Smart appointment scheduling system with automated reminders and calendar management.',
+    keywords: [
+      'Appointment Scheduling',
+      'Calendar Management',
+      'SMS Reminders',
+      'HMS',
+    ],
     canonical: '/appointments',
   }),
-  
+
   records: generatePageMetadata({
     title: 'Medical Records',
-    description: 'Comprehensive electronic health records system with clinical notes, diagnoses, and lab reports.',
-    keywords: ['Medical Records', 'EHR', 'Clinical Notes', 'Lab Reports', 'HMS'],
+    description:
+      'Comprehensive electronic health records system with clinical notes, diagnoses, and lab reports.',
+    keywords: [
+      'Medical Records',
+      'EHR',
+      'Clinical Notes',
+      'Lab Reports',
+      'HMS',
+    ],
     canonical: '/records',
   }),
 };

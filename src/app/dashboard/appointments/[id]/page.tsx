@@ -81,7 +81,8 @@ export default async function DashboardAppointmentDetailPage({
     customFee: appointment.customFee ? appointment.customFee.toNumber() : null,
     doctor: {
       ...appointment.doctor,
-      defaultAppointmentFee: appointment.doctor.defaultAppointmentFee.toNumber(),
+      defaultAppointmentFee:
+        appointment.doctor.defaultAppointmentFee.toNumber(),
       defaultSessionFee: appointment.doctor.defaultSessionFee.toNumber(),
     },
     billing: appointment.billing

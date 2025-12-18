@@ -25,7 +25,7 @@ const staggerContainer = {
 export default function NotFound() {
   return (
     <div className="bg-background min-h-screen">
-       {/* Main Content */}
+      {/* Main Content */}
       <div className="flex min-h-[calc(100vh-64px)] items-center justify-center px-4">
         <div className="mx-auto max-w-2xl text-center">
           <motion.div
@@ -60,7 +60,8 @@ export default function NotFound() {
                 been moved.
               </p>
               <p className="text-muted-foreground">
-                Don&apos;t worry, let&apos;s get you back to the health management system.
+                Don&apos;t worry, let&apos;s get you back to the health
+                management system.
               </p>
             </motion.div>
 

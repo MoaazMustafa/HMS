@@ -98,23 +98,23 @@ export function FeaturesSection() {
       <div className="container mx-auto max-w-7xl px-4">
         <div className="mb-16 text-center">
           <div data-aos="fade-up">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-medium text-primary backdrop-blur-sm">
+            <div className="border-primary/20 bg-primary/10 text-primary mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium backdrop-blur-sm">
               <Zap className="h-4 w-4" />
               Comprehensive Features
             </div>
           </div>
 
           <div data-aos="fade-up" data-aos-delay="100">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl lg:text-5xl">
+            <h2 className="text-foreground mb-4 text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
               Everything You Need for{' '}
-              <span className="bg-linear-to-r from-primary to-primary-600 bg-clip-text text-transparent">
+              <span className="from-primary to-primary-600 bg-linear-to-r bg-clip-text text-transparent">
                 Modern Healthcare
               </span>
             </h2>
           </div>
 
           <div data-aos="fade-up" data-aos-delay="200">
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl">
+            <p className="text-muted-foreground mx-auto max-w-2xl text-lg md:text-xl">
               Powerful features designed to streamline healthcare operations and
               improve patient care quality.
             </p>

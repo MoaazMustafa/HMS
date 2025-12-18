@@ -51,5 +51,7 @@ export default async function PrescriptionsPageRoute() {
     redirect('/login');
   }
 
-  return <PrescriptionsPage prescriptions={user.patient.prescriptions as never} />;
+  return (
+    <PrescriptionsPage prescriptions={user.patient.prescriptions as never} />
+  );
 }

@@ -91,23 +91,24 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
     switch (status) {
       case 'CONFIRMED':
       case 'COMPLETED':
-        return <CheckCircle className="w-4 h-4" />;
+        return <CheckCircle className="h-4 w-4" />;
       case 'CANCELLED':
       case 'NO_SHOW':
-        return <XCircle className="w-4 h-4" />;
+        return <XCircle className="h-4 w-4" />;
       case 'IN_PROGRESS':
-        return <AlertCircle className="w-4 h-4" />;
+        return <AlertCircle className="h-4 w-4" />;
       default:
-        return <Clock className="w-4 h-4" />;
+        return <Clock className="h-4 w-4" />;
     }
   };
 
   const canRescheduleOrCancel = (appointment: Appointment) => {
     const appointmentDateTime = new Date(
-      `${appointment.scheduledDate.toString().split('T')[0]}T${appointment.scheduledTime}`
+      `${appointment.scheduledDate.toString().split('T')[0]}T${appointment.scheduledTime}`,
     );
     const now = new Date();
-    const hoursUntilAppointment = (appointmentDateTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+    const hoursUntilAppointment =
+      (appointmentDateTime.getTime() - now.getTime()) / (1000 * 60 * 60);
 
     return (
       hoursUntilAppointment >= 24 &&
@@ -120,17 +121,21 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Appointments</h1>
-          <p className="text-background-400">Manage your appointments and book new ones</p>
+          <h1 className="text-foreground mb-2 text-3xl font-bold">
+            Appointments
+          </h1>
+          <p className="text-background-400">
+            Manage your appointments and book new ones
+          </p>
         </div>
         <Button onClick={() => setShowBookingModal(true)} className="gap-2">
-          <Plus className="w-4 h-4" />
+          <Plus className="h-4 w-4" />
           Book Appointment
         </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         {[
           {
             label: 'Total Appointments',
@@ -143,7 +148,7 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
             value: appointments.filter(
               (a) =>
                 new Date(a.scheduledDate) >= new Date() &&
-                (a.status === 'SCHEDULED' || a.status === 'CONFIRMED')
+                (a.status === 'SCHEDULED' || a.status === 'CONFIRMED'),
             ).length,
             icon: Clock,
             color: 'text-primary',
@@ -168,21 +173,23 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
+              className="bg-background-900/50 border-background-800 rounded-lg border p-6 backdrop-blur-xl"
             >
-              <div className="flex items-center justify-between mb-2">
-                <Icon className={`w-5 h-5 ${stat.color}`} />
-                <span className={`text-2xl font-bold ${stat.color}`}>{stat.value}</span>
+              <div className="mb-2 flex items-center justify-between">
+                <Icon className={`h-5 w-5 ${stat.color}`} />
+                <span className={`text-2xl font-bold ${stat.color}`}>
+                  {stat.value}
+                </span>
               </div>
-              <p className="text-sm text-background-400">{stat.label}</p>
+              <p className="text-background-400 text-sm">{stat.label}</p>
             </motion.div>
           );
         })}
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-4">
-        <div className="flex flex-col md:flex-row gap-4">
+      <div className="bg-background-900/50 border-background-800 rounded-lg border p-4 backdrop-blur-xl">
+        <div className="flex flex-col gap-4 md:flex-row">
           {/* Filter Tabs */}
           <div className="flex gap-2">
             {[
@@ -192,8 +199,10 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
             ].map((tab) => (
               <button
                 key={tab.value}
-                onClick={() => setFilter(tab.value as 'all' | 'upcoming' | 'past')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                onClick={() =>
+                  setFilter(tab.value as 'all' | 'upcoming' | 'past')
+                }
+                className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
                   filter === tab.value
                     ? 'bg-primary text-background'
                     : 'bg-background-800 text-background-400 hover:text-foreground'
@@ -205,14 +214,14 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
           </div>
 
           {/* Search */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-background-500" />
+          <div className="relative flex-1">
+            <Search className="text-background-500 absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by doctor, specialization, or ID..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-background-800 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="bg-background-800 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 w-full rounded-lg border py-2 pr-4 pl-10 focus:ring-2 focus:outline-none"
             />
           </div>
         </div>
@@ -221,15 +230,19 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
       {/* Appointments List */}
       <div className="space-y-4">
         {filteredAppointments.length === 0 ? (
-          <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
-            <Calendar className="w-12 h-12 text-background-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">No appointments found</h3>
+          <div className="bg-background-900/50 border-background-800 rounded-lg border p-12 text-center backdrop-blur-xl">
+            <Calendar className="text-background-600 mx-auto mb-4 h-12 w-12" />
+            <h3 className="text-foreground mb-2 text-lg font-semibold">
+              No appointments found
+            </h3>
             <p className="text-background-400 mb-4">
               {searchQuery
                 ? 'Try adjusting your search criteria'
                 : 'Book your first appointment to get started'}
             </p>
-            <Button onClick={() => setShowBookingModal(true)}>Book Appointment</Button>
+            <Button onClick={() => setShowBookingModal(true)}>
+              Book Appointment
+            </Button>
           </div>
         ) : (
           filteredAppointments.map((appointment, index) => (
@@ -238,60 +251,74 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6 hover:border-background-700 transition-all"
+              className="bg-background-900/50 border-background-800 hover:border-background-700 rounded-lg border p-6 backdrop-blur-xl transition-all"
             >
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
                 {/* Appointment Info */}
                 <div className="flex-1 space-y-3">
                   {/* Header Row */}
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-foreground">
-                          Dr. {appointment.doctor.firstName} {appointment.doctor.lastName}
+                      <div className="mb-2 flex items-center gap-3">
+                        <h3 className="text-foreground text-lg font-semibold">
+                          Dr. {appointment.doctor.firstName}{' '}
+                          {appointment.doctor.lastName}
                         </h3>
                         <span
-                          className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border ${getStatusColor(
-                            appointment.status
+                          className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs font-medium ${getStatusColor(
+                            appointment.status,
                           )}`}
                         >
                           {getStatusIcon(appointment.status)}
                           {appointment.status}
                         </span>
                       </div>
-                      <p className="text-sm text-background-400">{appointment.doctor.specialization}</p>
+                      <p className="text-background-400 text-sm">
+                        {appointment.doctor.specialization}
+                      </p>
                     </div>
-                    <span className="text-xs text-background-500 font-mono">{appointment.appointmentId}</span>
+                    <span className="text-background-500 font-mono text-xs">
+                      {appointment.appointmentId}
+                    </span>
                   </div>
 
                   {/* Details Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
                     <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="w-4 h-4 text-background-500" />
+                      <Calendar className="text-background-500 h-4 w-4" />
                       <span className="text-background-300">
-                        {new Date(appointment.scheduledDate).toLocaleDateString('en-US', {
-                          weekday: 'short',
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
+                        {new Date(appointment.scheduledDate).toLocaleDateString(
+                          'en-US',
+                          {
+                            weekday: 'short',
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                          },
+                        )}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
-                      <Clock className="w-4 h-4 text-background-500" />
-                      <span className="text-background-300">{appointment.scheduledTime}</span>
+                      <Clock className="text-background-500 h-4 w-4" />
+                      <span className="text-background-300">
+                        {appointment.scheduledTime}
+                      </span>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
-                      <DollarSign className="w-4 h-4 text-background-500" />
-                      <span className="text-background-300">${appointment.fee.toFixed(2)}</span>
+                      <DollarSign className="text-background-500 h-4 w-4" />
+                      <span className="text-background-300">
+                        ${appointment.fee.toFixed(2)}
+                      </span>
                     </div>
 
                     {appointment.reason && (
-                      <div className="flex items-center gap-2 text-sm col-span-full">
-                        <AlertCircle className="w-4 h-4 text-background-500" />
-                        <span className="text-background-300">{appointment.reason}</span>
+                      <div className="col-span-full flex items-center gap-2 text-sm">
+                        <AlertCircle className="text-background-500 h-4 w-4" />
+                        <span className="text-background-300">
+                          {appointment.reason}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -303,7 +330,11 @@ export function AppointmentsPage({ appointments, patientId }: Props) {
                     <Button variant="outline" size="sm">
                       Reschedule
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-400">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-500 hover:text-red-400"
+                    >
                       Cancel
                     </Button>
                   </div>

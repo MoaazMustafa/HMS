@@ -52,7 +52,15 @@ interface WorkingHours {
   isAvailable: boolean;
 }
 
-const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const dayNames = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
 
 const timeSlots = Array.from({ length: 48 }, (_, i) => {
   const hour = Math.floor(i / 2);
@@ -64,7 +72,8 @@ export function DoctorSchedulePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [schedules, setSchedules] = useState<WorkingHours[]>([]);
-  const [editingSchedule, setEditingSchedule] = useState<Partial<WorkingHours> | null>(null);
+  const [editingSchedule, setEditingSchedule] =
+    useState<Partial<WorkingHours> | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [scheduleToDelete, setScheduleToDelete] = useState<string | null>(null);
@@ -146,7 +155,9 @@ export function DoctorSchedulePage() {
 
       if (result.success) {
         toast.success(
-          editingSchedule.id ? 'Schedule updated successfully' : 'Schedule added successfully'
+          editingSchedule.id
+            ? 'Schedule updated successfully'
+            : 'Schedule added successfully',
         );
         setEditingSchedule(null);
         setDialogOpen(false);
@@ -242,7 +253,7 @@ export function DoctorSchedulePage() {
         </div>
 
         {/* Weekly Schedule Grid Skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {[...Array(7)].map((_, i) => (
             <Skeleton key={i} className="h-48" />
           ))}
@@ -259,13 +270,15 @@ export function DoctorSchedulePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Schedule Configuration</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h1 className="text-foreground text-2xl font-bold">
+            Schedule Configuration
+          </h1>
+          <p className="text-muted-foreground mt-1 text-sm">
             Manage your working hours and availability
           </p>
         </div>
         <Button onClick={handleAddSchedule} className="gap-2">
-          <Plus className="w-4 h-4" />
+          <Plus className="h-4 w-4" />
           Add Schedule
         </Button>
       </div>
@@ -275,7 +288,7 @@ export function DoctorSchedulePage() {
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-primary" />
+              <Clock className="text-primary h-5 w-5" />
               {editingSchedule?.id ? 'Edit Schedule' : 'Add New Schedule'}
             </DialogTitle>
             <DialogDescription>
@@ -285,7 +298,7 @@ export function DoctorSchedulePage() {
 
           <div className="space-y-4 py-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
+              <label className="text-foreground mb-2 block text-sm font-medium">
                 Day of Week <span className="text-destructive">*</span>
               </label>
               <Select
@@ -312,7 +325,7 @@ export function DoctorSchedulePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="text-foreground mb-2 block text-sm font-medium">
                   Start Time <span className="text-destructive">*</span>
                 </label>
                 <Select
@@ -335,7 +348,7 @@ export function DoctorSchedulePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label className="text-foreground mb-2 block text-sm font-medium">
                   End Time <span className="text-destructive">*</span>
                 </label>
                 <Select
@@ -358,7 +371,7 @@ export function DoctorSchedulePage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 bg-accent/50 rounded-md">
+            <div className="bg-accent/50 flex items-center gap-3 rounded-md p-3">
               <button
                 type="button"
                 onClick={() =>
@@ -370,16 +383,16 @@ export function DoctorSchedulePage() {
                 className="flex items-center gap-2"
               >
                 {editingSchedule?.isAvailable ? (
-                  <ToggleRight className="w-6 h-6 text-primary" />
+                  <ToggleRight className="text-primary h-6 w-6" />
                 ) : (
-                  <ToggleLeft className="w-6 h-6 text-muted-foreground" />
+                  <ToggleLeft className="text-muted-foreground h-6 w-6" />
                 )}
               </button>
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-foreground text-sm font-medium">
                   {editingSchedule?.isAvailable ? 'Available' : 'Unavailable'}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   Toggle to set availability status
                 </p>
               </div>
@@ -395,18 +408,18 @@ export function DoctorSchedulePage() {
               }}
               disabled={saving}
             >
-              <X className="w-4 h-4 mr-2" />
+              <X className="mr-2 h-4 w-4" />
               Cancel
             </Button>
             <Button onClick={handleSaveSchedule} disabled={saving}>
               {saving ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
                 </>
               ) : (
                 <>
-                  <Save className="w-4 h-4 mr-2" />
+                  <Save className="mr-2 h-4 w-4" />
                   {editingSchedule?.id ? 'Update' : 'Save'}
                 </>
               )}
@@ -421,7 +434,8 @@ export function DoctorSchedulePage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete this schedule entry.
+              This action cannot be undone. This will permanently delete this
+              schedule entry.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -437,17 +451,20 @@ export function DoctorSchedulePage() {
       </AlertDialog>
 
       {/* Weekly Schedule View */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {dayNames.map((day, index) => {
           const daySchedules = getSchedulesForDay(index);
           const hasSchedules = daySchedules.length > 0;
 
           return (
-            <Card key={index} className={hasSchedules ? 'border-primary/20' : ''}>
+            <Card
+              key={index}
+              className={hasSchedules ? 'border-primary/20' : ''}
+            >
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center justify-between text-base">
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-primary" />
+                    <Calendar className="text-primary h-4 w-4" />
                     {day}
                   </div>
                   {hasSchedules && (
@@ -459,21 +476,23 @@ export function DoctorSchedulePage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 {daySchedules.length === 0 ? (
-                  <p className="text-xs text-muted-foreground text-center py-4">No schedule set</p>
+                  <p className="text-muted-foreground py-4 text-center text-xs">
+                    No schedule set
+                  </p>
                 ) : (
                   daySchedules.map((schedule) => (
                     <div
                       key={schedule.id}
-                      className={`p-3 rounded-md border ${
+                      className={`rounded-md border p-3 ${
                         schedule.isAvailable
                           ? 'bg-primary/5 border-primary/20'
                           : 'bg-muted border-border'
                       }`}
                     >
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="mb-2 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Clock className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span className="text-sm font-medium text-foreground">
+                          <Clock className="text-muted-foreground h-3.5 w-3.5" />
+                          <span className="text-foreground text-sm font-medium">
                             {schedule.startTime} - {schedule.endTime}
                           </span>
                         </div>
@@ -482,28 +501,30 @@ export function DoctorSchedulePage() {
                           className="text-xs"
                         >
                           {schedule.isAvailable ? (
-                            <ToggleRight className="w-5 h-5 text-primary" />
+                            <ToggleRight className="text-primary h-5 w-5" />
                           ) : (
-                            <ToggleLeft className="w-5 h-5 text-muted-foreground" />
+                            <ToggleLeft className="text-muted-foreground h-5 w-5" />
                           )}
                         </button>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <Badge
-                          variant={schedule.isAvailable ? 'default' : 'secondary'}
+                          variant={
+                            schedule.isAvailable ? 'default' : 'secondary'
+                          }
                           className="text-[10px]"
                         >
                           {schedule.isAvailable ? 'Available' : 'Unavailable'}
                         </Badge>
                       </div>
 
-                      <div className="flex gap-1 mt-3">
+                      <div className="mt-3 flex gap-1">
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => handleEditSchedule(schedule)}
-                          className="flex-1 h-7 text-xs"
+                          className="h-7 flex-1 text-xs"
                         >
                           Edit
                         </Button>
@@ -513,7 +534,7 @@ export function DoctorSchedulePage() {
                           onClick={() => handleDeleteSchedule(schedule.id)}
                           className="h-7 px-2"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="h-3.5 w-3.5" />
                         </Button>
                       </div>
                     </div>
@@ -531,28 +552,30 @@ export function DoctorSchedulePage() {
           <CardTitle className="text-base">Schedule Summary</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             <div className="text-center">
-              <p className="text-2xl font-bold text-foreground">{schedules.length}</p>
-              <p className="text-xs text-muted-foreground">Total Schedules</p>
+              <p className="text-foreground text-2xl font-bold">
+                {schedules.length}
+              </p>
+              <p className="text-muted-foreground text-xs">Total Schedules</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-green-500">
                 {schedules.filter((s) => s.isAvailable).length}
               </p>
-              <p className="text-xs text-muted-foreground">Available</p>
+              <p className="text-muted-foreground text-xs">Available</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-orange-500">
                 {schedules.filter((s) => !s.isAvailable).length}
               </p>
-              <p className="text-xs text-muted-foreground">Unavailable</p>
+              <p className="text-muted-foreground text-xs">Unavailable</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-blue-500">
                 {new Set(schedules.map((s) => s.dayOfWeek)).size}
               </p>
-              <p className="text-xs text-muted-foreground">Days Configured</p>
+              <p className="text-muted-foreground text-xs">Days Configured</p>
             </div>
           </div>
         </CardContent>

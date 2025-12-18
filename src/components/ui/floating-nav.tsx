@@ -54,7 +54,7 @@ export function FloatingNav() {
 
   return (
     <>
-      <motion.nav className="fixed top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
+      <motion.nav className="border-border/50 bg-background/80 fixed top-0 z-50 w-full border-b backdrop-blur-md">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -73,7 +73,7 @@ export function FloatingNav() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 onClick={() => scrollToSection(item.href)}
-                className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                className="text-foreground hover:text-primary text-sm font-medium transition-colors"
               >
                 {item.name}
               </motion.button>
@@ -143,16 +143,26 @@ export function FloatingNav() {
           ))}
           {session ? (
             <>
-              <Button onClick={handleAuth} className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button
+                onClick={handleAuth}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
                 Dashboard
               </Button>
-              <Button onClick={handleLogout} variant="outline" className="border-primary/20">
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                className="border-primary/20"
+              >
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
               </Button>
             </>
           ) : (
-            <Button onClick={handleAuth} className="bg-primary text-primary-foreground hover:bg-primary/90">
+            <Button
+              onClick={handleAuth}
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+            >
               <LogIn className="mr-2 h-4 w-4" />
               Sign In
             </Button>

@@ -21,17 +21,23 @@ export async function POST(request: NextRequest) {
 
     // Validation
     if (!currentPassword || !newPassword || !confirmPassword) {
-      return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'All fields are required' },
+        { status: 400 },
+      );
     }
 
     if (newPassword !== confirmPassword) {
-      return NextResponse.json({ error: 'New passwords do not match' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'New passwords do not match' },
+        { status: 400 },
+      );
     }
 
     if (newPassword.length < 8) {
       return NextResponse.json(
         { error: 'Password must be at least 8 characters long' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -45,10 +51,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify current password
-    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password,
+    );
 
     if (!isPasswordValid) {
-      return NextResponse.json({ error: 'Current password is incorrect' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Current password is incorrect' },
+        { status: 401 },
+      );
     }
 
     // Hash new password
@@ -67,9 +79,12 @@ export async function POST(request: NextRequest) {
       {
         message: 'Password changed successfully',
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch {
-    return NextResponse.json({ error: 'Failed to change password' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to change password' },
+      { status: 500 },
+    );
   }
 }

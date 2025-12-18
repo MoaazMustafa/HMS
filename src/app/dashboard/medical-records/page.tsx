@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth/next';
 
 import DoctorMedicalRecordsPage from '@/components/dashboard/doctor-medical-records-page';
 import { MedicalRecordsPage } from '@/components/dashboard/medical-records-page';
+import NurseMedicalRecordsPage from '@/components/dashboard/nurse-medical-records-page';
 import * as auth from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -17,6 +18,11 @@ export default async function MedicalRecordsPageRoute() {
   // Doctor View
   if (session.user.role === UserRole.DOCTOR) {
     return <DoctorMedicalRecordsPage />;
+  }
+
+  // Nurse View (Read-only)
+  if (session.user.role === UserRole.NURSE) {
+    return <NurseMedicalRecordsPage />;
   }
 
   // Patient View

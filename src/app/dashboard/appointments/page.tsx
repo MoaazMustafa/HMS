@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth/next';
 
 import { AppointmentsPage } from '@/components/dashboard/appointments-page';
 import { DoctorAppointmentsPage } from '@/components/dashboard/doctor-appointments-page';
+import NurseAppointmentsPage from '@/components/dashboard/nurse-appointments-page';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -54,8 +55,8 @@ export default async function DashboardAppointmentsPage() {
       const feeValue = apt.billing?.amount
         ? apt.billing.amount
         : apt.customFee
-        ? apt.customFee
-        : apt.doctor.defaultAppointmentFee;
+          ? apt.customFee
+          : apt.doctor.defaultAppointmentFee;
 
       return {
         ...apt,
@@ -64,13 +65,23 @@ export default async function DashboardAppointmentsPage() {
       };
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return <AppointmentsPage appointments={appointments as any} patientId={user.patient.id} />;
+     
+    return (
+      <AppointmentsPage
+        appointments={appointments as any}
+        patientId={user.patient.id}
+      />
+    );
   }
 
   // Doctor Appointments
   if (session.user.role === UserRole.DOCTOR) {
     return <DoctorAppointmentsPage />;
+  }
+
+  // Nurse Appointments (Read-only)
+  if (session.user.role === UserRole.NURSE) {
+    return <NurseAppointmentsPage />;
   }
 
   // Other roles - redirect

@@ -22,9 +22,10 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          message: 'If an account with that email exists, we sent a password reset link',
+          message:
+            'If an account with that email exists, we sent a password reset link',
         },
-        { status: 200 }
+        { status: 200 },
       );
     }
 
@@ -53,14 +54,15 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        message: 'If an account with that email exists, we sent a password reset link',
+        message:
+          'If an account with that email exists, we sent a password reset link',
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch {
     return NextResponse.json(
       { error: 'Failed to process password reset request' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,5 +1,5 @@
 import { UserRole } from '@prisma/client';
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server';
 // eslint-disable-next-line no-duplicate-imports
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
@@ -8,14 +8,33 @@ import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 // Mock drug interaction database (in production, use external API or database)
-const DRUG_INTERACTIONS: Record<string, Array<{ drug: string; severity: string; description: string }>> = {
+const DRUG_INTERACTIONS: Record<
+  string,
+  Array<{ drug: string; severity: string; description: string }>
+> = {
   warfarin: [
-    { drug: 'aspirin', severity: 'SEVERE', description: 'Increased risk of bleeding' },
-    { drug: 'ibuprofen', severity: 'MODERATE', description: 'May increase bleeding risk' },
+    {
+      drug: 'aspirin',
+      severity: 'SEVERE',
+      description: 'Increased risk of bleeding',
+    },
+    {
+      drug: 'ibuprofen',
+      severity: 'MODERATE',
+      description: 'May increase bleeding risk',
+    },
   ],
   aspirin: [
-    { drug: 'warfarin', severity: 'SEVERE', description: 'Increased risk of bleeding' },
-    { drug: 'ibuprofen', severity: 'MODERATE', description: 'Increased GI bleeding risk' },
+    {
+      drug: 'warfarin',
+      severity: 'SEVERE',
+      description: 'Increased risk of bleeding',
+    },
+    {
+      drug: 'ibuprofen',
+      severity: 'MODERATE',
+      description: 'Increased GI bleeding risk',
+    },
   ],
   // Add more interactions as needed
 };
@@ -25,12 +44,18 @@ export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 },
+      );
     }
 
     // Only doctors can create prescriptions
     if (session.user.role !== UserRole.DOCTOR) {
-      return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json(
+        { success: false, error: 'Forbidden' },
+        { status: 403 },
+      );
     }
 
     const doctor = await prisma.doctor.findUnique({
@@ -38,17 +63,28 @@ export async function POST(request: NextRequest) {
     });
 
     if (!doctor) {
-      return NextResponse.json({ success: false, error: 'Doctor profile not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Doctor profile not found' },
+        { status: 404 },
+      );
     }
 
     const body = await request.json();
-    const { patientId, medicationName, dosage, frequency, duration, instructions, refillsRemaining } = body;
+    const {
+      patientId,
+      medicationName,
+      dosage,
+      frequency,
+      duration,
+      instructions,
+      refillsRemaining,
+    } = body;
 
     // Validation
     if (!patientId || !medicationName || !dosage || !frequency || !duration) {
       return NextResponse.json(
         { success: false, error: 'All required fields must be filled' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -64,7 +100,7 @@ export async function POST(request: NextRequest) {
     if (!assignment) {
       return NextResponse.json(
         { success: false, error: 'Patient is not assigned to you' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -77,7 +113,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (!patient) {
-      return NextResponse.json({ success: false, error: 'Patient not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Patient not found' },
+        { status: 404 },
+      );
     }
 
     // Generate unique prescription ID
@@ -95,7 +134,10 @@ export async function POST(request: NextRequest) {
 
     let nextNumber = 1;
     if (lastPrescription) {
-      const lastNumber = parseInt(lastPrescription.prescriptionId.split('-')[2], 10);
+      const lastNumber = parseInt(
+        lastPrescription.prescriptionId.split('-')[2],
+        10,
+      );
       nextNumber = lastNumber + 1;
     }
 
@@ -106,12 +148,19 @@ export async function POST(request: NextRequest) {
     expiresAt.setDate(expiresAt.getDate() + 90);
 
     // Check for drug interactions
-    const interactions: Array<{ interactsWith: string; severity: string; description: string }> = [];
+    const interactions: Array<{
+      interactsWith: string;
+      severity: string;
+      description: string;
+    }> = [];
 
     // Check against patient allergies
     const medicationLower = medicationName.toLowerCase();
     patient.allergies.forEach((allergy) => {
-      if (medicationLower.includes(allergy.allergen.toLowerCase()) || allergy.allergen.toLowerCase().includes(medicationLower)) {
+      if (
+        medicationLower.includes(allergy.allergen.toLowerCase()) ||
+        allergy.allergen.toLowerCase().includes(medicationLower)
+      ) {
         interactions.push({
           interactsWith: allergy.allergen,
           severity: allergy.severity || 'SEVERE',
@@ -182,13 +231,17 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ success: true, data: prescription, interactions });
+    return NextResponse.json({
+      success: true,
+      data: prescription,
+      interactions,
+    });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error creating prescription:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to create prescription' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

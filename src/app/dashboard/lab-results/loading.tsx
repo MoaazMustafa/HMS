@@ -17,7 +17,7 @@ export default function Loading() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {[...Array(3)].map((_, i) => (
           <Skeleton key={i} className="h-24" />
         ))}

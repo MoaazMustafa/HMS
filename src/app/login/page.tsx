@@ -54,9 +54,9 @@ export default function LoginPage() {
   // Show loading while checking session
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background-900 via-muted to-background-900">
+      <div className="from-background-900 via-muted to-background-900 flex min-h-screen items-center justify-center bg-linear-to-br">
         <div className="text-center">
-          <Activity className="w-12 h-12 text-primary animate-pulse mx-auto mb-4" />
+          <Activity className="text-primary mx-auto mb-4 h-12 w-12 animate-pulse" />
           <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
@@ -69,7 +69,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background-900 via-muted to-background-900 px-4">
+    <div className="from-background-900 via-muted to-background-900 flex min-h-screen items-center justify-center bg-linear-to-br px-4">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#80000080,transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,#80000080,transparent_50%)]" />
 
@@ -77,20 +77,22 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md relative z-10"
+        className="relative z-10 w-full max-w-md"
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center justify-center mb-8">
-          <Activity className="w-10 h-10 text-primary" />
-          <span className="ml-2 text-2xl font-bold bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+        <Link href="/" className="mb-8 flex items-center justify-center">
+          <Activity className="text-primary h-10 w-10" />
+          <span className="from-primary to-primary/70 ml-2 bg-linear-to-r bg-clip-text text-2xl font-bold text-transparent">
             HMS
           </span>
         </Link>
 
         {/* Login Card */}
-        <div className="bg-background-900/50 backdrop-blur-4xl border border-background-800 rounded-2xl p-8 shadow-2xl">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
+        <div className="bg-background-900/50 backdrop-blur-4xl border-background-800 rounded-2xl border p-8 shadow-2xl">
+          <div className="mb-8 text-center">
+            <h1 className="text-foreground mb-2 text-3xl font-bold">
+              Welcome Back
+            </h1>
             <p className="text-background-400">Sign in to your HMS account</p>
           </div>
 
@@ -98,7 +100,7 @@ export default function LoginPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm"
+              className="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-500"
             >
               {error}
             </motion.div>
@@ -107,17 +109,20 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-background-300 mb-2">
+              <label
+                htmlFor="email"
+                className="text-background-300 mb-2 block text-sm font-medium"
+              >
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background-500" />
+                <Mail className="text-background-500 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                 <input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                  className="bg-background-800/50 border-background-700 text-foreground placeholder:text-muted-foreground focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-4 pl-11 transition-colors focus:ring-2 focus:outline-none"
                   placeholder="you@example.com"
                   required
                   disabled={isLoading}
@@ -127,17 +132,20 @@ export default function LoginPage() {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-background-300 mb-2">
+              <label
+                htmlFor="password"
+                className="text-background-300 mb-2 block text-sm font-medium"
+              >
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background-500" />
+                <Lock className="text-background-500 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-12 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                  className="bg-background-800/50 border-background-700 text-foreground placeholder:text-muted-foreground focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-12 pl-11 transition-colors focus:ring-2 focus:outline-none"
                   placeholder="••••••••"
                   required
                   disabled={isLoading}
@@ -145,12 +153,12 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-background-500 hover:text-background-300 transition-colors"
+                  className="text-background-500 hover:text-background-300 absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
                 >
                   {showPassword ? (
-                    <EyeOff className="w-5 h-5" />
+                    <EyeOff className="h-5 w-5" />
                   ) : (
-                    <Eye className="w-5 h-5" />
+                    <Eye className="h-5 w-5" />
                   )}
                 </button>
               </div>
@@ -162,15 +170,18 @@ export default function LoginPage() {
                 <input
                   id="remember"
                   type="checkbox"
-                  className="w-4 h-4 rounded border-background-700 bg-background text-primary focus:ring-primary focus:ring-offset-0"
+                  className="border-background-700 bg-background text-primary focus:ring-primary h-4 w-4 rounded focus:ring-offset-0"
                 />
-                <label htmlFor="remember" className="ml-2 text-sm text-background-400">
+                <label
+                  htmlFor="remember"
+                  className="text-background-400 ml-2 text-sm"
+                >
                   Remember me
                 </label>
               </div>
               <Link
                 href="/forgot-password"
-                className="text-sm text-primary hover:text-primary/80 transition-colors"
+                className="text-primary hover:text-primary/80 text-sm transition-colors"
               >
                 Forgot password?
               </Link>
@@ -180,16 +191,18 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 text-base font-semibold"
+              className="h-12 w-full text-base font-semibold"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-lg">
-            <p className="text-xs text-background-400 mb-2 font-semibold">Demo Credentials:</p>
-            <div className="space-y-1 text-xs text-background-500">
+          <div className="bg-primary/5 border-primary/20 mt-6 rounded-lg border p-4">
+            <p className="text-background-400 mb-2 text-xs font-semibold">
+              Demo Credentials:
+            </p>
+            <div className="text-background-500 space-y-1 text-xs">
               <p>Patient: patient1@example.com / password123</p>
               <p>Doctor: dr.smith@hms.com / password123</p>
               <p>Admin: admin@hms.com / password123</p>
@@ -211,7 +224,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-background-500 text-sm mt-8">
+        <p className="text-background-500 mt-8 text-center text-sm">
           © 2025 HMS. All rights reserved.
         </p>
       </motion.div>

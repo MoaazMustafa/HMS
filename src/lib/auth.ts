@@ -6,7 +6,6 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 
 import { prisma } from './prisma';
 
-
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as any,
   providers: [
@@ -40,7 +39,7 @@ export const authOptions: NextAuthOptions = {
 
         const isCorrectPassword = await bcrypt.compare(
           credentials.password,
-          user.password
+          user.password,
         );
 
         if (!isCorrectPassword) {
@@ -49,7 +48,9 @@ export const authOptions: NextAuthOptions = {
 
         // Check if account is active
         if (user.accountStatus !== 'ACTIVE') {
-          throw new Error('Your account is not active. Please contact support.');
+          throw new Error(
+            'Your account is not active. Please contact support.',
+          );
         }
 
         // Update last login

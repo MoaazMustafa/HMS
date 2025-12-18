@@ -59,8 +59,8 @@ async function main() {
           specialization: 'Cardiology',
           licenseNumber: 'DOC-001',
           phone: '+1234567892',
-          defaultAppointmentFee: 150.00,
-          defaultSessionFee: 100.00,
+          defaultAppointmentFee: 150.0,
+          defaultSessionFee: 100.0,
           workingHours: {
             create: [
               { dayOfWeek: 1, startTime: '09:00', endTime: '17:00' },
@@ -88,8 +88,8 @@ async function main() {
           specialization: 'General Practice',
           licenseNumber: 'DOC-002',
           phone: '+1234567893',
-          defaultAppointmentFee: 120.00,
-          defaultSessionFee: 80.00,
+          defaultAppointmentFee: 120.0,
+          defaultSessionFee: 80.0,
           workingHours: {
             create: [
               { dayOfWeek: 1, startTime: '08:00', endTime: '16:00' },
@@ -211,11 +211,27 @@ async function main() {
   // Create some medications
   await prisma.medication.createMany({
     data: [
-      { name: 'Amoxicillin', genericName: 'Amoxicillin', category: 'Antibiotic' },
-      { name: 'Ibuprofen', genericName: 'Ibuprofen', category: 'Pain Reliever' },
-      { name: 'Lisinopril', genericName: 'Lisinopril', category: 'Blood Pressure' },
+      {
+        name: 'Amoxicillin',
+        genericName: 'Amoxicillin',
+        category: 'Antibiotic',
+      },
+      {
+        name: 'Ibuprofen',
+        genericName: 'Ibuprofen',
+        category: 'Pain Reliever',
+      },
+      {
+        name: 'Lisinopril',
+        genericName: 'Lisinopril',
+        category: 'Blood Pressure',
+      },
       { name: 'Metformin', genericName: 'Metformin', category: 'Diabetes' },
-      { name: 'Atorvastatin', genericName: 'Atorvastatin', category: 'Cholesterol' },
+      {
+        name: 'Atorvastatin',
+        genericName: 'Atorvastatin',
+        category: 'Cholesterol',
+      },
     ],
   });
   console.log('✅ Medications created');

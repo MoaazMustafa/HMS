@@ -53,7 +53,10 @@ export async function GET() {
       // eslint-disable-next-line no-console
       console.error('Error fetching doctor schedule:', error.message);
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }
 
@@ -71,18 +74,27 @@ export async function POST(request: Request) {
 
     // Validate required fields
     if (dayOfWeek === undefined || !startTime || !endTime) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 },
+      );
     }
 
     // Validate day of week (0-6)
     if (dayOfWeek < 0 || dayOfWeek > 6) {
-      return NextResponse.json({ error: 'Invalid day of week' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid day of week' },
+        { status: 400 },
+      );
     }
 
     // Validate time format (HH:MM)
     const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
     if (!timeRegex.test(startTime) || !timeRegex.test(endTime)) {
-      return NextResponse.json({ error: 'Invalid time format. Use HH:MM' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid time format. Use HH:MM' },
+        { status: 400 },
+      );
     }
 
     const doctor = await prisma.doctor.findUnique({
@@ -101,13 +113,22 @@ export async function POST(request: Request) {
         isActive: true,
         OR: [
           {
-            AND: [{ startTime: { lte: startTime } }, { endTime: { gt: startTime } }],
+            AND: [
+              { startTime: { lte: startTime } },
+              { endTime: { gt: startTime } },
+            ],
           },
           {
-            AND: [{ startTime: { lt: endTime } }, { endTime: { gte: endTime } }],
+            AND: [
+              { startTime: { lt: endTime } },
+              { endTime: { gte: endTime } },
+            ],
           },
           {
-            AND: [{ startTime: { gte: startTime } }, { endTime: { lte: endTime } }],
+            AND: [
+              { startTime: { gte: startTime } },
+              { endTime: { lte: endTime } },
+            ],
           },
         ],
       },
@@ -116,7 +137,7 @@ export async function POST(request: Request) {
     if (existingHours) {
       return NextResponse.json(
         { error: 'Working hours overlap with existing schedule' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -141,7 +162,10 @@ export async function POST(request: Request) {
       // eslint-disable-next-line no-console
       console.error('Error adding working hours:', error.message);
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }
 
@@ -158,14 +182,23 @@ export async function PUT(request: Request) {
     const { id, startTime, endTime, isAvailable } = body;
 
     if (!id) {
-      return NextResponse.json({ error: 'Working hours ID is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Working hours ID is required' },
+        { status: 400 },
+      );
     }
 
     // Validate time format if provided
     if (startTime || endTime) {
       const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-      if ((startTime && !timeRegex.test(startTime)) || (endTime && !timeRegex.test(endTime))) {
-        return NextResponse.json({ error: 'Invalid time format. Use HH:MM' }, { status: 400 });
+      if (
+        (startTime && !timeRegex.test(startTime)) ||
+        (endTime && !timeRegex.test(endTime))
+      ) {
+        return NextResponse.json(
+          { error: 'Invalid time format. Use HH:MM' },
+          { status: 400 },
+        );
       }
     }
 
@@ -183,7 +216,10 @@ export async function PUT(request: Request) {
     });
 
     if (!existingHours || existingHours.doctorId !== doctor.id) {
-      return NextResponse.json({ error: 'Working hours not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Working hours not found' },
+        { status: 404 },
+      );
     }
 
     const updatedHours = await prisma.workingHours.update({
@@ -191,7 +227,8 @@ export async function PUT(request: Request) {
       data: {
         startTime: startTime || existingHours.startTime,
         endTime: endTime || existingHours.endTime,
-        isAvailable: isAvailable !== undefined ? isAvailable : existingHours.isAvailable,
+        isAvailable:
+          isAvailable !== undefined ? isAvailable : existingHours.isAvailable,
       },
     });
 
@@ -206,7 +243,10 @@ export async function PUT(request: Request) {
       // eslint-disable-next-line no-console
       console.error('Error updating working hours:', error.message);
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }
 
@@ -223,7 +263,10 @@ export async function DELETE(request: Request) {
     const id = searchParams.get('id');
 
     if (!id) {
-      return NextResponse.json({ error: 'Working hours ID is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Working hours ID is required' },
+        { status: 400 },
+      );
     }
 
     const doctor = await prisma.doctor.findUnique({
@@ -240,7 +283,10 @@ export async function DELETE(request: Request) {
     });
 
     if (!existingHours || existingHours.doctorId !== doctor.id) {
-      return NextResponse.json({ error: 'Working hours not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Working hours not found' },
+        { status: 404 },
+      );
     }
 
     // Soft delete by setting isActive to false
@@ -259,6 +305,9 @@ export async function DELETE(request: Request) {
       // eslint-disable-next-line no-console
       console.error('Error deleting working hours:', error.message);
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }

@@ -117,57 +117,68 @@ export function UserRolesSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-muted/30 flex flex-col items-center justify-center">
+    <section className="bg-muted/30 flex flex-col items-center justify-center py-24 md:py-32">
       <div className="container px-6">
         <ScrollReveal>
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="mx-auto mb-16 max-w-3xl text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6"
+              className="bg-primary/10 border-primary/20 text-primary mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium"
             >
               User Roles & Permissions
             </motion.div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            <h2 className="mb-4 text-3xl font-bold md:text-4xl lg:text-5xl">
               Built for Every
-              <span className="block text-primary mt-2">Healthcare Professional</span>
+              <span className="text-primary mt-2 block">
+                Healthcare Professional
+              </span>
             </h2>
-            <p className="text-lg text-muted-foreground">
-              Role-based access control with customized dashboards for optimal workflow
+            <p className="text-muted-foreground text-lg">
+              Role-based access control with customized dashboards for optimal
+              workflow
             </p>
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {roles.map((role, index) => {
             const Icon = role.icon;
             return (
               <ScrollReveal key={index} delay={index * 0.1}>
-                <Card className="group relative overflow-hidden h-full hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                <Card className="group relative h-full overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl">
                   {/* Gradient Background */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${role.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                  
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${role.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
+                  />
+
                   <div className="relative p-8">
                     {/* Icon Header */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className={`p-4 rounded-xl bg-card border-2 ${role.color} border-current/20`}>
-                        <Icon className={`w-8 h-8 ${role.color}`} />
+                    <div className="mb-6 flex items-center justify-between">
+                      <div
+                        className={`bg-card rounded-xl border-2 p-4 ${role.color} border-current/20`}
+                      >
+                        <Icon className={`h-8 w-8 ${role.color}`} />
                       </div>
-                      
+
                       {/* Stats Badge */}
                       <div className="text-right">
                         {Object.entries(role.stats).map(([key, value], idx) => (
                           <div key={idx} className="text-xs">
-                            <span className="text-muted-foreground">{key}: </span>
-                            <span className={`font-semibold ${role.color}`}>{value}</span>
+                            <span className="text-muted-foreground">
+                              {key}:{' '}
+                            </span>
+                            <span className={`font-semibold ${role.color}`}>
+                              {value}
+                            </span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     {/* Title & Description */}
-                    <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="group-hover:text-primary mb-2 text-2xl font-bold transition-colors">
                       {role.title}
                     </h3>
                     <p className="text-muted-foreground mb-6 text-sm">
@@ -183,9 +194,11 @@ export function UserRolesSection() {
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ delay: idx * 0.05 }}
-                          className="flex items-center gap-2 text-sm group/item"
+                          className="group/item flex items-center gap-2 text-sm"
                         >
-                          <div className={`w-1.5 h-1.5 rounded-full ${role.color} bg-current`} />
+                          <div
+                            className={`h-1.5 w-1.5 rounded-full ${role.color} bg-current`}
+                          />
                           <span className="group-hover/item:text-foreground transition-colors">
                             {feature}
                           </span>
@@ -194,13 +207,15 @@ export function UserRolesSection() {
                     </div>
 
                     {/* Bottom Icon Indicators */}
-                    <div className="flex items-center gap-2 mt-6 pt-6 border-t border-border/50">
-                      {[Calendar, FileText, Settings].map((IconComponent, idx) => (
-                        <IconComponent
-                          key={idx}
-                          className={`w-4 h-4 ${role.color} opacity-50`}
-                        />
-                      ))}
+                    <div className="border-border/50 mt-6 flex items-center gap-2 border-t pt-6">
+                      {[Calendar, FileText, Settings].map(
+                        (IconComponent, idx) => (
+                          <IconComponent
+                            key={idx}
+                            className={`h-4 w-4 ${role.color} opacity-50`}
+                          />
+                        ),
+                      )}
                     </div>
                   </div>
                 </Card>
@@ -212,11 +227,15 @@ export function UserRolesSection() {
         {/* Security Badge */}
         <ScrollReveal delay={0.8}>
           <div className="mt-16 text-center">
-            <div className="inline-flex items-center gap-3 px-6 py-4 rounded-full bg-primary/5 border border-primary/20">
-              <Shield className="w-5 h-5 text-primary" />
+            <div className="bg-primary/5 border-primary/20 inline-flex items-center gap-3 rounded-full border px-6 py-4">
+              <Shield className="text-primary h-5 w-5" />
               <div className="text-left">
-                <div className="text-sm font-semibold text-primary">RBAC Security</div>
-                <div className="text-xs text-muted-foreground">Role-Based Access Control with audit logging</div>
+                <div className="text-primary text-sm font-semibold">
+                  RBAC Security
+                </div>
+                <div className="text-muted-foreground text-xs">
+                  Role-Based Access Control with audit logging
+                </div>
               </div>
             </div>
           </div>

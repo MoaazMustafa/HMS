@@ -1,7 +1,18 @@
 'use client';
 
 import type { Decimal } from '@prisma/client/runtime/library';
-import { Save, User, Mail, Phone, Stethoscope, DollarSign, Shield, KeyRound, Edit, X } from 'lucide-react';
+import {
+  Save,
+  User,
+  Mail,
+  Phone,
+  Stethoscope,
+  DollarSign,
+  Shield,
+  KeyRound,
+  Edit,
+  X,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -36,7 +47,15 @@ interface DoctorProfileData {
   }>;
 }
 
-const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const dayNames = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
 
 export function DoctorProfilePage() {
   const [loading, setLoading] = useState(true);
@@ -178,7 +197,7 @@ export function DoctorProfilePage() {
         </div>
 
         {/* Profile Cards Skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Skeleton className="h-96" />
           <Skeleton className="h-96" />
         </div>
@@ -191,8 +210,8 @@ export function DoctorProfilePage() {
 
   if (!profile) {
     return (
-      <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-6 text-center">
-        <p className="text-sm text-destructive">Failed to load profile data</p>
+      <div className="bg-destructive/10 border-destructive/20 rounded-lg border p-6 text-center">
+        <p className="text-destructive text-sm">Failed to load profile data</p>
       </div>
     );
   }
@@ -202,23 +221,30 @@ export function DoctorProfilePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Doctor Profile</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h1 className="text-foreground text-2xl font-bold">Doctor Profile</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
             Manage your personal and professional information
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant={profile.isActive ? 'default' : 'secondary'} className="text-xs">
+          <Badge
+            variant={profile.isActive ? 'default' : 'secondary'}
+            className="text-xs"
+          >
             {profile.isActive ? 'Active' : 'Inactive'}
           </Badge>
           {!isEditing ? (
             <>
-              <Button onClick={() => setIsPasswordModalOpen(true)} variant="outline" className="gap-2">
-                <KeyRound className="w-4 h-4" />
+              <Button
+                onClick={() => setIsPasswordModalOpen(true)}
+                variant="outline"
+                className="gap-2"
+              >
+                <KeyRound className="h-4 w-4" />
                 Change Password
               </Button>
               <Button onClick={() => setIsEditing(true)} className="gap-2">
-                <Edit className="w-4 h-4" />
+                <Edit className="h-4 w-4" />
                 Edit Profile
               </Button>
             </>
@@ -229,11 +255,15 @@ export function DoctorProfilePage() {
                 disabled={saving}
                 className="gap-2 bg-green-600 hover:bg-green-700"
               >
-                <Save className="w-4 h-4" />
+                <Save className="h-4 w-4" />
                 {saving ? 'Saving...' : 'Save Changes'}
               </Button>
-              <Button onClick={handleCancel} variant="outline" className="gap-2">
-                <X className="w-4 h-4" />
+              <Button
+                onClick={handleCancel}
+                variant="outline"
+                className="gap-2"
+              >
+                <X className="h-4 w-4" />
                 Cancel
               </Button>
             </>
@@ -243,28 +273,36 @@ export function DoctorProfilePage() {
 
       {/* Success/Error Messages */}
       {success && (
-        <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
-          <p className="text-sm text-green-600 dark:text-green-400">{success}</p>
+        <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-4">
+          <p className="text-sm text-green-600 dark:text-green-400">
+            {success}
+          </p>
         </div>
       )}
 
       {error && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-          <p className="text-sm text-destructive">{error}</p>
+        <div className="bg-destructive/10 border-destructive/20 rounded-lg border p-4">
+          <p className="text-destructive text-sm">{error}</p>
         </div>
       )}
 
       {/* Profile Form */}
-      <div className="space-y-6">{/* Personal Information */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <User className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Personal Information</h2>
+      <div className="space-y-6">
+        {/* Personal Information */}
+        <div className="bg-card border-border rounded-lg border p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <User className="text-primary h-5 w-5" />
+            <h2 className="text-foreground text-lg font-semibold">
+              Personal Information
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-foreground mb-2">
+              <label
+                htmlFor="firstName"
+                className="text-foreground mb-2 block text-sm font-medium"
+              >
                 First Name <span className="text-destructive">*</span>
               </label>
               <input
@@ -275,14 +313,17 @@ export function DoctorProfilePage() {
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 required
-                className={`w-full px-3 py-2 border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                className={`border-border text-foreground focus:ring-primary w-full rounded-md border px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:outline-none ${
                   !isEditing ? 'bg-muted cursor-not-allowed' : 'bg-background'
                 }`}
               />
             </div>
 
             <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-foreground mb-2">
+              <label
+                htmlFor="lastName"
+                className="text-foreground mb-2 block text-sm font-medium"
+              >
                 Last Name <span className="text-destructive">*</span>
               </label>
               <input
@@ -293,18 +334,21 @@ export function DoctorProfilePage() {
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 required
-                className={`w-full px-3 py-2 border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                className={`border-border text-foreground focus:ring-primary w-full rounded-md border px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:outline-none ${
                   !isEditing ? 'bg-muted cursor-not-allowed' : 'bg-background'
                 }`}
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+              <label
+                htmlFor="email"
+                className="text-foreground mb-2 block text-sm font-medium"
+              >
                 Email Address <span className="text-destructive">*</span>
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Mail className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                 <input
                   type="email"
                   id="email"
@@ -313,17 +357,20 @@ export function DoctorProfilePage() {
                   onChange={handleInputChange}
                   disabled
                   required
-                  className="w-full pl-10 pr-3 py-2 bg-muted border border-border rounded-md text-sm text-muted-foreground cursor-not-allowed"
+                  className="bg-muted border-border text-muted-foreground w-full cursor-not-allowed rounded-md border py-2 pr-3 pl-10 text-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
+              <label
+                htmlFor="phone"
+                className="text-foreground mb-2 block text-sm font-medium"
+              >
                 Phone Number <span className="text-destructive">*</span>
               </label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Phone className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                 <input
                   type="tel"
                   id="phone"
@@ -332,7 +379,7 @@ export function DoctorProfilePage() {
                   onChange={handleInputChange}
                   disabled={!isEditing}
                   required
-                  className={`w-full pl-10 pr-3 py-2 border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  className={`border-border text-foreground focus:ring-primary w-full rounded-md border py-2 pr-3 pl-10 text-sm focus:border-transparent focus:ring-2 focus:outline-none ${
                     !isEditing ? 'bg-muted cursor-not-allowed' : 'bg-background'
                   }`}
                 />
@@ -342,31 +389,33 @@ export function DoctorProfilePage() {
         </div>
 
         {/* Professional Information */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Stethoscope className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Professional Information</h2>
+        <div className="bg-card border-border rounded-lg border p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <Stethoscope className="text-primary h-5 w-5" />
+            <h2 className="text-foreground text-lg font-semibold">
+              Professional Information
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label
                 htmlFor="specialization"
-                className="block text-sm font-medium text-foreground mb-2"
+                className="text-foreground mb-2 block text-sm font-medium"
               >
                 Specialization
               </label>
               <div className="relative">
-                <Stethoscope className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Stethoscope className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                 <input
                   type="text"
                   id="specialization"
                   value={profile.specialization || 'Not specified'}
                   disabled
-                  className="w-full pl-10 pr-3 py-2 bg-muted border border-border rounded-md text-sm text-muted-foreground cursor-not-allowed"
+                  className="bg-muted border-border text-muted-foreground w-full cursor-not-allowed rounded-md border py-2 pr-3 pl-10 text-sm"
                 />
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1 text-xs">
                 Specialization cannot be changed. Contact admin if needed.
               </p>
             </div>
@@ -374,21 +423,21 @@ export function DoctorProfilePage() {
             <div>
               <label
                 htmlFor="licenseNumber"
-                className="block text-sm font-medium text-foreground mb-2"
+                className="text-foreground mb-2 block text-sm font-medium"
               >
                 License Number
               </label>
               <div className="relative">
-                <Shield className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Shield className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                 <input
                   type="text"
                   id="licenseNumber"
                   value={profile.licenseNumber}
                   disabled
-                  className="w-full pl-10 pr-3 py-2 bg-muted border border-border rounded-md text-sm text-muted-foreground cursor-not-allowed"
+                  className="bg-muted border-border text-muted-foreground w-full cursor-not-allowed rounded-md border py-2 pr-3 pl-10 text-sm"
                 />
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-muted-foreground mt-1 text-xs">
                 License number cannot be changed. Contact admin if needed.
               </p>
             </div>
@@ -396,22 +445,24 @@ export function DoctorProfilePage() {
         </div>
 
         {/* Fee Settings */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <DollarSign className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Fee Settings</h2>
+        <div className="bg-card border-border rounded-lg border p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <DollarSign className="text-primary h-5 w-5" />
+            <h2 className="text-foreground text-lg font-semibold">
+              Fee Settings
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label
                 htmlFor="defaultAppointmentFee"
-                className="block text-sm font-medium text-foreground mb-2"
+                className="text-foreground mb-2 block text-sm font-medium"
               >
                 Default Appointment Fee
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2 text-sm">
                   $
                 </span>
                 <input
@@ -422,7 +473,7 @@ export function DoctorProfilePage() {
                   onChange={handleInputChange}
                   min="0"
                   step="0.01"
-                  className="w-full pl-7 pr-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="bg-background border-border text-foreground focus:ring-primary w-full rounded-md border py-2 pr-3 pl-7 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
                 />
               </div>
             </div>
@@ -430,12 +481,12 @@ export function DoctorProfilePage() {
             <div>
               <label
                 htmlFor="defaultSessionFee"
-                className="block text-sm font-medium text-foreground mb-2"
+                className="text-foreground mb-2 block text-sm font-medium"
               >
                 Default Session Fee
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2 text-sm">
                   $
                 </span>
                 <input
@@ -446,22 +497,24 @@ export function DoctorProfilePage() {
                   onChange={handleInputChange}
                   min="0"
                   step="0.01"
-                  className="w-full pl-7 pr-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="bg-background border-border text-foreground focus:ring-primary w-full rounded-md border py-2 pr-3 pl-7 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
                 />
               </div>
             </div>
           </div>
 
-          <p className="text-xs text-muted-foreground mt-3">
-            These are your default fees. You can set custom fees for specific appointments or
-            sessions.
+          <p className="text-muted-foreground mt-3 text-xs">
+            These are your default fees. You can set custom fees for specific
+            appointments or sessions.
           </p>
         </div>
 
         {/* Working Hours Display */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-foreground">Working Hours</h2>
+        <div className="bg-card border-border rounded-lg border p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-foreground text-lg font-semibold">
+              Working Hours
+            </h2>
             <Badge variant="outline" className="text-xs">
               {profile.workingHours?.length || 0} schedules
             </Badge>
@@ -472,30 +525,36 @@ export function DoctorProfilePage() {
               {profile.workingHours.map((hours) => (
                 <div
                   key={hours.id}
-                  className="flex items-center justify-between p-3 bg-accent/50 rounded-md"
+                  className="bg-accent/50 flex items-center justify-between rounded-md p-3"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-sm font-medium text-foreground">
+                    <span className="text-foreground text-sm font-medium">
                       {dayNames[hours.dayOfWeek]}
                     </span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-muted-foreground text-xs">
                       {hours.startTime} - {hours.endTime}
                     </span>
                   </div>
-                  <Badge variant={hours.isAvailable ? 'default' : 'secondary'} className="text-xs">
+                  <Badge
+                    variant={hours.isAvailable ? 'default' : 'secondary'}
+                    className="text-xs"
+                  >
                     {hours.isAvailable ? 'Available' : 'Unavailable'}
                   </Badge>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-6">
-              <p className="text-sm text-muted-foreground">No working hours configured</p>
+            <div className="py-6 text-center">
+              <p className="text-muted-foreground text-sm">
+                No working hours configured
+              </p>
             </div>
           )}
 
-          <p className="text-xs text-muted-foreground mt-3">
-            Manage your working hours in the Schedule section to configure availability.
+          <p className="text-muted-foreground mt-3 text-xs">
+            Manage your working hours in the Schedule section to configure
+            availability.
           </p>
         </div>
       </div>

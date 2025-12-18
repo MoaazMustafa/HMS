@@ -1,7 +1,16 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Lock, Mail, User, Activity, Phone, Calendar } from 'lucide-react';
+import {
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  User,
+  Activity,
+  Phone,
+  Calendar,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -35,7 +44,9 @@ export default function RegisterPage() {
     }
   }, [status, router]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -77,7 +88,10 @@ export default function RegisterPage() {
       // Redirect to login
       router.push('/login?registered=true');
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred. Please try again.';
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : 'An error occurred. Please try again.';
       setError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -87,9 +101,9 @@ export default function RegisterPage() {
   // Show loading while checking session
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background-900 via-background to-background-900">
+      <div className="from-background-900 via-background to-background-900 flex min-h-screen items-center justify-center bg-linear-to-br">
         <div className="text-center">
-          <Activity className="w-12 h-12 text-primary animate-pulse mx-auto mb-4" />
+          <Activity className="text-primary mx-auto mb-4 h-12 w-12 animate-pulse" />
           <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
@@ -102,7 +116,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background-900 via-background to-background-900 px-4 py-12">
+    <div className="from-background-900 via-background to-background-900 flex min-h-screen items-center justify-center bg-linear-to-br px-4 py-12">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#80000060,transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,#80000060,transparent_50%)]" />
 
@@ -110,20 +124,22 @@ export default function RegisterPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-2xl relative z-10"
+        className="relative z-10 w-full max-w-2xl"
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center justify-center mb-8">
-          <Activity className="w-10 h-10 text-primary" />
-          <span className="ml-2 text-2xl font-bold bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+        <Link href="/" className="mb-8 flex items-center justify-center">
+          <Activity className="text-primary h-10 w-10" />
+          <span className="from-primary to-primary/70 ml-2 bg-linear-to-r bg-clip-text text-2xl font-bold text-transparent">
             HMS
           </span>
         </Link>
 
         {/* Register Card */}
-        <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-2xl p-8 shadow-2xl">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Create Account</h1>
+        <div className="bg-background-900/50 border-background-800 rounded-2xl border p-8 shadow-2xl backdrop-blur-xl">
+          <div className="mb-8 text-center">
+            <h1 className="text-foreground mb-2 text-3xl font-bold">
+              Create Account
+            </h1>
             <p className="text-background-400">Register as a new patient</p>
           </div>
 
@@ -131,7 +147,7 @@ export default function RegisterPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm"
+              className="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-500"
             >
               {error}
             </motion.div>
@@ -139,20 +155,23 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-background-300 mb-2">
+                <label
+                  htmlFor="firstName"
+                  className="text-background-300 mb-2 block text-sm font-medium"
+                >
                   First Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background-500" />
+                  <User className="text-background-500 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                   <input
                     id="firstName"
                     name="firstName"
                     type="text"
                     value={formData.firstName}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                    className="bg-background-800/50 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-4 pl-11 transition-colors focus:ring-2 focus:outline-none"
                     placeholder="John"
                     required
                     disabled={isLoading}
@@ -161,18 +180,21 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-background-300 mb-2">
+                <label
+                  htmlFor="lastName"
+                  className="text-background-300 mb-2 block text-sm font-medium"
+                >
                   Last Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background-500" />
+                  <User className="text-background-500 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                   <input
                     id="lastName"
                     name="lastName"
                     type="text"
                     value={formData.lastName}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                    className="bg-background-800/50 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-4 pl-11 transition-colors focus:ring-2 focus:outline-none"
                     placeholder="Doe"
                     required
                     disabled={isLoading}
@@ -183,18 +205,21 @@ export default function RegisterPage() {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-background-300 mb-2">
+              <label
+                htmlFor="email"
+                className="text-background-300 mb-2 block text-sm font-medium"
+              >
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background-500" />
+                <Mail className="text-background-500 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                 <input
                   id="email"
                   name="email"
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full pl-11 pr-4 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                  className="bg-background-800/50 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-4 pl-11 transition-colors focus:ring-2 focus:outline-none"
                   placeholder="you@example.com"
                   required
                   disabled={isLoading}
@@ -203,20 +228,23 @@ export default function RegisterPage() {
             </div>
 
             {/* Phone and DOB */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-background-300 mb-2">
+                <label
+                  htmlFor="phone"
+                  className="text-background-300 mb-2 block text-sm font-medium"
+                >
                   Phone Number
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background-500" />
+                  <Phone className="text-background-500 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                   <input
                     id="phone"
                     name="phone"
                     type="tel"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                    className="bg-background-800/50 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-4 pl-11 transition-colors focus:ring-2 focus:outline-none"
                     placeholder="+1234567890"
                     required
                     disabled={isLoading}
@@ -225,18 +253,21 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="dateOfBirth" className="block text-sm font-medium text-background-300 mb-2">
+                <label
+                  htmlFor="dateOfBirth"
+                  className="text-background-300 mb-2 block text-sm font-medium"
+                >
                   Date of Birth
                 </label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background-500" />
+                  <Calendar className="text-background-500 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                   <input
                     id="dateOfBirth"
                     name="dateOfBirth"
                     type="date"
                     value={formData.dateOfBirth}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                    className="bg-background-800/50 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-4 pl-11 transition-colors focus:ring-2 focus:outline-none"
                     required
                     disabled={isLoading}
                   />
@@ -246,7 +277,10 @@ export default function RegisterPage() {
 
             {/* Gender */}
             <div>
-              <label htmlFor="gender" className="block text-sm font-medium text-background-300 mb-2">
+              <label
+                htmlFor="gender"
+                className="text-background-300 mb-2 block text-sm font-medium"
+              >
                 Gender
               </label>
               <select
@@ -254,7 +288,7 @@ export default function RegisterPage() {
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                className="bg-background-800/50 border-background-700 text-foreground focus:ring-primary/50 focus:border-primary w-full rounded-lg border px-4 py-3 transition-colors focus:ring-2 focus:outline-none"
                 disabled={isLoading}
               >
                 <option value="MALE">Male</option>
@@ -264,20 +298,23 @@ export default function RegisterPage() {
             </div>
 
             {/* Password Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-background-300 mb-2">
+                <label
+                  htmlFor="password"
+                  className="text-background-300 mb-2 block text-sm font-medium"
+                >
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background-500" />
+                  <Lock className="text-background-500 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                   <input
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-12 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                    className="bg-background-800/50 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-12 pl-11 transition-colors focus:ring-2 focus:outline-none"
                     placeholder="••••••••"
                     required
                     disabled={isLoading}
@@ -285,26 +322,33 @@ export default function RegisterPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-background-500 hover:text-background-300 transition-colors"
+                    className="text-background-500 hover:text-background-300 absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-background-300 mb-2">
+                <label
+                  htmlFor="confirmPassword"
+                  className="text-background-300 mb-2 block text-sm font-medium"
+                >
                   Confirm Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background-500" />
+                  <Lock className="text-background-500 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                   <input
                     id="confirmPassword"
                     name="confirmPassword"
                     type={showConfirmPassword ? 'text' : 'password'}
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-12 py-3 bg-background-800/50 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                    className="bg-background-800/50 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-12 pl-11 transition-colors focus:ring-2 focus:outline-none"
                     placeholder="••••••••"
                     required
                     disabled={isLoading}
@@ -312,9 +356,13 @@ export default function RegisterPage() {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-background-500 hover:text-background-300 transition-colors"
+                    className="text-background-500 hover:text-background-300 absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
                   >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -324,7 +372,7 @@ export default function RegisterPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 text-base font-semibold"
+              className="h-12 w-full text-base font-semibold"
             >
               {isLoading ? 'Creating Account...' : 'Create Account'}
             </Button>
@@ -345,7 +393,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-background-500 text-sm mt-8">
+        <p className="text-background-500 mt-8 text-center text-sm">
           © 2025 HMS. All rights reserved.
         </p>
       </motion.div>

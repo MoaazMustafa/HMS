@@ -1,15 +1,18 @@
 # HMS Database Setup Guide
 
 ## Prerequisites
+
 - PostgreSQL installed and running
 - Node.js and npm installed
 
 ## Step-by-Step Setup
 
 ### 1. Install PostgreSQL
+
 If you haven't installed PostgreSQL, download it from: https://www.postgresql.org/download/
 
 ### 2. Create Database
+
 Open PostgreSQL terminal (psql) or use pgAdmin and create a new database:
 
 ```sql
@@ -17,6 +20,7 @@ CREATE DATABASE hms_db;
 ```
 
 ### 3. Configure Environment Variables
+
 Copy `.env.example` to `.env`:
 
 ```bash
@@ -30,20 +34,24 @@ DATABASE_URL="postgresql://USERNAME:PASSWORD@localhost:5432/hms_db?schema=public
 ```
 
 Replace:
+
 - `USERNAME` with your PostgreSQL username (default is usually `postgres`)
 - `PASSWORD` with your PostgreSQL password
 
 ### 4. Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### 5. Generate Prisma Client
+
 ```bash
 npm run db:generate
 ```
 
 ### 6. Push Schema to Database
+
 This will create all tables without migrations:
 
 ```bash
@@ -57,6 +65,7 @@ npm run db:migrate
 ```
 
 ### 7. Seed the Database (Optional)
+
 Populate the database with demo data:
 
 ```bash
@@ -64,6 +73,7 @@ npm run db:seed
 ```
 
 This will create:
+
 - Main Admin user
 - Admin user
 - 2 Doctors with working hours
@@ -75,6 +85,7 @@ This will create:
 - Notification templates
 
 ## Demo Credentials
+
 After seeding, you can login with:
 
 - **Main Admin**: `mainadmin@hms.com` / `password123`
@@ -89,6 +100,7 @@ After seeding, you can login with:
 ## Database Commands
 
 ### View Data in Prisma Studio
+
 ```bash
 npm run db:studio
 ```
@@ -96,11 +108,13 @@ npm run db:studio
 This opens a visual database editor at `http://localhost:5555`
 
 ### Create a New Migration
+
 ```bash
 npm run db:migrate
 ```
 
 ### Reset Database
+
 ⚠️ **WARNING**: This will delete all data!
 
 ```bash
@@ -108,6 +122,7 @@ npm run db:migrate:reset
 ```
 
 ### Deploy Migrations (Production)
+
 ```bash
 npm run db:migrate:deploy
 ```
@@ -117,6 +132,7 @@ npm run db:migrate:deploy
 ### Core Tables
 
 #### Users & Authentication
+
 - `users` - Core user authentication table
 - `patients` - Patient-specific information
 - `doctors` - Doctor profiles and settings
@@ -125,6 +141,7 @@ npm run db:migrate:deploy
 - `admins` - Administrator profiles
 
 #### Medical Records
+
 - `medical_records` - SOAP format clinical notes
 - `diagnoses` - ICD-10 coded diagnoses
 - `prescriptions` - Medication prescriptions with digital signatures
@@ -137,30 +154,36 @@ npm run db:migrate:deploy
 - `immunizations` - Vaccination records
 
 #### Appointments & Scheduling
+
 - `appointments` - Appointment booking and management
 - `sessions` - Follow-up sessions
 - `working_hours` - Doctor availability
 - `time_off_requests` - Doctor leave management
 
 #### Patient Management
+
 - `patient_profile_history` - Profile change tracking
 - `patient_doctor_assignments` - Patient-doctor relationships
 
 #### Billing & Payments
+
 - `billings` - Payment records
 
 #### Notifications & Audit
+
 - `notifications` - User notifications
 - `notification_templates` - Notification message templates
 - `audit_logs` - System audit trail
 
 #### System
+
 - `system_settings` - Application configuration
 - `doctor_permissions` - Custom doctor permissions
 
 ### Key Features
 
 #### Security
+
 - AES-256 encryption ready (data at rest)
 - Multi-factor authentication support
 - Role-based access control (RBAC)
@@ -168,12 +191,14 @@ npm run db:migrate:deploy
 - Digital signatures for prescriptions and clinical notes
 
 #### Data Integrity
+
 - Unique identifiers for all entities
 - Version history for critical records
 - Cascading deletes where appropriate
 - Referential integrity with foreign keys
 
 #### Performance
+
 - Optimized indexes on frequently queried fields
 - Efficient relationship modeling
 - Support for 10,000+ concurrent users
@@ -181,9 +206,11 @@ npm run db:migrate:deploy
 ## Troubleshooting
 
 ### Connection Issues
+
 If you can't connect to PostgreSQL:
 
 1. Check if PostgreSQL is running:
+
    ```bash
    # Windows
    services.msc
@@ -198,6 +225,7 @@ If you can't connect to PostgreSQL:
 4. Ensure firewall allows connections
 
 ### Migration Errors
+
 If migrations fail:
 
 1. Check database user has proper permissions
@@ -205,6 +233,7 @@ If migrations fail:
 3. Try `npm run db:push` instead of migrations for development
 
 ### Seed Errors
+
 If seeding fails:
 
 1. Ensure Prisma Client is generated: `npm run db:generate`
@@ -232,6 +261,7 @@ If seeding fails:
 ## Database Maintenance
 
 ### Backups
+
 Configure automated daily backups (required for HIPAA compliance):
 
 ```bash
@@ -243,6 +273,7 @@ psql -U postgres hms_db < backup_20231106.sql
 ```
 
 ### Monitoring
+
 - Monitor query performance with Prisma logs
 - Track database size and growth
 - Monitor connection pool usage
@@ -250,5 +281,6 @@ psql -U postgres hms_db < backup_20231106.sql
 ---
 
 For more information, refer to:
+
 - [Prisma Documentation](https://www.prisma.io/docs)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs)

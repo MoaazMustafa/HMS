@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (!patientId || !testName || !testType) {
       return NextResponse.json(
         { error: 'Patient, test name, and test type are required' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     if (!assignment) {
       return NextResponse.json(
         { error: 'You do not have access to this patient' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -113,6 +113,9 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error creating lab test:', error);
-    return NextResponse.json({ success: false, error: 'Failed to order lab test' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Failed to order lab test' },
+      { status: 500 },
+    );
   }
 }

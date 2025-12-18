@@ -20,7 +20,10 @@ export async function GET() {
       });
 
       if (!doctor) {
-        return NextResponse.json({ error: 'Doctor not found' }, { status: 404 });
+        return NextResponse.json(
+          { error: 'Doctor not found' },
+          { status: 404 },
+        );
       }
 
       const labTests = await prisma.labTest.findMany({
@@ -58,7 +61,10 @@ export async function GET() {
       });
 
       if (!patient) {
-        return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+        return NextResponse.json(
+          { error: 'Patient not found' },
+          { status: 404 },
+        );
       }
 
       const labTests = await prisma.labTest.findMany({
@@ -93,6 +99,9 @@ export async function GET() {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error fetching lab tests:', error);
-    return NextResponse.json({ success: false, error: 'Failed to fetch lab tests' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch lab tests' },
+      { status: 500 },
+    );
   }
 }

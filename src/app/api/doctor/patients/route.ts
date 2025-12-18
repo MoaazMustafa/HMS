@@ -10,8 +10,58 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || session.user.role !== UserRole.DOCTOR) {
+    if (
+      !session ||
+      (session.user.role !== UserRole.DOCTOR &&
+        session.user.role !== UserRole.NURSE)
+    ) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // For nurses, get all patients; for doctors, get assigned patients
+    if (session.user.role === UserRole.NURSE) {
+      const patients = await prisma.patient.findMany({
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              phoneNumber: true,
+            },
+          },
+          _count: {
+            select: {
+              appointments: true,
+              prescriptions: true,
+              medicalRecords: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      const formattedPatients = patients.map((patient) => ({
+        id: patient.id,
+        patientId: patient.patientId,
+        dateOfBirth: patient.dateOfBirth,
+        gender: patient.gender,
+        bloodType: patient.bloodGroup,
+        user: patient.user,
+        assignment: {
+          status: 'ACTIVE',
+          assignedAt: patient.createdAt,
+        },
+        _count: patient._count,
+      }));
+
+      return NextResponse.json({
+        success: true,
+        data: formattedPatients,
+        count: formattedPatients.length,
+      });
     }
 
     const doctor = await prisma.doctor.findUnique({
@@ -80,6 +130,9 @@ export async function GET() {
       // eslint-disable-next-line no-console
       console.error('Error fetching doctor patients:', error.message);
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }

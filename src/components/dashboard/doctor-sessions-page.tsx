@@ -1,7 +1,16 @@
 'use client';
 
 import { format } from 'date-fns';
-import { Calendar, Clock, Eye, Filter, Loader2, Plus, Search, X } from 'lucide-react';
+import {
+  Calendar,
+  Clock,
+  Eye,
+  Filter,
+  Loader2,
+  Plus,
+  Search,
+  X,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -126,7 +135,7 @@ export function DoctorSessionsPage() {
           session.patient.user.name.toLowerCase().includes(query) ||
           session.patient.user.email.toLowerCase().includes(query) ||
           session.patient.patientId.toLowerCase().includes(query) ||
-          session.sessionId.toLowerCase().includes(query)
+          session.sessionId.toLowerCase().includes(query),
       );
     }
 
@@ -173,8 +182,9 @@ export function DoctorSessionsPage() {
       if (result.success) {
         setPatients(
           result.data.filter(
-            (p: { assignment: { status: string } }) => p.assignment.status === 'ACTIVE'
-          )
+            (p: { assignment: { status: string } }) =>
+              p.assignment.status === 'ACTIVE',
+          ),
         );
       }
     } catch {
@@ -184,7 +194,12 @@ export function DoctorSessionsPage() {
 
   const handleCreateSession = async () => {
     // Validation
-    if (!formData.patientId || !formData.scheduledDate || !formData.startTime || !formData.endTime) {
+    if (
+      !formData.patientId ||
+      !formData.scheduledDate ||
+      !formData.startTime ||
+      !formData.endTime
+    ) {
       toast.error('Please fill in all required fields');
       return;
     }
@@ -231,14 +246,17 @@ export function DoctorSessionsPage() {
     if (!start || !end) return 60;
     const [startHour, startMin] = start.split(':').map(Number);
     const [endHour, endMin] = end.split(':').map(Number);
-    const duration = (endHour * 60 + endMin) - (startHour * 60 + startMin);
+    const duration = endHour * 60 + endMin - (startHour * 60 + startMin);
     return duration > 0 ? duration : 60;
   };
 
   const handleTimeChange = (field: 'startTime' | 'endTime', value: string) => {
     const newFormData = { ...formData, [field]: value };
     if (newFormData.startTime && newFormData.endTime) {
-      newFormData.duration = calculateDuration(newFormData.startTime, newFormData.endTime);
+      newFormData.duration = calculateDuration(
+        newFormData.startTime,
+        newFormData.endTime,
+      );
     }
     setFormData(newFormData);
   };
@@ -275,7 +293,7 @@ export function DoctorSessionsPage() {
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-10 w-32" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Skeleton className="h-32" />
           <Skeleton className="h-32" />
           <Skeleton className="h-32" />
@@ -301,7 +319,9 @@ export function DoctorSessionsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Therapy Sessions</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Therapy Sessions
+          </h1>
           <p className="text-muted-foreground mt-1">
             Manage and track therapy sessions with patients
           </p>
@@ -313,21 +333,29 @@ export function DoctorSessionsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Sessions</p>
-              <p className="text-2xl font-bold text-foreground">{stats.total}</p>
+              <p className="text-muted-foreground text-sm font-medium">
+                Total Sessions
+              </p>
+              <p className="text-foreground text-2xl font-bold">
+                {stats.total}
+              </p>
             </div>
-            <Calendar className="h-8 w-8 text-primary" />
+            <Calendar className="text-primary h-8 w-8" />
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Scheduled</p>
-              <p className="text-2xl font-bold text-blue-500">{stats.scheduled}</p>
+              <p className="text-muted-foreground text-sm font-medium">
+                Scheduled
+              </p>
+              <p className="text-2xl font-bold text-blue-500">
+                {stats.scheduled}
+              </p>
             </div>
             <Clock className="h-8 w-8 text-blue-500" />
           </div>
@@ -335,8 +363,12 @@ export function DoctorSessionsPage() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">In Progress</p>
-              <p className="text-2xl font-bold text-yellow-500">{stats.inProgress}</p>
+              <p className="text-muted-foreground text-sm font-medium">
+                In Progress
+              </p>
+              <p className="text-2xl font-bold text-yellow-500">
+                {stats.inProgress}
+              </p>
             </div>
             <Loader2 className="h-8 w-8 text-yellow-500" />
           </div>
@@ -344,8 +376,12 @@ export function DoctorSessionsPage() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Completed</p>
-              <p className="text-2xl font-bold text-green-500">{stats.completed}</p>
+              <p className="text-muted-foreground text-sm font-medium">
+                Completed
+              </p>
+              <p className="text-2xl font-bold text-green-500">
+                {stats.completed}
+              </p>
             </div>
             <Calendar className="h-8 w-8 text-green-500" />
           </div>
@@ -356,20 +392,20 @@ export function DoctorSessionsPage() {
       <Card className="p-4">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-muted-foreground" />
+            <Filter className="text-muted-foreground h-4 w-4" />
             <h3 className="text-sm font-semibold">Filters</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search sessions..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 rounded-md border border-input bg-background text-sm"
+                className="border-input bg-background w-full rounded-md border py-2 pr-4 pl-10 text-sm"
               />
             </div>
 
@@ -414,10 +450,10 @@ export function DoctorSessionsPage() {
       <div className="space-y-3">
         {filteredSessions.length === 0 ? (
           <Card className="p-8">
-            <div className="text-center space-y-2">
-              <Calendar className="h-12 w-12 text-muted-foreground mx-auto" />
+            <div className="space-y-2 text-center">
+              <Calendar className="text-muted-foreground mx-auto h-12 w-12" />
               <h3 className="text-lg font-semibold">No sessions found</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {searchQuery || statusFilter !== 'all' || dateFilter !== 'all'
                   ? 'Try adjusting your filters'
                   : 'No sessions scheduled yet'}
@@ -426,38 +462,42 @@ export function DoctorSessionsPage() {
           </Card>
         ) : (
           filteredSessions.map((session) => (
-            <Card key={session.id} className="p-4 hover:shadow-md transition-shadow">
+            <Card
+              key={session.id}
+              className="p-4 transition-shadow hover:shadow-md"
+            >
               <div className="flex items-start justify-between gap-4">
                 {/* Left: Patient Info */}
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-xl">
+                    <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-full text-xl">
                       {session.patient.gender === 'MALE' ? '👨' : '👩'}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground">
+                      <h3 className="text-foreground font-semibold">
                         {session.patient.user.name}
                       </h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         {session.patient.patientId} •{' '}
                         {calculateAge(session.patient.dateOfBirth)} years old
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="text-muted-foreground flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
                       {format(new Date(session.scheduledDate), 'MMM d, yyyy')}
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
-                      {session.startTime} - {session.endTime} ({session.duration} min)
+                      {session.startTime} - {session.endTime} (
+                      {session.duration} min)
                     </div>
                   </div>
 
                   {session.notes && (
-                    <p className="text-sm text-muted-foreground line-clamp-2">
+                    <p className="text-muted-foreground line-clamp-2 text-sm">
                       {session.notes}
                     </p>
                   )}
@@ -465,7 +505,10 @@ export function DoctorSessionsPage() {
 
                 {/* Right: Status & Actions */}
                 <div className="flex flex-col items-end gap-3">
-                  <Badge variant="outline" className={getStatusColor(session.status)}>
+                  <Badge
+                    variant="outline"
+                    className={getStatusColor(session.status)}
+                  >
                     {session.status.replace('_', ' ')}
                   </Badge>
 
@@ -474,13 +517,14 @@ export function DoctorSessionsPage() {
                       variant="outline"
                       className={
                         session.billing.status === 'PAID'
-                          ? 'bg-green-500/10 text-green-500 border-green-500/20'
+                          ? 'border-green-500/20 bg-green-500/10 text-green-500'
                           : session.billing.status === 'PENDING'
-                            ? 'bg-orange-500/10 text-orange-500 border-orange-500/20'
-                            : 'bg-red-500/10 text-red-500 border-red-500/20'
+                            ? 'border-orange-500/20 bg-orange-500/10 text-orange-500'
+                            : 'border-red-500/20 bg-red-500/10 text-red-500'
                       }
                     >
-                      ${session.billing.amount.toFixed(2)} • {session.billing.status}
+                      ${session.billing.amount.toFixed(2)} •{' '}
+                      {session.billing.status}
                     </Badge>
                   )}
 
@@ -499,7 +543,7 @@ export function DoctorSessionsPage() {
 
       {/* Create Session Dialog */}
       <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create New Session</DialogTitle>
             <DialogDescription>
@@ -529,8 +573,9 @@ export function DoctorSessionsPage() {
                 </SelectContent>
               </Select>
               {patients.length === 0 && (
-                <p className="text-sm text-muted-foreground">
-                  No assigned patients found. Complete an appointment first to assign patients.
+                <p className="text-muted-foreground text-sm">
+                  No assigned patients found. Complete an appointment first to
+                  assign patients.
                 </p>
               )}
             </div>
@@ -542,10 +587,13 @@ export function DoctorSessionsPage() {
                 type="date"
                 value={formData.scheduledDate}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, scheduledDate: e.target.value }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    scheduledDate: e.target.value,
+                  }))
                 }
                 min={new Date().toISOString().split('T')[0]}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
 
@@ -556,8 +604,10 @@ export function DoctorSessionsPage() {
                 <input
                   type="time"
                   value={formData.startTime}
-                  onChange={(e) => handleTimeChange('startTime', e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  onChange={(e) =>
+                    handleTimeChange('startTime', e.target.value)
+                  }
+                  className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
               <div className="space-y-2">
@@ -566,16 +616,17 @@ export function DoctorSessionsPage() {
                   type="time"
                   value={formData.endTime}
                   onChange={(e) => handleTimeChange('endTime', e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
             </div>
 
             {/* Duration Display */}
             {formData.duration > 0 && (
-              <div className="p-3 bg-muted rounded-md">
+              <div className="bg-muted rounded-md p-3">
                 <p className="text-sm">
-                  <span className="font-medium">Duration:</span> {formData.duration} minutes
+                  <span className="font-medium">Duration:</span>{' '}
+                  {formData.duration} minutes
                 </p>
               </div>
             )}
@@ -586,7 +637,7 @@ export function DoctorSessionsPage() {
                 Custom Fee (Optional)
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                <span className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2">
                   $
                 </span>
                 <input
@@ -597,23 +648,23 @@ export function DoctorSessionsPage() {
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
-                      customFee: e.target.value ? parseFloat(e.target.value) : 0,
+                      customFee: e.target.value
+                        ? parseFloat(e.target.value)
+                        : 0,
                     }))
                   }
                   placeholder="Leave empty for default fee"
-                  className="flex h-10 w-full rounded-md border border-input bg-background pl-7 pr-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border py-2 pr-3 pl-7 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 If not specified, your default session fee will be used
               </p>
             </div>
 
             {/* Notes */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">
-                Notes (Optional)
-              </label>
+              <label className="text-sm font-medium">Notes (Optional)</label>
               <textarea
                 value={formData.notes}
                 onChange={(e) =>
@@ -621,7 +672,7 @@ export function DoctorSessionsPage() {
                 }
                 placeholder="Add any notes about this session..."
                 rows={3}
-                className="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-20 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
           </div>

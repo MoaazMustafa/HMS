@@ -1,5 +1,5 @@
 import { UserRole } from '@prisma/client';
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server';
 // eslint-disable-next-line no-duplicate-imports
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
@@ -16,13 +16,17 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { doctorId, scheduledDate, scheduledTime, reason, duration, type } = body;
+    const { doctorId, scheduledDate, scheduledTime, reason, duration, type } =
+      body;
 
     // Validate required fields
     if (!doctorId || !scheduledDate || !scheduledTime) {
       return NextResponse.json(
-        { error: 'Missing required fields: doctorId, scheduledDate, scheduledTime' },
-        { status: 400 }
+        {
+          error:
+            'Missing required fields: doctorId, scheduledDate, scheduledTime',
+        },
+        { status: 400 },
       );
     }
 
@@ -33,7 +37,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (!user?.patient) {
-      return NextResponse.json({ error: 'Patient record not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Patient record not found' },
+        { status: 404 },
+      );
     }
 
     // Get doctor and consultation fee
@@ -56,7 +63,9 @@ export async function POST(request: NextRequest) {
 
     // Calculate appointment duration (default 30 minutes) and end time
     const appointmentDuration = duration || 30;
-    const endTime = new Date(appointmentDate.getTime() + appointmentDuration * 60000);
+    const endTime = new Date(
+      appointmentDate.getTime() + appointmentDuration * 60000,
+    );
     const endTimeStr = `${String(endTime.getHours()).padStart(2, '0')}:${String(endTime.getMinutes()).padStart(2, '0')}`;
 
     // Check for conflicting appointments
@@ -74,7 +83,7 @@ export async function POST(request: NextRequest) {
     if (conflict) {
       return NextResponse.json(
         { error: 'This time slot is already booked' },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -124,12 +133,12 @@ export async function POST(request: NextRequest) {
         message: 'Appointment booked successfully',
         appointment: appointmentWithName,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch {
     return NextResponse.json(
       { error: 'Failed to book appointment' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

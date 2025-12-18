@@ -20,7 +20,10 @@ export async function GET() {
       });
 
       if (!doctor) {
-        return NextResponse.json({ error: 'Doctor not found' }, { status: 404 });
+        return NextResponse.json(
+          { error: 'Doctor not found' },
+          { status: 404 },
+        );
       }
 
       const records = await prisma.medicalRecord.findMany({
@@ -59,7 +62,10 @@ export async function GET() {
       });
 
       if (!patient) {
-        return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+        return NextResponse.json(
+          { error: 'Patient not found' },
+          { status: 404 },
+        );
       }
 
       const records = await prisma.medicalRecord.findMany({
@@ -91,10 +97,41 @@ export async function GET() {
       });
     }
 
+    // Nurse: Get all medical records (read-only)
+    if (session.user.role === UserRole.NURSE) {
+      const records = await prisma.medicalRecord.findMany({
+        include: {
+          patient: {
+            include: {
+              user: {
+                select: {
+                  name: true,
+                  email: true,
+                },
+              },
+            },
+          },
+          diagnoses: true,
+        },
+        orderBy: {
+          visitDate: 'desc',
+        },
+      });
+
+      return NextResponse.json({
+        success: true,
+        data: records,
+        count: records.length,
+      });
+    }
+
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error fetching medical records:', error);
-    return NextResponse.json({ success: false, error: 'Failed to fetch medical records' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch medical records' },
+      { status: 500 },
+    );
   }
 }

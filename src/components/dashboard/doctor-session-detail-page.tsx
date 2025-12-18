@@ -38,7 +38,12 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 
-type SessionStatus = 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
+type SessionStatus =
+  | 'SCHEDULED'
+  | 'IN_PROGRESS'
+  | 'COMPLETED'
+  | 'CANCELLED'
+  | 'NO_SHOW';
 type BillingStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
 
 interface SessionDetail {
@@ -79,7 +84,11 @@ interface SessionDetail {
   updatedAt: string;
 }
 
-export default function DoctorSessionDetailPage({ sessionId }: { sessionId: string }) {
+export default function DoctorSessionDetailPage({
+  sessionId,
+}: {
+  sessionId: string;
+}) {
   const router = useRouter();
   const [session, setSession] = useState<SessionDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -175,7 +184,10 @@ export default function DoctorSessionDetailPage({ sessionId }: { sessionId: stri
     const birthDate = new Date(dateOfBirth);
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
     return age;
@@ -215,13 +227,15 @@ export default function DoctorSessionDetailPage({ sessionId }: { sessionId: stri
   if (!session) {
     return (
       <Card className="p-8">
-        <div className="text-center space-y-4">
-          <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto" />
+        <div className="space-y-4 text-center">
+          <AlertCircle className="text-muted-foreground mx-auto h-12 w-12" />
           <h3 className="text-lg font-semibold">Session Not Found</h3>
-          <p className="text-muted-foreground">The requested session could not be found.</p>
+          <p className="text-muted-foreground">
+            The requested session could not be found.
+          </p>
           <Button asChild>
             <Link href="/dashboard/sessions">
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Sessions
             </Link>
           </Button>
@@ -241,37 +255,45 @@ export default function DoctorSessionDetailPage({ sessionId }: { sessionId: stri
             </Link>
           </Button>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Session Details</h1>
-            <p className="text-muted-foreground mt-1">Session ID: {session.sessionId}</p>
+            <h1 className="text-3xl font-bold tracking-tight">
+              Session Details
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Session ID: {session.sessionId}
+            </p>
           </div>
         </div>
-        <Badge className={`${getStatusColor(session.status)} border`}>{session.status}</Badge>
+        <Badge className={`${getStatusColor(session.status)} border`}>
+          {session.status}
+        </Badge>
       </div>
 
       {/* Session Information */}
       <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Session Information</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <h2 className="mb-4 text-xl font-semibold">Session Information</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           <div className="flex items-center gap-3">
-            <Calendar className="h-5 w-5 text-muted-foreground" />
+            <Calendar className="text-muted-foreground h-5 w-5" />
             <div>
-              <p className="text-sm text-muted-foreground">Date</p>
-              <p className="font-medium">{format(new Date(session.scheduledDate), 'MMM d, yyyy')}</p>
+              <p className="text-muted-foreground text-sm">Date</p>
+              <p className="font-medium">
+                {format(new Date(session.scheduledDate), 'MMM d, yyyy')}
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Clock className="h-5 w-5 text-muted-foreground" />
+            <Clock className="text-muted-foreground h-5 w-5" />
             <div>
-              <p className="text-sm text-muted-foreground">Time</p>
+              <p className="text-muted-foreground text-sm">Time</p>
               <p className="font-medium">
                 {session.startTime} - {session.endTime}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Activity className="h-5 w-5 text-muted-foreground" />
+            <Activity className="text-muted-foreground h-5 w-5" />
             <div>
-              <p className="text-sm text-muted-foreground">Duration</p>
+              <p className="text-muted-foreground text-sm">Duration</p>
               <p className="font-medium">{session.duration} minutes</p>
             </div>
           </div>
@@ -289,82 +311,101 @@ export default function DoctorSessionDetailPage({ sessionId }: { sessionId: stri
 
       {/* Patient Information */}
       <Card className="p-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold">Patient Information</h2>
           <Button variant="outline" size="sm" asChild>
-            <Link href={`/dashboard/patients/${session.patient.id}`}>View Full Profile</Link>
+            <Link href={`/dashboard/patients/${session.patient.id}`}>
+              View Full Profile
+            </Link>
           </Button>
         </div>
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-xl">
+            <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-full text-xl">
               👤
             </div>
             <div>
-              <h3 className="font-semibold text-lg">{session.patient.user.name}</h3>
-              <p className="text-sm text-muted-foreground">ID: {session.patient.patientId}</p>
+              <h3 className="text-lg font-semibold">
+                {session.patient.user.name}
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                ID: {session.patient.patientId}
+              </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+          <div className="grid grid-cols-1 gap-4 border-t pt-4 md:grid-cols-2">
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-muted-foreground" />
+              <User className="text-muted-foreground h-4 w-4" />
               <span className="text-sm">
                 {calculateAge(session.patient.dateOfBirth)} years old
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Activity className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm">Blood Type: {session.patient.bloodType}</span>
+              <Activity className="text-muted-foreground h-4 w-4" />
+              <span className="text-sm">
+                Blood Type: {session.patient.bloodType}
+              </span>
             </div>
             <div className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-muted-foreground" />
+              <Mail className="text-muted-foreground h-4 w-4" />
               <span className="text-sm">{session.patient.user.email}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm">{session.patient.user.phoneNumber}</span>
+              <Phone className="text-muted-foreground h-4 w-4" />
+              <span className="text-sm">
+                {session.patient.user.phoneNumber}
+              </span>
             </div>
           </div>
 
-          {session.patient.allergies && session.patient.allergies.length > 0 && (
-            <div className="flex items-start gap-2 pt-4 border-t">
-              <AlertCircle className="h-4 w-4 text-red-500 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-red-500">Allergies:</p>
-                <p className="text-sm text-muted-foreground">{session.patient.allergies.join(', ')}</p>
+          {session.patient.allergies &&
+            session.patient.allergies.length > 0 && (
+              <div className="flex items-start gap-2 border-t pt-4">
+                <AlertCircle className="mt-0.5 h-4 w-4 text-red-500" />
+                <div>
+                  <p className="text-sm font-medium text-red-500">Allergies:</p>
+                  <p className="text-muted-foreground text-sm">
+                    {session.patient.allergies.join(', ')}
+                  </p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </Card>
 
       {/* Billing Information */}
       {session.billing && (
         <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Billing Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <h2 className="mb-4 text-xl font-semibold">Billing Information</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="flex items-center gap-3">
-              <DollarSign className="h-5 w-5 text-muted-foreground" />
+              <DollarSign className="text-muted-foreground h-5 w-5" />
               <div>
-                <p className="text-sm text-muted-foreground">Amount</p>
-                <p className="font-medium text-lg">${session.billing.amount.toFixed(2)}</p>
+                <p className="text-muted-foreground text-sm">Amount</p>
+                <p className="text-lg font-medium">
+                  ${session.billing.amount.toFixed(2)}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Activity className="h-5 w-5 text-muted-foreground" />
+              <Activity className="text-muted-foreground h-5 w-5" />
               <div>
-                <p className="text-sm text-muted-foreground">Status</p>
-                <Badge className={`${getBillingStatusColor(session.billing.status)} border mt-1`}>
+                <p className="text-muted-foreground text-sm">Status</p>
+                <Badge
+                  className={`${getBillingStatusColor(session.billing.status)} mt-1 border`}
+                >
                   {session.billing.status}
                 </Badge>
               </div>
             </div>
             {session.billing.paymentMethod && (
               <div className="flex items-center gap-3">
-                <FileText className="h-5 w-5 text-muted-foreground" />
+                <FileText className="text-muted-foreground h-5 w-5" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Payment Method</p>
+                  <p className="text-muted-foreground text-sm">
+                    Payment Method
+                  </p>
                   <p className="font-medium">{session.billing.paymentMethod}</p>
                 </div>
               </div>
@@ -376,8 +417,8 @@ export default function DoctorSessionDetailPage({ sessionId }: { sessionId: stri
       {/* Session Notes */}
       {session.notes && (
         <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Session Notes</h2>
-          <div className="bg-muted p-4 rounded-md">
+          <h2 className="mb-4 text-xl font-semibold">Session Notes</h2>
+          <div className="bg-muted rounded-md p-4">
             <p className="text-sm whitespace-pre-wrap">{session.notes}</p>
           </div>
         </Card>
@@ -405,7 +446,10 @@ export default function DoctorSessionDetailPage({ sessionId }: { sessionId: stri
 
             <div className="space-y-2">
               <label className="text-sm font-medium">New Status *</label>
-              <Select value={newStatus} onValueChange={(value) => setNewStatus(value as SessionStatus)}>
+              <Select
+                value={newStatus}
+                onValueChange={(value) => setNewStatus(value as SessionStatus)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select new status" />
                 </SelectTrigger>
@@ -421,10 +465,17 @@ export default function DoctorSessionDetailPage({ sessionId }: { sessionId: stri
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setStatusDialogOpen(false)} disabled={updating}>
+            <Button
+              variant="outline"
+              onClick={() => setStatusDialogOpen(false)}
+              disabled={updating}
+            >
               Cancel
             </Button>
-            <Button onClick={handleStatusChange} disabled={updating || newStatus === session.status}>
+            <Button
+              onClick={handleStatusChange}
+              disabled={updating || newStatus === session.status}
+            >
               {updating ? 'Updating...' : 'Update Status'}
             </Button>
           </DialogFooter>
@@ -435,7 +486,9 @@ export default function DoctorSessionDetailPage({ sessionId }: { sessionId: stri
       <Dialog open={notesDialogOpen} onOpenChange={setNotesDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{session.notes ? 'Edit Session Notes' : 'Add Session Notes'}</DialogTitle>
+            <DialogTitle>
+              {session.notes ? 'Edit Session Notes' : 'Add Session Notes'}
+            </DialogTitle>
             <DialogDescription>
               Document important information about this therapy session
             </DialogDescription>
@@ -449,13 +502,17 @@ export default function DoctorSessionDetailPage({ sessionId }: { sessionId: stri
                 onChange={(e) => setNewNotes(e.target.value)}
                 placeholder="Enter session notes, observations, or key points discussed..."
                 rows={6}
-                className="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-20 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setNotesDialogOpen(false)} disabled={updating}>
+            <Button
+              variant="outline"
+              onClick={() => setNotesDialogOpen(false)}
+              disabled={updating}
+            >
               Cancel
             </Button>
             <Button onClick={handleNotesUpdate} disabled={updating}>

@@ -1,7 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Users, Calendar, Shield } from 'lucide-react';
+import {
+  ArrowRight,
+  CheckCircle2,
+  Users,
+  Calendar,
+  Shield,
+} from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -22,35 +28,38 @@ export function CTASection() {
   ];
 
   return (
-    <section className="flex flex-col items-center justify-center py-24 md:py-32 bg-linear-to-br from-primary/10 via-background to-background relative overflow-hidden">
+    <section className="from-primary/10 via-background to-background relative flex flex-col items-center justify-center overflow-hidden bg-linear-to-br py-24 md:py-32">
       {/* Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="bg-primary/20 absolute top-0 left-0 h-96 w-96 rounded-full blur-3xl" />
+        <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl" />
       </div>
 
-      <div className="container px-6 relative">
-        <div className="max-w-5xl mx-auto">
+      <div className="relative container px-6">
+        <div className="mx-auto max-w-5xl">
           <ScrollReveal>
-            <div className="text-center mb-12">
+            <div className="mb-12 text-center">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
+                className="mb-6 text-3xl font-bold md:text-4xl lg:text-5xl"
               >
                 Ready to Transform Your
-                <span className="block text-primary mt-2">Healthcare Practice?</span>
+                <span className="text-primary mt-2 block">
+                  Healthcare Practice?
+                </span>
               </motion.h2>
-              
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
+                className="text-muted-foreground mx-auto mb-8 max-w-2xl text-lg md:text-xl"
               >
-                Join thousands of healthcare professionals already using HMS to deliver better patient care
+                Join thousands of healthcare professionals already using HMS to
+                deliver better patient care
               </motion.p>
 
               {/* Benefits */}
@@ -59,14 +68,14 @@ export function CTASection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="flex flex-wrap justify-center gap-4 mb-12"
+                className="mb-12 flex flex-wrap justify-center gap-4"
               >
                 {benefits.map((benefit, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 backdrop-blur-sm border border-border"
+                    className="bg-card/50 border-border flex items-center gap-2 rounded-full border px-4 py-2 backdrop-blur-sm"
                   >
-                    <CheckCircle2 className="w-4 h-4 text-primary" />
+                    <CheckCircle2 className="text-primary h-4 w-4" />
                     <span className="text-sm font-medium">{benefit}</span>
                   </div>
                 ))}
@@ -78,16 +87,20 @@ export function CTASection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+                className="mb-16 flex flex-col justify-center gap-4 sm:flex-row"
               >
                 <Link href="/register">
                   <Button size="lg" className="group px-8 py-6 text-lg">
                     Get Started Free
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </Link>
                 <Link href="/login">
-                  <Button size="lg" variant="outline" className="px-8 py-6 text-lg">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="px-8 py-6 text-lg"
+                  >
                     Sign In to Dashboard
                   </Button>
                 </Link>
@@ -99,19 +112,19 @@ export function CTASection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                className="grid grid-cols-3 gap-8 max-w-3xl mx-auto pt-12 border-t border-border/50"
+                className="border-border/50 mx-auto grid max-w-3xl grid-cols-3 gap-8 border-t pt-12"
               >
                 {trustIndicators.map((indicator, index) => {
                   const Icon = indicator.icon;
                   return (
                     <div key={index} className="text-center">
-                      <div className="inline-flex p-3 rounded-full bg-primary/10 border border-primary/20 mb-3">
-                        <Icon className="w-6 h-6 text-primary" />
+                      <div className="bg-primary/10 border-primary/20 mb-3 inline-flex rounded-full border p-3">
+                        <Icon className="text-primary h-6 w-6" />
                       </div>
-                      <div className="text-2xl md:text-3xl font-bold text-primary mb-1">
+                      <div className="text-primary mb-1 text-2xl font-bold md:text-3xl">
                         {indicator.value}
                       </div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-muted-foreground text-sm">
                         {indicator.label}
                       </div>
                     </div>

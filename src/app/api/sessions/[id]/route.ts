@@ -8,14 +8,17 @@ import { prisma } from '@/lib/prisma';
 // GET /api/sessions/[id] - Get session details
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession(authOptions);
     const { id } = await params;
 
     if (!session || session.user.role !== 'DOCTOR') {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 },
+      );
     }
 
     // Fetch session with all related data
@@ -48,12 +51,18 @@ export async function GET(
     });
 
     if (!sessionData) {
-      return NextResponse.json({ success: false, error: 'Session not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Session not found' },
+        { status: 404 },
+      );
     }
 
     // Verify the doctor owns this session
     if (sessionData.doctorId !== session.user.id) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 403 });
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 403 },
+      );
     }
 
     // Serialize Decimal fields
@@ -73,7 +82,7 @@ export async function GET(
     console.error('Error fetching session:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch session' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -81,14 +90,17 @@ export async function GET(
 // PATCH /api/sessions/[id] - Update session status or details
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession(authOptions);
     const { id } = await params;
 
     if (!session || session.user.role !== 'DOCTOR') {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 },
+      );
     }
 
     const body = await req.json();
@@ -100,19 +112,34 @@ export async function PATCH(
     });
 
     if (!existingSession) {
-      return NextResponse.json({ success: false, error: 'Session not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Session not found' },
+        { status: 404 },
+      );
     }
 
     // Verify ownership
     if (existingSession.doctorId !== session.user.id) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 403 });
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 403 },
+      );
     }
 
     // Validate status change
     if (status) {
-      const validStatuses = ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'NO_SHOW'];
+      const validStatuses = [
+        'SCHEDULED',
+        'IN_PROGRESS',
+        'COMPLETED',
+        'CANCELLED',
+        'NO_SHOW',
+      ];
       if (!validStatuses.includes(status)) {
-        return NextResponse.json({ success: false, error: 'Invalid status' }, { status: 400 });
+        return NextResponse.json(
+          { success: false, error: 'Invalid status' },
+          { status: 400 },
+        );
       }
 
       // Check if session time has passed
@@ -129,16 +156,23 @@ export async function PATCH(
         status !== 'NO_SHOW'
       ) {
         return NextResponse.json(
-          { success: false, error: 'Session time has passed. Can only mark as completed, cancelled, or no show.' },
-          { status: 400 }
+          {
+            success: false,
+            error:
+              'Session time has passed. Can only mark as completed, cancelled, or no show.',
+          },
+          { status: 400 },
         );
       }
 
       // Can't change status if already completed
       if (existingSession.status === 'COMPLETED') {
         return NextResponse.json(
-          { success: false, error: 'Cannot change status of completed session' },
-          { status: 400 }
+          {
+            success: false,
+            error: 'Cannot change status of completed session',
+          },
+          { status: 400 },
         );
       }
     }
@@ -233,7 +267,10 @@ export async function PATCH(
     });
 
     if (!finalSession) {
-      return NextResponse.json({ success: false, error: 'Session not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Session not found' },
+        { status: 404 },
+      );
     }
 
     // Serialize Decimal fields
@@ -253,7 +290,7 @@ export async function PATCH(
     console.error('Error updating session:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to update session' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

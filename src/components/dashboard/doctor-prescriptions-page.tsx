@@ -66,7 +66,9 @@ interface Prescription {
 
 export default function DoctorPrescriptionsPage() {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
-  const [filteredPrescriptions, setFilteredPrescriptions] = useState<Prescription[]>([]);
+  const [filteredPrescriptions, setFilteredPrescriptions] = useState<
+    Prescription[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -129,19 +131,21 @@ export default function DoctorPrescriptionsPage() {
           prescription.patient.user.email.toLowerCase().includes(query) ||
           prescription.patient.patientId.toLowerCase().includes(query) ||
           prescription.prescriptionId.toLowerCase().includes(query) ||
-          prescription.medicationName.toLowerCase().includes(query)
+          prescription.medicationName.toLowerCase().includes(query),
       );
     }
 
     // Status filter
     if (statusFilter && statusFilter !== 'all') {
-      filtered = filtered.filter((prescription) => prescription.status === statusFilter);
+      filtered = filtered.filter(
+        (prescription) => prescription.status === statusFilter,
+      );
     }
 
     // Severity filter (interactions)
     if (severityFilter && severityFilter !== 'all') {
       filtered = filtered.filter((prescription) =>
-        prescription.interactions.some((i) => i.severity === severityFilter)
+        prescription.interactions.some((i) => i.severity === severityFilter),
       );
     }
 
@@ -160,7 +164,12 @@ export default function DoctorPrescriptionsPage() {
       const response = await fetch('/api/doctor/patients');
       const result = await response.json();
       if (result.success) {
-        setPatients(result.data.filter((p: { assignment: { status: string } }) => p.assignment.status === 'ACTIVE'));
+        setPatients(
+          result.data.filter(
+            (p: { assignment: { status: string } }) =>
+              p.assignment.status === 'ACTIVE',
+          ),
+        );
       }
     } catch {
       toast.error('Failed to load patients');
@@ -168,7 +177,13 @@ export default function DoctorPrescriptionsPage() {
   };
 
   const handleCreatePrescription = async () => {
-    if (!formData.patientId || !formData.medicationName || !formData.dosage || !formData.frequency || !formData.duration) {
+    if (
+      !formData.patientId ||
+      !formData.medicationName ||
+      !formData.dosage ||
+      !formData.frequency ||
+      !formData.duration
+    ) {
       toast.error('Please fill in all required fields');
       return;
     }
@@ -186,11 +201,16 @@ export default function DoctorPrescriptionsPage() {
       if (result.success) {
         // Check for interactions
         if (result.interactions && result.interactions.length > 0) {
-          const severeInteractions = result.interactions.filter((i: { severity: string }) => i.severity === 'SEVERE');
+          const severeInteractions = result.interactions.filter(
+            (i: { severity: string }) => i.severity === 'SEVERE',
+          );
           if (severeInteractions.length > 0) {
-            toast.warning(`Prescription created with ${severeInteractions.length} severe interaction(s)`, {
-              description: 'Please review interactions before finalizing',
-            });
+            toast.warning(
+              `Prescription created with ${severeInteractions.length} severe interaction(s)`,
+              {
+                description: 'Please review interactions before finalizing',
+              },
+            );
           } else {
             toast.success('Prescription created with interaction warnings');
           }
@@ -235,7 +255,9 @@ export default function DoctorPrescriptionsPage() {
       MODERATE: 'bg-orange-500/10 text-orange-500 border-orange-500/20',
       MILD: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
     };
-    return colors[severity] || 'bg-gray-500/10 text-gray-500 border-gray-500/20';
+    return (
+      colors[severity] || 'bg-gray-500/10 text-gray-500 border-gray-500/20'
+    );
   };
 
   if (loading) {
@@ -253,7 +275,9 @@ export default function DoctorPrescriptionsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Prescriptions</h1>
-          <p className="text-muted-foreground mt-1">Manage patient prescriptions and medications</p>
+          <p className="text-muted-foreground mt-1">
+            Manage patient prescriptions and medications
+          </p>
         </div>
         <Button onClick={handleOpenCreateDialog} className="gap-2">
           <Plus className="h-4 w-4" />
@@ -262,21 +286,25 @@ export default function DoctorPrescriptionsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Total Prescriptions</p>
+              <p className="text-muted-foreground text-sm">
+                Total Prescriptions
+              </p>
               <p className="text-2xl font-bold">{prescriptions.length}</p>
             </div>
-            <Pill className="h-8 w-8 text-muted-foreground" />
+            <Pill className="text-muted-foreground h-8 w-8" />
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Active</p>
-              <p className="text-2xl font-bold">{prescriptions.filter((p) => p.status === 'ACTIVE').length}</p>
+              <p className="text-muted-foreground text-sm">Active</p>
+              <p className="text-2xl font-bold">
+                {prescriptions.filter((p) => p.status === 'ACTIVE').length}
+              </p>
             </div>
             <Pill className="h-8 w-8 text-green-500" />
           </div>
@@ -284,7 +312,7 @@ export default function DoctorPrescriptionsPage() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">With Interactions</p>
+              <p className="text-muted-foreground text-sm">With Interactions</p>
               <p className="text-2xl font-bold">
                 {prescriptions.filter((p) => p.interactions.length > 0).length}
               </p>
@@ -295,8 +323,10 @@ export default function DoctorPrescriptionsPage() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Expired</p>
-              <p className="text-2xl font-bold">{prescriptions.filter((p) => p.status === 'EXPIRED').length}</p>
+              <p className="text-muted-foreground text-sm">Expired</p>
+              <p className="text-2xl font-bold">
+                {prescriptions.filter((p) => p.status === 'EXPIRED').length}
+              </p>
             </div>
             <Pill className="h-8 w-8 text-gray-500" />
           </div>
@@ -307,20 +337,20 @@ export default function DoctorPrescriptionsPage() {
       <Card className="p-4">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-muted-foreground" />
+            <Filter className="text-muted-foreground h-4 w-4" />
             <h3 className="font-semibold">Filters</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search prescriptions..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border py-2 pr-3 pl-10 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
@@ -364,11 +394,13 @@ export default function DoctorPrescriptionsPage() {
       <div className="space-y-3">
         {filteredPrescriptions.length === 0 ? (
           <Card className="p-8">
-            <div className="text-center space-y-2">
-              <Pill className="h-12 w-12 text-muted-foreground mx-auto" />
+            <div className="space-y-2 text-center">
+              <Pill className="text-muted-foreground mx-auto h-12 w-12" />
               <h3 className="text-lg font-semibold">No prescriptions found</h3>
-              <p className="text-sm text-muted-foreground">
-                {searchQuery || statusFilter !== 'all' || severityFilter !== 'all'
+              <p className="text-muted-foreground text-sm">
+                {searchQuery ||
+                statusFilter !== 'all' ||
+                severityFilter !== 'all'
                   ? 'Try adjusting your filters'
                   : 'Create your first prescription'}
               </p>
@@ -376,44 +408,67 @@ export default function DoctorPrescriptionsPage() {
           </Card>
         ) : (
           filteredPrescriptions.map((prescription) => (
-            <Card key={prescription.id} className="p-4 hover:shadow-md transition-shadow">
+            <Card
+              key={prescription.id}
+              className="p-4 transition-shadow hover:shadow-md"
+            >
               <div className="flex items-start justify-between gap-4">
                 {/* Left: Patient & Medication Info */}
                 <div className="flex-1 space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-5 w-5 text-primary" />
+                    <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
+                      <User className="text-primary h-5 w-5" />
                     </div>
                     <div>
-                      <h3 className="font-semibold">{prescription.patient.user.name}</h3>
-                      <p className="text-sm text-muted-foreground">{prescription.patient.patientId}</p>
+                      <h3 className="font-semibold">
+                        {prescription.patient.user.name}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {prescription.patient.patientId}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="pl-13 space-y-2">
+                  <div className="space-y-2 pl-13">
                     <div className="flex items-start gap-2">
-                      <Pill className="h-4 w-4 text-muted-foreground mt-0.5" />
+                      <Pill className="text-muted-foreground mt-0.5 h-4 w-4" />
                       <div className="flex-1">
-                        <p className="font-medium">{prescription.medicationName}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {prescription.dosage} • {prescription.frequency} • {prescription.duration}
+                        <p className="font-medium">
+                          {prescription.medicationName}
+                        </p>
+                        <p className="text-muted-foreground text-sm">
+                          {prescription.dosage} • {prescription.frequency} •{' '}
+                          {prescription.duration}
                         </p>
                         {prescription.instructions && (
-                          <p className="text-sm text-muted-foreground mt-1">
-                            <span className="font-medium">Instructions:</span> {prescription.instructions}
+                          <p className="text-muted-foreground mt-1 text-sm">
+                            <span className="font-medium">Instructions:</span>{' '}
+                            {prescription.instructions}
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground pl-6">
+                    <div className="text-muted-foreground flex items-center gap-4 pl-6 text-sm">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
-                        <span>Issued: {format(new Date(prescription.issuedAt), 'MMM d, yyyy')}</span>
+                        <span>
+                          Issued:{' '}
+                          {format(
+                            new Date(prescription.issuedAt),
+                            'MMM d, yyyy',
+                          )}
+                        </span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
-                        <span>Expires: {format(new Date(prescription.expiresAt), 'MMM d, yyyy')}</span>
+                        <span>
+                          Expires:{' '}
+                          {format(
+                            new Date(prescription.expiresAt),
+                            'MMM d, yyyy',
+                          )}
+                        </span>
                       </div>
                       <span>Refills: {prescription.refillsRemaining}</span>
                     </div>
@@ -421,19 +476,24 @@ export default function DoctorPrescriptionsPage() {
                     {/* Interactions */}
                     {prescription.interactions.length > 0 && (
                       <div className="pl-6">
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="mb-2 flex items-center gap-2">
                           <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                          <span className="text-sm font-medium">Drug Interactions:</span>
+                          <span className="text-sm font-medium">
+                            Drug Interactions:
+                          </span>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                          {prescription.interactions.slice(0, 2).map((interaction, idx) => (
-                            <Badge
-                              key={idx}
-                              className={`${getSeverityColor(interaction.severity)} border`}
-                            >
-                              {interaction.severity}: {interaction.interactsWith}
-                            </Badge>
-                          ))}
+                          {prescription.interactions
+                            .slice(0, 2)
+                            .map((interaction, idx) => (
+                              <Badge
+                                key={idx}
+                                className={`${getSeverityColor(interaction.severity)} border`}
+                              >
+                                {interaction.severity}:{' '}
+                                {interaction.interactsWith}
+                              </Badge>
+                            ))}
                           {prescription.interactions.length > 2 && (
                             <Badge variant="outline" className="text-xs">
                               +{prescription.interactions.length - 2} more
@@ -447,7 +507,9 @@ export default function DoctorPrescriptionsPage() {
 
                 {/* Right: Status & Actions */}
                 <div className="flex flex-col items-end gap-2">
-                  <Badge className={`${getStatusColor(prescription.status)} border`}>
+                  <Badge
+                    className={`${getStatusColor(prescription.status)} border`}
+                  >
                     {prescription.status}
                   </Badge>
 
@@ -458,7 +520,7 @@ export default function DoctorPrescriptionsPage() {
                     </Button>
                   </Link>
 
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     ID: {prescription.prescriptionId}
                   </p>
                 </div>
@@ -470,11 +532,12 @@ export default function DoctorPrescriptionsPage() {
 
       {/* Create Prescription Dialog */}
       <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create New Prescription</DialogTitle>
             <DialogDescription>
-              Create a new prescription for a patient. System will check for drug interactions and allergies.
+              Create a new prescription for a patient. System will check for
+              drug interactions and allergies.
             </DialogDescription>
           </DialogHeader>
 
@@ -484,7 +547,9 @@ export default function DoctorPrescriptionsPage() {
               <label className="text-sm font-medium">Patient *</label>
               <Select
                 value={formData.patientId}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, patientId: value }))}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, patientId: value }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a patient" />
@@ -505,9 +570,14 @@ export default function DoctorPrescriptionsPage() {
               <input
                 type="text"
                 value={formData.medicationName}
-                onChange={(e) => setFormData((prev) => ({ ...prev, medicationName: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    medicationName: e.target.value,
+                  }))
+                }
                 placeholder="e.g., Amoxicillin"
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
@@ -518,9 +588,11 @@ export default function DoctorPrescriptionsPage() {
                 <input
                   type="text"
                   value={formData.dosage}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, dosage: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, dosage: e.target.value }))
+                  }
                   placeholder="e.g., 500mg"
-                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
                 />
               </div>
               <div className="space-y-2">
@@ -528,9 +600,14 @@ export default function DoctorPrescriptionsPage() {
                 <input
                   type="text"
                   value={formData.frequency}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, frequency: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      frequency: e.target.value,
+                    }))
+                  }
                   placeholder="e.g., 3 times daily"
-                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
                 />
               </div>
               <div className="space-y-2">
@@ -538,22 +615,34 @@ export default function DoctorPrescriptionsPage() {
                 <input
                   type="text"
                   value={formData.duration}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, duration: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      duration: e.target.value,
+                    }))
+                  }
                   placeholder="e.g., 7 days"
-                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
                 />
               </div>
             </div>
 
             {/* Instructions */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Instructions (Optional)</label>
+              <label className="text-sm font-medium">
+                Instructions (Optional)
+              </label>
               <textarea
                 value={formData.instructions}
-                onChange={(e) => setFormData((prev) => ({ ...prev, instructions: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    instructions: e.target.value,
+                  }))
+                }
                 placeholder="e.g., Take with food, avoid alcohol"
                 rows={3}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
@@ -565,9 +654,12 @@ export default function DoctorPrescriptionsPage() {
                 min="0"
                 value={formData.refillsRemaining}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, refillsRemaining: parseInt(e.target.value) || 0 }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    refillsRemaining: parseInt(e.target.value) || 0,
+                  }))
                 }
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
           </div>
@@ -593,7 +685,7 @@ export default function DoctorPrescriptionsPage() {
             >
               {creating ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Creating...
                 </>
               ) : (

@@ -23,11 +23,21 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { patientId, visitDate, chiefComplaint, physicalExam, assessment, plan } = body;
+    const {
+      patientId,
+      visitDate,
+      chiefComplaint,
+      physicalExam,
+      assessment,
+      plan,
+    } = body;
 
     // Validate required fields
     if (!patientId || !visitDate) {
-      return NextResponse.json({ error: 'Patient and visit date are required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Patient and visit date are required' },
+        { status: 400 },
+      );
     }
 
     // Check if patient exists
@@ -51,7 +61,7 @@ export async function POST(request: NextRequest) {
     if (!assignment) {
       return NextResponse.json(
         { error: 'You do not have access to this patient' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -111,6 +121,9 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error creating medical record:', error);
-    return NextResponse.json({ success: false, error: 'Failed to create medical record' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Failed to create medical record' },
+      { status: 500 },
+    );
   }
 }

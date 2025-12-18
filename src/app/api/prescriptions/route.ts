@@ -1,6 +1,6 @@
 import { UserRole } from '@prisma/client';
-import { getServerSession } from 'next-auth/next';
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
 
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -10,12 +10,18 @@ export async function GET() {
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 },
+      );
     }
 
     // Only doctors can view prescriptions
     if (session.user.role !== UserRole.DOCTOR) {
-      return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json(
+        { success: false, error: 'Forbidden' },
+        { status: 403 },
+      );
     }
 
     const doctor = await prisma.doctor.findUnique({
@@ -23,7 +29,10 @@ export async function GET() {
     });
 
     if (!doctor) {
-      return NextResponse.json({ success: false, error: 'Doctor profile not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Doctor profile not found' },
+        { status: 404 },
+      );
     }
 
     const prescriptions = await prisma.prescription.findMany({
@@ -61,8 +70,7 @@ export async function GET() {
     console.error('Error fetching prescriptions:', error);
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

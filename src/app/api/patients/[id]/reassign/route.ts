@@ -8,7 +8,7 @@ import { prisma } from '@/lib/prisma';
 // POST /api/patients/[id]/reassign - Reassign patient to another doctor
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -21,7 +21,7 @@ export async function POST(
     if (session.user.role !== UserRole.DOCTOR) {
       return NextResponse.json(
         { error: 'Only doctors can reassign patients' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -30,7 +30,10 @@ export async function POST(
     const { newDoctorId, notes } = body;
 
     if (!newDoctorId) {
-      return NextResponse.json({ error: 'New doctor ID is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'New doctor ID is required' },
+        { status: 400 },
+      );
     }
 
     // Get current doctor
@@ -75,13 +78,13 @@ export async function POST(
 
     // Check if patient is assigned to this doctor
     const currentAssignment = patient.activeAssignments.find(
-      (assignment) => assignment.doctorId === currentDoctor.id
+      (assignment) => assignment.doctorId === currentDoctor.id,
     );
 
     if (!currentAssignment) {
       return NextResponse.json(
         { error: 'You can only reassign your own patients' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -98,13 +101,16 @@ export async function POST(
     });
 
     if (!newDoctor) {
-      return NextResponse.json({ error: 'New doctor not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'New doctor not found' },
+        { status: 404 },
+      );
     }
 
     if (!newDoctor.isActive) {
       return NextResponse.json(
         { error: 'Cannot assign to inactive doctor' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -130,7 +136,9 @@ export async function POST(
           patientId: patientId,
           doctorId: newDoctorId,
           status: 'ACTIVE',
-          notes: notes || `Assigned from Dr. ${currentDoctor.firstName} ${currentDoctor.lastName}`,
+          notes:
+            notes ||
+            `Assigned from Dr. ${currentDoctor.firstName} ${currentDoctor.lastName}`,
         },
       });
     });
@@ -148,6 +156,9 @@ export async function POST(
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error reassigning patient:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }

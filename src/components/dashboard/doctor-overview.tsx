@@ -87,7 +87,7 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
 
   // Calculate stats
   const activePatients = doctor.patientAssignments.filter(
-    (assignment) => assignment.status === 'ACTIVE'
+    (assignment) => assignment.status === 'ACTIVE',
   ).length;
 
   const todayAppointments = doctor.appointments.filter((apt) => {
@@ -115,11 +115,11 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
   });
 
   const activePrescriptions = doctor.prescriptions.filter(
-    (prescription) => prescription.status === 'ACTIVE'
+    (prescription) => prescription.status === 'ACTIVE',
   ).length;
 
   const pendingLabTests = doctor.labTests.filter(
-    (test) => test.status === 'PENDING' || test.status === 'IN_PROGRESS'
+    (test) => test.status === 'PENDING' || test.status === 'IN_PROGRESS',
   ).length;
 
   const stats = [
@@ -164,7 +164,10 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
   const getStatusBadge = (status: string) => {
     const statusMap: Record<
       string,
-      { variant: 'default' | 'secondary' | 'destructive' | 'outline'; label: string }
+      {
+        variant: 'default' | 'secondary' | 'destructive' | 'outline';
+        label: string;
+      }
     > = {
       SCHEDULED: { variant: 'default', label: 'Scheduled' },
       CONFIRMED: { variant: 'default', label: 'Confirmed' },
@@ -173,9 +176,12 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
       NO_SHOW: { variant: 'destructive', label: 'No Show' },
     };
 
-    const badgeInfo = statusMap[status] || { variant: 'outline' as const, label: status };
+    const badgeInfo = statusMap[status] || {
+      variant: 'outline' as const,
+      label: status,
+    };
     return (
-      <Badge variant={badgeInfo.variant} className="text-[10px] px-1.5 py-0">
+      <Badge variant={badgeInfo.variant} className="px-1.5 py-0 text-[10px]">
         {badgeInfo.label}
       </Badge>
     );
@@ -201,19 +207,21 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-linear-to-r from-primary/10 via-primary/5 to-transparent border border-primary/20 rounded-lg p-6">
+      <div className="from-primary/10 via-primary/5 border-primary/20 rounded-lg border bg-linear-to-r to-transparent p-6">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground mb-2">
+            <h1 className="text-foreground mb-2 text-2xl font-bold">
               Welcome back, Dr. {doctor.lastName}!
             </h1>
-            <p className="text-sm text-muted-foreground mb-4">
-              {doctor.specialization ? `${doctor.specialization} Specialist` : 'General Practice'} •{' '}
-              License: {doctor.licenseNumber}
+            <p className="text-muted-foreground mb-4 text-sm">
+              {doctor.specialization
+                ? `${doctor.specialization} Specialist`
+                : 'General Practice'}{' '}
+              • License: {doctor.licenseNumber}
             </p>
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="text-xs">
-                <Stethoscope className="w-3 h-3 mr-1" />
+                <Stethoscope className="mr-1 h-3 w-3" />
                 {doctor.isActive ? 'Active' : 'Inactive'}
               </Badge>
               <Badge variant="outline" className="text-xs">
@@ -223,7 +231,7 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
           </div>
           <Link href="/dashboard/profile">
             <Button variant="outline" size="sm">
-              <Eye className="w-4 h-4 mr-2" />
+              <Eye className="mr-2 h-4 w-4" />
               View Profile
             </Button>
           </Link>
@@ -231,22 +239,26 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <Link key={index} href={stat.href}>
               <div
-                className={`${stat.bgColor} border ${stat.borderColor} rounded-lg p-4 hover:scale-105 transition-transform cursor-pointer`}
+                className={`${stat.bgColor} border ${stat.borderColor} cursor-pointer rounded-lg p-4 transition-transform hover:scale-105`}
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div className={`${stat.bgColor} p-2 rounded-md`}>
-                    <Icon className={`w-5 h-5 ${stat.iconColor}`} />
+                <div className="mb-3 flex items-center justify-between">
+                  <div className={`${stat.bgColor} rounded-md p-2`}>
+                    <Icon className={`h-5 w-5 ${stat.iconColor}`} />
                   </div>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                  <ChevronRight className="text-muted-foreground h-4 w-4" />
                 </div>
-                <div className="text-2xl font-bold text-foreground mb-1">{stat.value}</div>
-                <div className="text-xs text-muted-foreground">{stat.label}</div>
+                <div className="text-foreground mb-1 text-2xl font-bold">
+                  {stat.value}
+                </div>
+                <div className="text-muted-foreground text-xs">
+                  {stat.label}
+                </div>
               </div>
             </Link>
           );
@@ -254,38 +266,50 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Link href="/dashboard/patients">
-          <Button variant="outline" className="w-full justify-start h-auto py-4">
-            <Users className="w-5 h-5 mr-3 text-primary" />
+          <Button
+            variant="outline"
+            className="h-auto w-full justify-start py-4"
+          >
+            <Users className="text-primary mr-3 h-5 w-5" />
             <div className="text-left">
-              <div className="font-semibold text-sm">Search Patients</div>
-              <div className="text-xs text-muted-foreground">Find patient records by ID or name</div>
+              <div className="text-sm font-semibold">Search Patients</div>
+              <div className="text-muted-foreground text-xs">
+                Find patient records by ID or name
+              </div>
             </div>
           </Button>
         </Link>
         <Link href="/dashboard/lab-orders">
-          <Button variant="outline" className="w-full justify-start h-auto py-4">
-            <FlaskConical className="w-5 h-5 mr-3 text-primary" />
+          <Button
+            variant="outline"
+            className="h-auto w-full justify-start py-4"
+          >
+            <FlaskConical className="text-primary mr-3 h-5 w-5" />
             <div className="text-left">
-              <div className="font-semibold text-sm">
+              <div className="text-sm font-semibold">
                 Pending Lab Results ({pendingLabTests})
               </div>
-              <div className="text-xs text-muted-foreground">Review and approve test results</div>
+              <div className="text-muted-foreground text-xs">
+                Review and approve test results
+              </div>
             </div>
           </Button>
         </Link>
       </div>
 
       {/* Today's Schedule */}
-      <div className="bg-card border border-border rounded-lg">
-        <div className="p-4 border-b border-border">
+      <div className="bg-card border-border rounded-lg border">
+        <div className="border-border border-b p-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-foreground">Today&apos;s Schedule</h2>
+            <h2 className="text-foreground text-lg font-semibold">
+              Today&apos;s Schedule
+            </h2>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setSelectedTab('today')}
-                className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+                className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
                   selectedTab === 'today'
                     ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:text-foreground'
@@ -295,7 +319,7 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
               </button>
               <button
                 onClick={() => setSelectedTab('upcoming')}
-                className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+                className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
                   selectedTab === 'upcoming'
                     ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:text-foreground'
@@ -307,37 +331,44 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
           </div>
         </div>
 
-        <div className="divide-y divide-border">
+        <div className="divide-border divide-y">
           {selectedTab === 'today' ? (
             <>
               {/* Today's Appointments */}
               {todayAppointments.length === 0 && todaySessions.length === 0 ? (
                 <div className="p-8 text-center">
-                  <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
-                  <p className="text-sm text-muted-foreground">No appointments or sessions today</p>
+                  <Calendar className="text-muted-foreground mx-auto mb-3 h-12 w-12 opacity-50" />
+                  <p className="text-muted-foreground text-sm">
+                    No appointments or sessions today
+                  </p>
                 </div>
               ) : (
                 <>
                   {todayAppointments.map((appointment) => (
-                    <div key={appointment.id} className="p-4 hover:bg-accent/50 transition-colors">
+                    <div
+                      key={appointment.id}
+                      className="hover:bg-accent/50 p-4 transition-colors"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                            <Calendar className="w-5 h-5 text-primary" />
+                          <div className="bg-primary/10 border-primary/20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border">
+                            <Calendar className="text-primary h-5 w-5" />
                           </div>
                           <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <p className="text-sm font-semibold text-foreground">
-                                {appointment.patient.user.name || 'Unknown Patient'}
+                            <div className="mb-1 flex items-center gap-2">
+                              <p className="text-foreground text-sm font-semibold">
+                                {appointment.patient.user.name ||
+                                  'Unknown Patient'}
                               </p>
                               <Badge variant="outline" className="text-[10px]">
                                 {appointment.patient.patientId}
                               </Badge>
                             </div>
-                            <p className="text-xs text-muted-foreground mb-1">
-                              {appointment.type || 'Appointment'} • {formatTime(appointment.startTime)}
+                            <p className="text-muted-foreground mb-1 text-xs">
+                              {appointment.type || 'Appointment'} •{' '}
+                              {formatTime(appointment.startTime)}
                             </p>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-muted-foreground text-xs">
                               {appointment.patient.user.email}
                             </p>
                           </div>
@@ -346,7 +377,7 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
                           {getStatusBadge(appointment.status)}
                           <Link href={`/dashboard/appointments`}>
                             <Button variant="ghost" size="sm" className="h-7">
-                              <Eye className="w-3.5 h-3.5 mr-1.5" />
+                              <Eye className="mr-1.5 h-3.5 w-3.5" />
                               View
                             </Button>
                           </Link>
@@ -357,28 +388,35 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
 
                   {/* Today's Sessions */}
                   {todaySessions.map((session) => (
-                    <div key={session.id} className="p-4 hover:bg-accent/50 transition-colors">
+                    <div
+                      key={session.id}
+                      className="hover:bg-accent/50 p-4 transition-colors"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0">
-                            <Clock className="w-5 h-5 text-purple-500" />
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-purple-500/20 bg-purple-500/10">
+                            <Clock className="h-5 w-5 text-purple-500" />
                           </div>
                           <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <p className="text-sm font-semibold text-foreground">
+                            <div className="mb-1 flex items-center gap-2">
+                              <p className="text-foreground text-sm font-semibold">
                                 {session.patient.user.name || 'Unknown Patient'}
                               </p>
                               <Badge variant="outline" className="text-[10px]">
                                 {session.patient.patientId}
                               </Badge>
-                              <Badge variant="secondary" className="text-[10px]">
+                              <Badge
+                                variant="secondary"
+                                className="text-[10px]"
+                              >
                                 Session
                               </Badge>
                             </div>
-                            <p className="text-xs text-muted-foreground mb-1">
-                              Follow-up Session • {formatTime(session.startTime)}
+                            <p className="text-muted-foreground mb-1 text-xs">
+                              Follow-up Session •{' '}
+                              {formatTime(session.startTime)}
                             </p>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-muted-foreground text-xs">
                               {session.patient.user.email}
                             </p>
                           </div>
@@ -387,7 +425,7 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
                           {getStatusBadge(session.status)}
                           <Link href={`/dashboard/sessions`}>
                             <Button variant="ghost" size="sm" className="h-7">
-                              <Eye className="w-3.5 h-3.5 mr-1.5" />
+                              <Eye className="mr-1.5 h-3.5 w-3.5" />
                               View
                             </Button>
                           </Link>
@@ -403,32 +441,39 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
               {/* Upcoming Appointments */}
               {upcomingAppointments.length === 0 ? (
                 <div className="p-8 text-center">
-                  <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
-                  <p className="text-sm text-muted-foreground">No upcoming appointments</p>
+                  <Calendar className="text-muted-foreground mx-auto mb-3 h-12 w-12 opacity-50" />
+                  <p className="text-muted-foreground text-sm">
+                    No upcoming appointments
+                  </p>
                 </div>
               ) : (
                 <>
                   {upcomingAppointments.slice(0, 5).map((appointment) => (
-                    <div key={appointment.id} className="p-4 hover:bg-accent/50 transition-colors">
+                    <div
+                      key={appointment.id}
+                      className="hover:bg-accent/50 p-4 transition-colors"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                            <Calendar className="w-5 h-5 text-primary" />
+                          <div className="bg-primary/10 border-primary/20 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border">
+                            <Calendar className="text-primary h-5 w-5" />
                           </div>
                           <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <p className="text-sm font-semibold text-foreground">
-                                {appointment.patient.user.name || 'Unknown Patient'}
+                            <div className="mb-1 flex items-center gap-2">
+                              <p className="text-foreground text-sm font-semibold">
+                                {appointment.patient.user.name ||
+                                  'Unknown Patient'}
                               </p>
                               <Badge variant="outline" className="text-[10px]">
                                 {appointment.patient.patientId}
                               </Badge>
                             </div>
-                            <p className="text-xs text-muted-foreground mb-1">
-                              {appointment.type || 'Appointment'} • {formatDate(appointment.scheduledDate)}{' '}
-                              at {formatTime(appointment.startTime)}
+                            <p className="text-muted-foreground mb-1 text-xs">
+                              {appointment.type || 'Appointment'} •{' '}
+                              {formatDate(appointment.scheduledDate)} at{' '}
+                              {formatTime(appointment.startTime)}
                             </p>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-muted-foreground text-xs">
                               {appointment.patient.user.email}
                             </p>
                           </div>
@@ -437,7 +482,7 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
                           {getStatusBadge(appointment.status)}
                           <Link href={`/dashboard/appointments`}>
                             <Button variant="ghost" size="sm" className="h-7">
-                              <Eye className="w-3.5 h-3.5 mr-1.5" />
+                              <Eye className="mr-1.5 h-3.5 w-3.5" />
                               View
                             </Button>
                           </Link>
@@ -452,11 +497,11 @@ export function DoctorOverview({ doctor }: DoctorOverviewProps) {
         </div>
 
         {selectedTab === 'upcoming' && upcomingAppointments.length > 0 && (
-          <div className="p-3 border-t border-border">
+          <div className="border-border border-t p-3">
             <Link href="/dashboard/appointments">
               <Button variant="ghost" size="sm" className="w-full">
                 View All Appointments
-                <ChevronRight className="w-4 h-4 ml-2" />
+                <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>

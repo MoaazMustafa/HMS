@@ -1,0 +1,153 @@
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│                          HMS - ADMIN DASHBOARD OVERVIEW                              │
+│                         http://localhost:3002/dashboard                              │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────┬───────────────────────────────────────────────────────────────────┐
+│                │                                                                       │
+│   SIDEBAR      │                      MAIN DASHBOARD CONTENT                          │
+│                │                                                                       │
+│  ┌──────────┐  │  ┌─────────────────────────────────────────────────────┐  [Refresh]│
+│  │   HMS    │  │  │  Admin Dashboard                                    │            │
+│  │  Admin   │  │  │  System overview and management                     │            │
+│  │  Portal  │  │  └─────────────────────────────────────────────────────┘            │
+│  └──────────┘  │                                                                       │
+│                │  ╔═══════════════════════════════════════════════════════════════╗  │
+│  ┌──────────┐  │  ║                    STATS CARDS (4x2 Grid)                    ║  │
+│  │ Admin    │  │  ╠═══════════════════════════════════════════════════════════════╣  │
+│  │ Details  │  │  ║                                                               ║  │
+│  └──────────┘  │  ║  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────┐ ║  │
+│                │  ║  │   📊 150    │  │   👤 100    │  │   🏥 25     │  │ 🩺  │ ║  │
+│                │  ║  │ Total Users │  │  Patients   │  │  Doctors    │  │  20 │ ║  │
+│  📋 Overview   │  ║  │   +12%  📈  │  └─────────────┘  └─────────────┘  └─────┘ ║  │
+│  👥 Users      │  ║  └─────────────┘                                             ║  │
+│  🏥 Doctors    │  ║                                                               ║  │
+│  🩺 Nurses     │  ║  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────┐ ║  │
+│  👤 Patients   │  ║  │   📅 500    │  │   📅 15     │  │   💊 75     │  │ 🧪  │ ║  │
+│  📊 Analytics  │  ║  │Appointments │  │   Today     │  │Prescriptions│  │  12 │ ║  │
+│  📝 Audit Logs │  ║  └─────────────┘  └─────────────┘  └─────────────┘  └─────┘ ║  │
+│  ⚙️  Settings  │  ║                                                               ║  │
+│  💾 Database   │  ╚═══════════════════════════════════════════════════════════════╝  │
+│  🔔 Notify     │                                                                       │
+│  🔒 Security   │  ╔═══════════════════════════════════════════════════════════════╗  │
+│                │  ║                  QUICK ACTIONS (3x2 Grid)                    ║  │
+│                │  ╠═══════════════════════════════════════════════════════════════╣  │
+│                │  ║                                                               ║  │
+│  ┌──────────┐  │  ║  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      ║  │
+│  │  Logout  │  │  ║  │👥 User Mgmt  │  │📊 Analytics  │  │📝 Audit Logs │      ║  │
+│  └──────────┘  │  ║  │Manage users  │  │View stats    │  │Review logs   │      ║  │
+│                │  ║  └──────────────┘  └──────────────┘  └──────────────┘      ║  │
+│                │  ║                                                               ║  │
+│                │  ║  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      ║  │
+│                │  ║  │💾 Database   │  │🔒 Security   │  │⚙️ Settings   │      ║  │
+│                │  ║  │Manage DB     │  │Security dash │  │Configure sys │      ║  │
+│                │  ║  └──────────────┘  └──────────────┘  └──────────────┘      ║  │
+│                │  ║                                                               ║  │
+│                │  ╚═══════════════════════════════════════════════════════════════╝  │
+│                │                                                                       │
+│                │  ╔═══════════════════════════════════════════════════════════════╗  │
+│                │  ║            RECENT ACTIVITY (2 Columns)                       ║  │
+│                │  ╠═══════════════════════════════════════════════════════════════╣  │
+│                │  ║                                                               ║  │
+│                │  ║  ┌────────────────────┐       ┌─────────────────────┐       ║  │
+│                │  ║  │  Recent Users      │       │ Appointment Status  │       ║  │
+│                │  ║  │  ──────────────    │       │ ──────────────────  │       ║  │
+│                │  ║  │  • John Doe        │       │ ✅ Completed: 5     │       ║  │
+│                │  ║  │    Patient         │       │ 🕐 Scheduled: 10    │       ║  │
+│                │  ║  │  • Dr. Smith       │       │ ❌ Cancelled: 2     │       ║  │
+│                │  ║  │    Doctor          │       │                     │       ║  │
+│                │  ║  │  • Jane Nurse      │       │                     │       ║  │
+│                │  ║  │    Nurse           │       │                     │       ║  │
+│                │  ║  └────────────────────┘       └─────────────────────┘       ║  │
+│                │  ║                                                               ║  │
+│                │  ╚═══════════════════════════════════════════════════════════════╝  │
+│                │                                                                       │
+│                │  ╔═══════════════════════════════════════════════════════════════╗  │
+│                │  ║               SYSTEM HEALTH (4 Columns)                      ║  │
+│                │  ╠═══════════════════════════════════════════════════════════════╣  │
+│                │  ║                                                               ║  │
+│                │  ║  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐    ║  │
+│                │  ║  │✅ API    │  │✅ DB     │  │✅ Uptime │  │⚡ Perf   │    ║  │
+│                │  ║  │100% ████ │  │98%  ███  │  │99.9% ███ │  │95%  ███  │    ║  │
+│                │  ║  └──────────┘  └──────────┘  └──────────┘  └──────────┘    ║  │
+│                │  ║                                                               ║  │
+│                │  ╚═══════════════════════════════════════════════════════════════╝  │
+│                │                                                                       │
+│                │  ╔═══════════════════════════════════════════════════════════════╗  │
+│                │  ║            MANAGEMENT SECTIONS (2x2 Grid)                    ║  │
+│                │  ╠═══════════════════════════════════════════════════════════════╣  │
+│                │  ║                                                               ║  │
+│                │  ║  ┌─────────────────────┐    ┌─────────────────────┐         ║  │
+│                │  ║  │🏥 Doctors Mgmt      │    │🩺 Nurses Mgmt       │         ║  │
+│                │  ║  │   25 doctors        │    │   20 nurses         │         ║  │
+│                │  ║  └─────────────────────┘    └─────────────────────┘         ║  │
+│                │  ║                                                               ║  │
+│                │  ║  ┌─────────────────────┐    ┌─────────────────────┐         ║  │
+│                │  ║  │👤 Patients Mgmt     │    │🔔 Notifications     │         ║  │
+│                │  ║  │   100 patients      │    │   Send announcements│         ║  │
+│                │  ║  └─────────────────────┘    └─────────────────────┘         ║  │
+│                │  ║                                                               ║  │
+│                │  ╚═══════════════════════════════════════════════════════════════╝  │
+│                │                                                                       │
+└────────────────┴───────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│                             KEY FEATURES & CAPABILITIES                              │
+├─────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                       │
+│  ✅ Real-time Statistics        ✅ User Management          ✅ Role-based Access     │
+│  ✅ Quick Action Navigation     ✅ System Health Monitor    ✅ Responsive Design     │
+│  ✅ Recent Activity Feed        ✅ Appointment Tracking     ✅ Error Handling        │
+│  ✅ Manual Refresh Button       ✅ Loading States           ✅ Smooth Animations     │
+│  ✅ Color-coded UI Elements     ✅ Intuitive Navigation     ✅ TypeScript Safe       │
+│                                                                                       │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│                                  NAVIGATION TREE                                     │
+├─────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                       │
+│  /dashboard (Admin)                                                                  │
+│  ├── Overview ★ (Main Dashboard)                                                    │
+│  ├── /admin/users           → User Management (Search, Filter, Paginate)           │
+│  ├── /admin/doctors         → Doctors Management (Profiles, Specializations)       │
+│  ├── /admin/nurses          → Nurses Management (Departments, Licenses)            │
+│  ├── /admin/patients        → Patients Management (Records, IDs)                   │
+│  ├── /admin/analytics       → Analytics & Reports (Charts, Trends)                 │
+│  ├── /admin/audit-logs      → Audit Logs (Activity Tracking)                       │
+│  ├── /admin/settings        → System Settings (Config, Notifications)              │
+│  ├── /admin/database        → Database Management (Backup, Restore)                │
+│  ├── /admin/notifications   → Notifications Center (Broadcasts)                    │
+│  └── /admin/security        → Security Dashboard (Firewall, Logs)                  │
+│                                                                                       │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│                                API ENDPOINTS STATUS                                  │
+├─────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                       │
+│  ✅ GET  /api/admin/stats           → Dashboard statistics                          │
+│  ✅ GET  /api/admin/users           → User list with filters & pagination           │
+│  ✅ GET  /api/admin/audit-logs      → Activity logs with search                     │
+│  ✅ GET  /api/doctors               → Doctors list                                   │
+│  ✅ GET  /api/patients              → Patients list                                  │
+│  ✅ GET  /api/appointments          → Appointments list                              │
+│  ✅ GET  /api/prescriptions         → Prescriptions list                             │
+│                                                                                       │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│                              SECURITY & PERMISSIONS                                  │
+├─────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                       │
+│  🔒 Authentication:  Next-Auth with session management                              │
+│  🔒 Authorization:   UserRole.ADMIN & UserRole.MAIN_ADMIN only                      │
+│  🔒 API Protection:  Server-side session validation on every request                │
+│  🔒 Data Security:   No sensitive data in client components                         │
+│  🔒 Auto Redirect:   Unauthorized users redirected to /login                        │
+│                                                                                       │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+
+                              STATUS: ✅ FULLY OPERATIONAL
+                              Server: http://localhost:3002
+                              Last Updated: December 18, 2025

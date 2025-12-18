@@ -6,7 +6,6 @@ import PrescriptionDetailPage from '@/components/dashboard/prescription-detail-p
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-
 export default async function PrescriptionDetail({
   params,
 }: {
@@ -71,7 +70,9 @@ export default async function PrescriptionDetail({
       redirect('/dashboard/prescriptions');
     }
 
-    return <PrescriptionDetailPage prescription={prescription} userRole="DOCTOR" />;
+    return (
+      <PrescriptionDetailPage prescription={prescription} userRole="DOCTOR" />
+    );
   }
 
   // For patients
@@ -125,7 +126,9 @@ export default async function PrescriptionDetail({
       redirect('/dashboard/prescriptions');
     }
 
-    return <PrescriptionDetailPage prescription={prescription} userRole="PATIENT" />;
+    return (
+      <PrescriptionDetailPage prescription={prescription} userRole="PATIENT" />
+    );
   }
 
   redirect('/login');

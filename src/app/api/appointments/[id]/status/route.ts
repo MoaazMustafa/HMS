@@ -8,7 +8,7 @@ import { prisma } from '@/lib/prisma';
 // PATCH /api/appointments/[id]/status - Update appointment status
 export async function PATCH(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -54,14 +54,17 @@ export async function PATCH(
     });
 
     if (!appointment) {
-      return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Appointment not found' },
+        { status: 404 },
+      );
     }
 
     // Authorization check - only doctor can update status
     if (session.user.role !== UserRole.DOCTOR) {
       return NextResponse.json(
         { error: 'Only doctors can update appointment status' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -73,7 +76,7 @@ export async function PATCH(
     if (!doctor || appointment.doctorId !== doctor.id) {
       return NextResponse.json(
         { error: 'You can only update your own appointments' },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -82,8 +85,10 @@ export async function PATCH(
     const finalStatuses = ['COMPLETED', 'CANCELLED', 'NO_SHOW'];
     if (finalStatuses.includes(appointment.status)) {
       return NextResponse.json(
-        { error: `Cannot update appointment that is already ${appointment.status.toLowerCase()}` },
-        { status: 400 }
+        {
+          error: `Cannot update appointment that is already ${appointment.status.toLowerCase()}`,
+        },
+        { status: 400 },
       );
     }
 
@@ -91,15 +96,22 @@ export async function PATCH(
     const appointmentDateTime = new Date(appointment.scheduledDate);
     const [hours, minutes] = appointment.endTime.split(':');
     appointmentDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
-    
+
     const now = new Date();
     const isPastAppointment = now > appointmentDateTime;
 
     // Only restrict time-based updates for marking as NO_SHOW or similar
-    if (isPastAppointment && !appointment.canUpdateStatus && !finalStatuses.includes(status)) {
+    if (
+      isPastAppointment &&
+      !appointment.canUpdateStatus &&
+      !finalStatuses.includes(status)
+    ) {
       return NextResponse.json(
-        { error: 'This appointment time has passed. You can only mark it as completed or no-show.' },
-        { status: 400 }
+        {
+          error:
+            'This appointment time has passed. You can only mark it as completed or no-show.',
+        },
+        { status: 400 },
       );
     }
 
@@ -140,7 +152,7 @@ export async function PATCH(
     // Auto-assign patient to doctor when appointment is completed
     // Check if patient already has an active assignment with this doctor
     const hasActiveAssignment = appointment.patient.activeAssignments.some(
-      (assignment) => assignment.doctorId === appointment.doctorId
+      (assignment) => assignment.doctorId === appointment.doctorId,
     );
 
     if (status === 'COMPLETED' && !hasActiveAssignment) {
@@ -169,6 +181,9 @@ export async function PATCH(
       // eslint-disable-next-line no-console
       console.error('Error updating appointment status:', error.message);
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }

@@ -48,7 +48,9 @@ export default function ForgotPasswordPage() {
       setSuccess(true);
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : 'An error occurred. Please try again.';
+        err instanceof Error
+          ? err.message
+          : 'An error occurred. Please try again.';
       setError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -58,9 +60,9 @@ export default function ForgotPasswordPage() {
   // Show loading while checking session
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="bg-background flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <Activity className="w-12 h-12 text-primary animate-pulse mx-auto mb-4" />
+          <Activity className="text-primary mx-auto mb-4 h-12 w-12 animate-pulse" />
           <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
@@ -73,7 +75,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4 py-12">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(172,236,0,0.05),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(172,236,0,0.05),transparent_50%)]" />
 
@@ -81,22 +83,25 @@ export default function ForgotPasswordPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md relative z-10"
+        className="relative z-10 w-full max-w-md"
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center justify-center mb-8">
-          <Activity className="w-10 h-10 text-primary" />
-          <span className="ml-2 text-2xl font-bold bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+        <Link href="/" className="mb-8 flex items-center justify-center">
+          <Activity className="text-primary h-10 w-10" />
+          <span className="from-primary to-primary/70 ml-2 bg-linear-to-r bg-clip-text text-2xl font-bold text-transparent">
             HMS
           </span>
         </Link>
 
         {/* Forgot Password Card */}
-        <div className="bg-card backdrop-blur-xl border border-border rounded-2xl p-8 shadow-2xl">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Reset Password</h1>
+        <div className="bg-card border-border rounded-2xl border p-8 shadow-2xl backdrop-blur-xl">
+          <div className="mb-8 text-center">
+            <h1 className="text-foreground mb-2 text-3xl font-bold">
+              Reset Password
+            </h1>
             <p className="text-muted-foreground">
-              Enter your email and we&apos;ll send you a link to reset your password
+              Enter your email and we&apos;ll send you a link to reset your
+              password
             </p>
           </div>
 
@@ -104,18 +109,21 @@ export default function ForgotPasswordPage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-8"
+              className="py-8 text-center"
             >
-              <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Mail className="w-8 h-8 text-green-500" />
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500/10">
+                <Mail className="h-8 w-8 text-green-500" />
               </div>
-              <h2 className="text-xl font-semibold text-foreground mb-2">Check your email</h2>
+              <h2 className="text-foreground mb-2 text-xl font-semibold">
+                Check your email
+              </h2>
               <p className="text-muted-foreground mb-6">
-                We&apos;ve sent a password reset link to <strong>{email}</strong>
+                We&apos;ve sent a password reset link to{' '}
+                <strong>{email}</strong>
               </p>
               <Link href="/login">
                 <Button variant="outline" className="gap-2">
-                  <ArrowLeft className="w-4 h-4" />
+                  <ArrowLeft className="h-4 w-4" />
                   Back to Login
                 </Button>
               </Link>
@@ -126,7 +134,7 @@ export default function ForgotPasswordPage() {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm"
+                  className="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-500"
                 >
                   {error}
                 </motion.div>
@@ -137,19 +145,19 @@ export default function ForgotPasswordPage() {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-foreground mb-2"
+                    className="text-foreground mb-2 block text-sm font-medium"
                   >
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Mail className="text-muted-foreground absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                     <input
                       id="email"
                       name="email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-muted border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                      className="bg-muted border-border text-foreground placeholder:text-muted-foreground focus:ring-primary/50 focus:border-primary w-full rounded-lg border py-3 pr-4 pl-11 transition-colors focus:ring-2 focus:outline-none"
                       placeholder="you@example.com"
                       required
                       disabled={isLoading}
@@ -158,7 +166,11 @@ export default function ForgotPasswordPage() {
                 </div>
 
                 {/* Submit Button */}
-                <Button type="submit" disabled={isLoading} className="w-full h-12 text-base font-semibold">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="h-12 w-full text-base font-semibold"
+                >
                   {isLoading ? 'Sending...' : 'Send Reset Link'}
                 </Button>
               </form>
@@ -167,9 +179,9 @@ export default function ForgotPasswordPage() {
               <div className="mt-6 text-center">
                 <Link
                   href="/login"
-                  className="text-muted-foreground hover:text-foreground text-sm transition-colors inline-flex items-center gap-2"
+                  className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors"
                 >
-                  <ArrowLeft className="w-4 h-4" />
+                  <ArrowLeft className="h-4 w-4" />
                   Back to Login
                 </Link>
               </div>
@@ -178,7 +190,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-muted-foreground text-sm mt-8">
+        <p className="text-muted-foreground mt-8 text-center text-sm">
           © 2025 HMS. All rights reserved.
         </p>
       </motion.div>

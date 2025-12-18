@@ -27,6 +27,7 @@ const patientMenuItems = [
     href: '/dashboard/medical-records',
     icon: FileText,
   },
+  { name: 'Health Records', href: '/dashboard/health-records', icon: Activity },
   { name: 'Prescriptions', href: '/dashboard/prescriptions', icon: Pill },
   { name: 'Lab Results', href: '/dashboard/lab-results', icon: FlaskConical },
   { name: 'Profile', href: '/dashboard/profile', icon: User },

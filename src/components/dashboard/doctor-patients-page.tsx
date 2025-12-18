@@ -50,7 +50,9 @@ export function DoctorPatientsPage() {
   const [patients, setPatients] = useState<PatientData[]>([]);
   const [filteredPatients, setFilteredPatients] = useState<PatientData[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'ALL' | 'ACTIVE' | 'INACTIVE'>('ACTIVE');
+  const [statusFilter, setStatusFilter] = useState<
+    'ALL' | 'ACTIVE' | 'INACTIVE'
+  >('ACTIVE');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -77,7 +79,7 @@ export function DoctorPatientsPage() {
             p.patientId.toLowerCase().includes(query) ||
             p.user.name?.toLowerCase().includes(query) ||
             p.user.email.toLowerCase().includes(query) ||
-            p.user.phoneNumber?.includes(query)
+            p.user.phoneNumber?.includes(query),
         );
       }
 
@@ -132,7 +134,10 @@ export function DoctorPatientsPage() {
     const birthDate = new Date(dateOfBirth);
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
     return age;
@@ -148,21 +153,21 @@ export function DoctorPatientsPage() {
         </div>
 
         {/* Stats Cards Skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {[...Array(3)].map((_, i) => (
             <Skeleton key={i} className="h-24" />
           ))}
         </div>
 
         {/* Search and Filter Skeleton */}
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col gap-4 md:flex-row">
           <Skeleton className="h-10 flex-1" />
           <Skeleton className="h-10 w-40" />
           <Skeleton className="h-10 w-32" />
         </div>
 
         {/* Patients List Skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(6)].map((_, i) => (
             <Skeleton key={i} className="h-64" />
           ))}
@@ -175,95 +180,105 @@ export function DoctorPatientsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">My Patients</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <h1 className="text-foreground text-2xl font-bold">My Patients</h1>
+        <p className="text-muted-foreground mt-1 text-sm">
           Search and manage your assigned patients
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-          <p className="text-sm text-destructive">{error}</p>
+        <div className="bg-destructive/10 border-destructive/20 rounded-lg border p-4">
+          <p className="text-destructive text-sm">{error}</p>
         </div>
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-card border border-border rounded-lg p-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="bg-card border-border rounded-lg border p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-              <Users className="w-5 h-5 text-blue-500" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-blue-500/20 bg-blue-500/10">
+              <Users className="h-5 w-5 text-blue-500" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">{patients.length}</p>
-              <p className="text-xs text-muted-foreground">Total Patients</p>
+              <p className="text-foreground text-2xl font-bold">
+                {patients.length}
+              </p>
+              <p className="text-muted-foreground text-xs">Total Patients</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-lg p-4">
+        <div className="bg-card border-border rounded-lg border p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
-              <UserCheck className="w-5 h-5 text-green-500" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-green-500/20 bg-green-500/10">
+              <UserCheck className="h-5 w-5 text-green-500" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">
-                {patients.filter((p) => p.assignment.status === 'ACTIVE').length}
+              <p className="text-foreground text-2xl font-bold">
+                {
+                  patients.filter((p) => p.assignment.status === 'ACTIVE')
+                    .length
+                }
               </p>
-              <p className="text-xs text-muted-foreground">Active Patients</p>
+              <p className="text-muted-foreground text-xs">Active Patients</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-card border border-border rounded-lg p-4">
+        <div className="bg-card border-border rounded-lg border p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
-              <UserX className="w-5 h-5 text-orange-500" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-orange-500/20 bg-orange-500/10">
+              <UserX className="h-5 w-5 text-orange-500" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">
-                {patients.filter((p) => p.assignment.status === 'INACTIVE').length}
+              <p className="text-foreground text-2xl font-bold">
+                {
+                  patients.filter((p) => p.assignment.status === 'INACTIVE')
+                    .length
+                }
               </p>
-              <p className="text-xs text-muted-foreground">Inactive Patients</p>
+              <p className="text-muted-foreground text-xs">Inactive Patients</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Search and Filter */}
-      <div className="bg-card border border-border rounded-lg p-4">
-        <div className="flex flex-col md:flex-row gap-4">
+      <div className="bg-card border-border rounded-lg border p-4">
+        <div className="flex flex-col gap-4 md:flex-row">
           {/* Search Bar */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <div className="relative flex-1">
+            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by Patient ID, name, email, or phone..."
               value={searchQuery}
               onChange={handleSearch}
-              className="w-full pl-10 pr-10 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="bg-background border-border text-foreground focus:ring-primary w-full rounded-md border py-2 pr-10 pl-10 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
             />
             {searchQuery && (
               <button
                 onClick={clearSearch}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
               </button>
             )}
             {searching && (
-              <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
+              <Loader2 className="text-muted-foreground absolute top-1/2 right-10 h-4 w-4 -translate-y-1/2 animate-spin" />
             )}
           </div>
 
           {/* Status Filter */}
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-muted-foreground" />
+            <Filter className="text-muted-foreground h-4 w-4" />
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as 'ALL' | 'ACTIVE' | 'INACTIVE')}
-              className="px-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              onChange={(e) =>
+                setStatusFilter(e.target.value as 'ALL' | 'ACTIVE' | 'INACTIVE')
+              }
+              className="bg-background border-border text-foreground focus:ring-primary rounded-md border px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
             >
               <option value="ALL">All Status</option>
               <option value="ACTIVE">Active Only</option>
@@ -272,40 +287,42 @@ export function DoctorPatientsPage() {
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground mt-3">
+        <p className="text-muted-foreground mt-3 text-xs">
           Showing {filteredPatients.length} of {patients.length} patients
         </p>
       </div>
 
       {/* Patients List */}
-      <div className="bg-card border border-border rounded-lg">
+      <div className="bg-card border-border rounded-lg border">
         {filteredPatients.length === 0 ? (
           <div className="p-8 text-center">
-            <Users className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
-            <p className="text-sm text-muted-foreground">
-              {searchQuery ? 'No patients found matching your search' : 'No patients assigned yet'}
+            <Users className="text-muted-foreground mx-auto mb-3 h-12 w-12 opacity-50" />
+            <p className="text-muted-foreground text-sm">
+              {searchQuery
+                ? 'No patients found matching your search'
+                : 'No patients assigned yet'}
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-border">
+          <div className="divide-border divide-y">
             {filteredPatients.map((patient) => (
               <div
                 key={patient.id}
-                className="p-4 hover:bg-accent/50 transition-colors cursor-pointer"
+                className="hover:bg-accent/50 cursor-pointer p-4 transition-colors"
               >
                 <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-4 flex-1">
+                  <div className="flex flex-1 items-start gap-4">
                     {/* Avatar */}
-                    <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                      <span className="text-sm font-semibold text-primary">
+                    <div className="bg-primary/10 border-primary/20 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border">
+                      <span className="text-primary text-sm font-semibold">
                         {patient.user.name?.charAt(0).toUpperCase() || 'P'}
                       </span>
                     </div>
 
                     {/* Patient Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-sm font-semibold text-foreground">
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-2 flex items-center gap-2">
+                        <h3 className="text-foreground text-sm font-semibold">
                           {patient.user.name || 'Unnamed Patient'}
                         </h3>
                         <Badge variant="outline" className="text-[10px]">
@@ -313,7 +330,9 @@ export function DoctorPatientsPage() {
                         </Badge>
                         <Badge
                           variant={
-                            patient.assignment.status === 'ACTIVE' ? 'default' : 'secondary'
+                            patient.assignment.status === 'ACTIVE'
+                              ? 'default'
+                              : 'secondary'
                           }
                           className="text-[10px]"
                         >
@@ -321,33 +340,39 @@ export function DoctorPatientsPage() {
                         </Badge>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+                      <div className="mb-2 grid grid-cols-1 gap-2 md:grid-cols-2">
                         {patient.user.email && (
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <Mail className="w-3.5 h-3.5" />
-                            <span className="truncate">{patient.user.email}</span>
+                          <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                            <Mail className="h-3.5 w-3.5" />
+                            <span className="truncate">
+                              {patient.user.email}
+                            </span>
                           </div>
                         )}
                         {patient.user.phoneNumber && (
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <Phone className="w-3.5 h-3.5" />
+                          <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                            <Phone className="h-3.5 w-3.5" />
                             <span>{patient.user.phoneNumber}</span>
                           </div>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <div className="text-muted-foreground flex items-center gap-4 text-xs">
                         {patient.dateOfBirth && (
                           <span>Age: {calculateAge(patient.dateOfBirth)}</span>
                         )}
-                        {patient.gender && <span>Gender: {patient.gender}</span>}
-                        {patient.bloodType && <span>Blood: {patient.bloodType}</span>}
+                        {patient.gender && (
+                          <span>Gender: {patient.gender}</span>
+                        )}
+                        {patient.bloodType && (
+                          <span>Blood: {patient.bloodType}</span>
+                        )}
                       </div>
 
                       {/* Stats */}
-                      <div className="flex items-center gap-4 mt-3">
+                      <div className="mt-3 flex items-center gap-4">
                         <div className="flex items-center gap-1.5 text-xs">
-                          <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
+                          <Calendar className="text-muted-foreground h-3.5 w-3.5" />
                           <span className="text-muted-foreground">
                             {patient._count.appointments} appointments
                           </span>
@@ -364,17 +389,17 @@ export function DoctorPatientsPage() {
                         </div>
                       </div>
 
-                      <p className="text-[10px] text-muted-foreground mt-2">
+                      <p className="text-muted-foreground mt-2 text-[10px]">
                         Assigned: {formatDate(patient.assignment.assignedAt)}
                       </p>
                     </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-2 ml-4">
+                  <div className="ml-4 flex items-center gap-2">
                     <Link href={`/dashboard/patients/${patient.id}`}>
                       <Button variant="outline" size="sm" className="h-8">
-                        <Eye className="w-3.5 h-3.5 mr-1.5" />
+                        <Eye className="mr-1.5 h-3.5 w-3.5" />
                         View
                       </Button>
                     </Link>
@@ -387,11 +412,14 @@ export function DoctorPatientsPage() {
       </div>
 
       {/* Load More (if needed for pagination) */}
-      {filteredPatients.length > 0 && filteredPatients.length === patients.length && (
-        <div className="text-center">
-          <p className="text-xs text-muted-foreground">All patients displayed</p>
-        </div>
-      )}
+      {filteredPatients.length > 0 &&
+        filteredPatients.length === patients.length && (
+          <div className="text-center">
+            <p className="text-muted-foreground text-xs">
+              All patients displayed
+            </p>
+          </div>
+        )}
     </div>
   );
 }

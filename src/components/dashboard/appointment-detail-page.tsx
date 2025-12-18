@@ -1,6 +1,13 @@
 'use client';
 
-import type { Appointment, Billing, Doctor, Patient, User, UserRole } from '@prisma/client';
+import type {
+  Appointment,
+  Billing,
+  Doctor,
+  Patient,
+  User,
+  UserRole,
+} from '@prisma/client';
 import {
   ArrowLeft,
   Calendar,
@@ -20,7 +27,13 @@ import { useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -65,11 +78,14 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
     setSuccess(null);
 
     try {
-      const response = await fetch(`/api/appointments/${appointment.id}/status`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status }),
-      });
+      const response = await fetch(
+        `/api/appointments/${appointment.id}/status`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status }),
+        },
+      );
 
       const result = await response.json();
 
@@ -93,7 +109,10 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
   const getStatusBadge = (statusValue: string) => {
     const statusMap: Record<
       string,
-      { variant: 'default' | 'secondary' | 'destructive' | 'outline'; icon: typeof CheckCircle2 }
+      {
+        variant: 'default' | 'secondary' | 'destructive' | 'outline';
+        icon: typeof CheckCircle2;
+      }
     > = {
       SCHEDULED: { variant: 'default', icon: Clock },
       CONFIRMED: { variant: 'default', icon: CheckCircle2 },
@@ -102,12 +121,15 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
       NO_SHOW: { variant: 'destructive', icon: AlertCircle },
     };
 
-    const statusInfo = statusMap[statusValue] || { variant: 'outline' as const, icon: AlertCircle };
+    const statusInfo = statusMap[statusValue] || {
+      variant: 'outline' as const,
+      icon: AlertCircle,
+    };
     const StatusIcon = statusInfo.icon;
 
     return (
       <Badge variant={statusInfo.variant} className="text-xs">
-        <StatusIcon className="w-3.5 h-3.5 mr-1.5" />
+        <StatusIcon className="mr-1.5 h-3.5 w-3.5" />
         {statusValue.replace('_', ' ')}
       </Badge>
     );
@@ -133,12 +155,14 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
         <div className="flex items-center gap-4">
           <Link href="/dashboard/appointments">
             <Button variant="outline" size="icon">
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Appointment Details</h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h1 className="text-foreground text-2xl font-bold">
+              Appointment Details
+            </h1>
+            <p className="text-muted-foreground mt-1 text-sm">
               Appointment ID: {appointment.appointmentId}
             </p>
           </div>
@@ -148,75 +172,87 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
 
       {/* Success/Error Messages */}
       {success && (
-        <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
-          <p className="text-sm text-green-600 dark:text-green-400">{success}</p>
+        <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-4">
+          <p className="text-sm text-green-600 dark:text-green-400">
+            {success}
+          </p>
         </div>
       )}
 
       {error && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-          <p className="text-sm text-destructive">{error}</p>
+        <div className="bg-destructive/10 border-destructive/20 rounded-lg border p-4">
+          <p className="text-destructive text-sm">{error}</p>
         </div>
       )}
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid gap-6 md:grid-cols-2">
         {/* Appointment Information */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-primary" />
+              <Calendar className="text-primary h-5 w-5" />
               Appointment Information
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Date</p>
+              <p className="text-muted-foreground mb-1 text-sm">Date</p>
               <p className="text-foreground font-medium">
-                {new Date(appointment.scheduledDate).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {new Date(appointment.scheduledDate).toLocaleDateString(
+                  'en-US',
+                  {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  },
+                )}
               </p>
             </div>
 
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Time</p>
+              <p className="text-muted-foreground mb-1 text-sm">Time</p>
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-muted-foreground" />
+                <Clock className="text-muted-foreground h-4 w-4" />
                 <p className="text-foreground font-medium">
-                  {formatTime(appointment.startTime)} - {formatTime(appointment.endTime)}
+                  {formatTime(appointment.startTime)} -{' '}
+                  {formatTime(appointment.endTime)}
                 </p>
-                <span className="text-xs text-muted-foreground">({appointment.duration} min)</span>
+                <span className="text-muted-foreground text-xs">
+                  ({appointment.duration} min)
+                </span>
               </div>
             </div>
 
             {appointment.type && (
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Type</p>
+                <p className="text-muted-foreground mb-1 text-sm">Type</p>
                 <p className="text-foreground">{appointment.type}</p>
               </div>
             )}
 
             {appointment.reason && (
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Reason for Visit</p>
+                <p className="text-muted-foreground mb-1 text-sm">
+                  Reason for Visit
+                </p>
                 <p className="text-foreground">{appointment.reason}</p>
               </div>
             )}
 
             {appointment.notes && (
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Notes</p>
+                <p className="text-muted-foreground mb-1 text-sm">Notes</p>
                 <p className="text-foreground text-sm">{appointment.notes}</p>
               </div>
             )}
 
             {/* Status Update (Doctor Only) */}
             {canUpdateStatus && (
-              <div className="pt-4 border-t border-border">
-                <p className="text-sm font-medium text-foreground mb-3">Update Status</p>
+              <div className="border-border border-t pt-4">
+                <p className="text-foreground mb-3 text-sm font-medium">
+                  Update Status
+                </p>
                 <div className="flex gap-2">
                   <Select
                     value={status}
@@ -229,7 +265,7 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
                           | 'COMPLETED'
                           | 'CANCELLED'
                           | 'NO_SHOW'
-                          | 'DECLINED'
+                          | 'DECLINED',
                       )
                     }
                   >
@@ -248,7 +284,11 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
                     onClick={handleStatusUpdate}
                     disabled={updating || status === appointment.status}
                   >
-                    {updating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Update'}
+                    {updating ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      'Update'
+                    )}
                   </Button>
                 </div>
               </div>
@@ -260,7 +300,7 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <UserIcon className="w-5 h-5 text-primary" />
+              <UserIcon className="text-primary h-5 w-5" />
               {isDoctor ? 'Patient Information' : 'Doctor Information'}
             </CardTitle>
           </CardHeader>
@@ -268,32 +308,38 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
             {isDoctor ? (
               <>
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Patient Name</p>
+                  <p className="text-muted-foreground mb-1 text-sm">
+                    Patient Name
+                  </p>
                   <p className="text-foreground font-medium">
                     {appointment.patient.user.name || 'Unnamed Patient'}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Patient ID</p>
+                  <p className="text-muted-foreground mb-1 text-sm">
+                    Patient ID
+                  </p>
                   <Badge variant="outline" className="text-xs">
                     {appointment.patient.patientId}
                   </Badge>
                 </div>
 
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Email</p>
+                  <p className="text-muted-foreground mb-1 text-sm">Email</p>
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-muted-foreground" />
-                    <p className="text-foreground text-sm">{appointment.patient.user.email}</p>
+                    <Mail className="text-muted-foreground h-4 w-4" />
+                    <p className="text-foreground text-sm">
+                      {appointment.patient.user.email}
+                    </p>
                   </div>
                 </div>
 
                 {appointment.patient.user.phoneNumber && (
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Phone</p>
+                    <p className="text-muted-foreground mb-1 text-sm">Phone</p>
                     <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-muted-foreground" />
+                      <Phone className="text-muted-foreground h-4 w-4" />
                       <p className="text-foreground text-sm">
                         {appointment.patient.user.phoneNumber}
                       </p>
@@ -301,7 +347,7 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
                   </div>
                 )}
 
-                <div className="pt-4 border-t border-border">
+                <div className="border-border border-t pt-4">
                   <Link href={`/dashboard/patients/${appointment.patient.id}`}>
                     <Button variant="outline" size="sm" className="w-full">
                       View Full Patient Profile
@@ -312,32 +358,41 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
             ) : (
               <>
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Doctor Name</p>
+                  <p className="text-muted-foreground mb-1 text-sm">
+                    Doctor Name
+                  </p>
                   <p className="text-foreground font-medium">
-                    Dr. {appointment.doctor.firstName} {appointment.doctor.lastName}
+                    Dr. {appointment.doctor.firstName}{' '}
+                    {appointment.doctor.lastName}
                   </p>
                 </div>
 
                 {appointment.doctor.specialization && (
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Specialization</p>
-                    <p className="text-foreground">{appointment.doctor.specialization}</p>
+                    <p className="text-muted-foreground mb-1 text-sm">
+                      Specialization
+                    </p>
+                    <p className="text-foreground">
+                      {appointment.doctor.specialization}
+                    </p>
                   </div>
                 )}
 
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Email</p>
+                  <p className="text-muted-foreground mb-1 text-sm">Email</p>
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-muted-foreground" />
-                    <p className="text-foreground text-sm">{appointment.doctor.user.email}</p>
+                    <Mail className="text-muted-foreground h-4 w-4" />
+                    <p className="text-foreground text-sm">
+                      {appointment.doctor.user.email}
+                    </p>
                   </div>
                 </div>
 
                 {appointment.doctor.user.phoneNumber && (
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Phone</p>
+                    <p className="text-muted-foreground mb-1 text-sm">Phone</p>
                     <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-muted-foreground" />
+                      <Phone className="text-muted-foreground h-4 w-4" />
                       <p className="text-foreground text-sm">
                         {appointment.doctor.user.phoneNumber}
                       </p>
@@ -353,18 +408,20 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-primary" />
+              <DollarSign className="text-primary h-5 w-5" />
               Billing Information
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Appointment Fee</p>
-              <p className="text-xl font-bold text-foreground">
+              <p className="text-muted-foreground mb-1 text-sm">
+                Appointment Fee
+              </p>
+              <p className="text-foreground text-xl font-bold">
                 {formatCurrency(
                   appointment.billing?.amount ||
                     appointment.customFee ||
-                    appointment.doctor.defaultAppointmentFee
+                    appointment.doctor.defaultAppointmentFee,
                 )}
               </p>
             </div>
@@ -372,14 +429,16 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
             {appointment.billing && (
               <>
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Payment Status</p>
+                  <p className="text-muted-foreground mb-1 text-sm">
+                    Payment Status
+                  </p>
                   <Badge
                     variant={
                       appointment.billing.status === 'COMPLETED'
                         ? 'default'
                         : appointment.billing.status === 'PENDING'
-                        ? 'outline'
-                        : 'destructive'
+                          ? 'outline'
+                          : 'destructive'
                     }
                     className="text-xs"
                   >
@@ -389,13 +448,18 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
 
                 {appointment.billing.paidAt && (
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Paid On</p>
+                    <p className="text-muted-foreground mb-1 text-sm">
+                      Paid On
+                    </p>
                     <p className="text-foreground text-sm">
-                      {new Date(appointment.billing.paidAt).toLocaleDateString('en-US', {
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
+                      {new Date(appointment.billing.paidAt).toLocaleDateString(
+                        'en-US',
+                        {
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        },
+                      )}
                     </p>
                   </div>
                 )}
@@ -408,7 +472,7 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <FileText className="w-5 h-5 text-primary" />
+              <FileText className="text-primary h-5 w-5" />
               Medical Record
             </CardTitle>
             <CardDescription>
@@ -417,13 +481,15 @@ export function AppointmentDetailPage({ appointment, userRole }: Props) {
           </CardHeader>
           <CardContent>
             {isDoctor && appointment.status === 'COMPLETED' ? (
-              <Link href={`/dashboard/medical-records/new?appointmentId=${appointment.id}`}>
+              <Link
+                href={`/dashboard/medical-records/new?appointmentId=${appointment.id}`}
+              >
                 <Button size="sm" className="w-full">
                   Create Medical Record
                 </Button>
               </Link>
             ) : (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-muted-foreground py-4 text-center text-sm">
                 {appointment.status === 'COMPLETED'
                   ? 'Medical record will be created by the doctor'
                   : 'Medical record will be available after appointment completion'}

@@ -33,6 +33,7 @@ const doctorMenuItems = [
     href: '/dashboard/medical-records',
     icon: FileText,
   },
+  { name: 'Vital Signs', href: '/dashboard/vital-signs', icon: Activity },
   { name: 'Prescriptions', href: '/dashboard/prescriptions', icon: Pill },
   { name: 'Lab Orders', href: '/dashboard/lab-orders', icon: FlaskConical },
   { name: 'Schedule', href: '/dashboard/schedule', icon: Settings },

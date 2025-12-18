@@ -45,7 +45,10 @@ export async function GET() {
       // eslint-disable-next-line no-console
       console.error('Error fetching doctor profile:', error.message);
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }
 
@@ -72,7 +75,10 @@ export async function PUT(request: Request) {
 
     // Validate required fields
     if (!firstName || !lastName || !phone) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 },
+      );
     }
 
     // Check if email is being changed and if it's already in use
@@ -82,7 +88,10 @@ export async function PUT(request: Request) {
       });
 
       if (existingUser && existingUser.id !== session.user.id) {
-        return NextResponse.json({ error: 'Email already in use' }, { status: 400 });
+        return NextResponse.json(
+          { error: 'Email already in use' },
+          { status: 400 },
+        );
       }
     }
 
@@ -109,7 +118,9 @@ export async function PUT(request: Request) {
           defaultAppointmentFee: defaultAppointmentFee
             ? parseFloat(defaultAppointmentFee)
             : undefined,
-          defaultSessionFee: defaultSessionFee ? parseFloat(defaultSessionFee) : undefined,
+          defaultSessionFee: defaultSessionFee
+            ? parseFloat(defaultSessionFee)
+            : undefined,
         },
         include: {
           user: {
@@ -140,6 +151,9 @@ export async function PUT(request: Request) {
       // eslint-disable-next-line no-console
       console.error('Error updating doctor profile:', error.message);
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }

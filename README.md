@@ -1,4 +1,4 @@
-# HMS - Health Management System 
+# HMS - Health Management System
 
 A comprehensive digital healthcare platform built with Next.js 15, TypeScript, Tailwind CSS, and Prisma ORM. HMS provides a complete solution for managing patients, prescriptions, appointments, medical records, and lab tests with HIPAA compliance and security as top priorities.
 
@@ -12,6 +12,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 ### Core Modules
 
 #### 👨‍⚕️ Patient Management
+
 - **Patient Registration & Profiles**: Complete demographic and medical information
 - **Patient ID Auto-generation**: Unique identifiers for each patient
 - **Search & Filter**: Advanced search by name, ID, email, or phone
@@ -19,6 +20,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 - **Profile Version Control**: Track changes to patient information
 
 #### 💊 Prescription Management
+
 - **E-Prescriptions**: Digital prescription creation and management
 - **Drug Interaction Checking**: Automatic detection of potential drug interactions
 - **Refill Management**: Track remaining refills and expiration dates
@@ -28,6 +30,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 - **Detail Views**: Comprehensive prescription information for doctors and patients
 
 #### 📅 Appointment Scheduling
+
 - **Smart Booking**: Intelligent appointment scheduling system
 - **Doctor Availability**: View and manage doctor schedules
 - **Status Management**: Scheduled, Confirmed, Completed, Cancelled, No-Show
@@ -36,6 +39,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 - **Detail Views**: Complete appointment information with update capabilities
 
 #### 📋 Medical Records (EHR)
+
 - **SOAP Format**: Subjective, Objective, Assessment, Plan notes
 - **ICD-10 Coding**: Standardized diagnosis codes
 - **Vital Signs Tracking**: Comprehensive health metrics
@@ -45,6 +49,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 - **Detail Views**: Full medical record display with SOAP notes and diagnoses
 
 #### 🧪 Lab Test Management
+
 - **Test Ordering**: Order laboratory tests for patients
 - **Status Tracking**: Ordered, Collected, In Progress, Completed, Cancelled
 - **Results Management**: Store and display test results
@@ -56,6 +61,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 ### User Roles & Permissions
 
 #### 🏥 Doctor Dashboard
+
 - Patient list with assignment management
 - Appointment calendar and scheduling
 - Prescription creation and management
@@ -65,6 +71,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 - Schedule management (availability, time slots)
 
 #### 👤 Patient Dashboard
+
 - Personal health overview
 - Appointment booking and management
 - Prescription viewing and refills
@@ -74,6 +81,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 - Profile management with password change
 
 ### Security & Compliance
+
 - **Multi-Factor Authentication**: Enhanced account security
 - **AES-256 Encryption**: Data encryption at rest
 - **RBAC**: Role-based access control
@@ -85,6 +93,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS 4
@@ -93,6 +102,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 - **UI Components**: Custom components following shadcn/ui patterns
 
 ### Backend
+
 - **Runtime**: Node.js
 - **Database**: PostgreSQL
 - **ORM**: Prisma
@@ -100,6 +110,7 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 - **API**: Next.js API Routes
 
 ### Development Tools
+
 - **Package Manager**: npm
 - **Linting**: ESLint
 - **Formatting**: Prettier
@@ -108,29 +119,34 @@ A comprehensive digital healthcare platform built with Next.js 15, TypeScript, T
 ## 📦 Installation
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - PostgreSQL 14+
 - npm or yarn
 
 ### Setup
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/MoaazMustafa/HMS.git
 cd HMS
 ```
 
 2. **Install dependencies**
+
 ```bash
 npm install
 ```
 
 3. **Set up environment variables**
+
 ```bash
 cp .env.example .env
 ```
 
 Edit `.env` and configure:
+
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/hms"
 NEXTAUTH_SECRET="your-secret-key"
@@ -138,6 +154,7 @@ NEXTAUTH_URL="http://localhost:3000"
 ```
 
 4. **Set up the database**
+
 ```bash
 # Generate Prisma Client
 npm run db:generate
@@ -150,6 +167,7 @@ npm run db:seed
 ```
 
 5. **Start the development server**
+
 ```bash
 npm run dev
 ```
@@ -193,6 +211,7 @@ HMS/
 ## 🚀 Available Scripts
 
 ### Development
+
 ```bash
 npm run dev          # Start development server with Turbopack
 npm run build        # Build for production
@@ -202,6 +221,7 @@ npm run format       # Format code with Prettier
 ```
 
 ### Database
+
 ```bash
 npm run db:generate  # Generate Prisma Client
 npm run db:push      # Push schema to database
@@ -211,6 +231,7 @@ npm run db:seed      # Seed the database
 ```
 
 ### Type Checking
+
 ```bash
 npm run type-check   # Run TypeScript compiler check
 ```
@@ -218,6 +239,7 @@ npm run type-check   # Run TypeScript compiler check
 ## 📱 Key Features by User Role
 
 ### Doctor Features
+
 - ✅ View and manage assigned patients
 - ✅ Create and update medical records with SOAP notes
 - ✅ Prescribe medications with drug interaction checks
@@ -228,6 +250,7 @@ npm run type-check   # Run TypeScript compiler check
 - ✅ Edit profile and manage availability
 
 ### Patient Features
+
 - ✅ View personal health dashboard
 - ✅ Book appointments with available doctors
 - ✅ View prescription details and refills
@@ -240,11 +263,13 @@ npm run type-check   # Run TypeScript compiler check
 ## 🔐 Authentication
 
 ### User Roles
+
 - **PATIENT**: Standard patient access
 - **DOCTOR**: Healthcare provider access
 - **ADMIN**: System administrator (future)
 
 ### Session Management
+
 - JWT-based authentication
 - Secure session storage
 - Automatic session refresh
@@ -253,6 +278,7 @@ npm run type-check   # Run TypeScript compiler check
 ## 📊 Database Schema
 
 ### Core Models
+
 - **User**: Authentication and base user data
 - **Patient**: Patient-specific information
 - **Doctor**: Doctor profiles and specializations
@@ -263,6 +289,7 @@ npm run type-check   # Run TypeScript compiler check
 - **Diagnosis**: ICD-10 coded diagnoses
 
 ### Relationships
+
 - One User → One Patient/Doctor
 - Many Patients → One Doctor (primary care)
 - Many Appointments → One Patient, One Doctor
@@ -273,11 +300,13 @@ npm run type-check   # Run TypeScript compiler check
 ## 🎨 Design System
 
 ### Color Palette
+
 - **Primary**: `#800000` (Lime Green) - Brand color for CTAs and highlights
 - **Dark Mode**: Full dark theme support
 - **Semantic Colors**: Success, Error, Warning, Info states
 
 ### Components
+
 - Consistent component library
 - Accessible by default (WCAG 2.1 AA)
 - Responsive design (mobile-first)
@@ -286,6 +315,7 @@ npm run type-check   # Run TypeScript compiler check
 ## 🔧 Configuration
 
 ### Environment Variables
+
 ```env
 # Database
 DATABASE_URL="postgresql://..."
@@ -324,12 +354,14 @@ npm run test:coverage
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 1. Push code to GitHub
 2. Import project in Vercel
 3. Configure environment variables
 4. Deploy automatically
 
 ### Docker (Alternative)
+
 ```bash
 docker build -t hms .
 docker run -p 3000:3000 hms
@@ -366,6 +398,7 @@ For support, email support@hms.example.com or open an issue in the repository.
 ## 🗺️ Roadmap
 
 ### Phase 1 (Current)
+
 - ✅ Core patient management
 - ✅ Prescription management with detail views
 - ✅ Appointment scheduling with updates
@@ -374,6 +407,7 @@ For support, email support@hms.example.com or open an issue in the repository.
 - ✅ Doctor and patient dashboards
 
 ### Phase 2 (Upcoming)
+
 - ⏳ Billing and payment integration
 - ⏳ Insurance claim processing
 - ⏳ Telemedicine video consultations
@@ -381,6 +415,7 @@ For support, email support@hms.example.com or open an issue in the repository.
 - ⏳ Mobile app (React Native)
 
 ### Phase 3 (Future)
+
 - ⏳ AI-powered diagnosis assistance
 - ⏳ Integration with external lab systems (HL7)
 - ⏳ Multi-language support

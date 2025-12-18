@@ -69,13 +69,29 @@ type Props = {
   immunizations: Immunization[];
 };
 
-export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }: Props) {
-  const [activeTab, setActiveTab] = useState<'records' | 'allergies' | 'immunizations'>('records');
+export function MedicalRecordsPage({
+  medicalRecords,
+  allergies,
+  immunizations,
+}: Props) {
+  const [activeTab, setActiveTab] = useState<
+    'records' | 'allergies' | 'immunizations'
+  >('records');
   const [searchQuery, setSearchQuery] = useState('');
 
   const tabs = [
-    { id: 'records' as const, label: 'Medical Records', icon: FileText, count: medicalRecords.length },
-    { id: 'allergies' as const, label: 'Allergies', icon: AlertTriangle, count: allergies.length },
+    {
+      id: 'records' as const,
+      label: 'Medical Records',
+      icon: FileText,
+      count: medicalRecords.length,
+    },
+    {
+      id: 'allergies' as const,
+      label: 'Allergies',
+      icon: AlertTriangle,
+      count: allergies.length,
+    },
     {
       id: 'immunizations' as const,
       label: 'Immunizations',
@@ -109,17 +125,19 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
             record.doctor.user.name.toLowerCase().includes(query) ||
             record.diagnoses.some(
               (d) =>
-                d.description.toLowerCase().includes(query) || d.icd10Code.toLowerCase().includes(query)
-            )
+                d.description.toLowerCase().includes(query) ||
+                d.icd10Code.toLowerCase().includes(query),
+            ),
         );
       case 'allergies':
         return allergies.filter(
           (allergy) =>
-            allergy.allergen.toLowerCase().includes(query) || allergy.type.toLowerCase().includes(query)
+            allergy.allergen.toLowerCase().includes(query) ||
+            allergy.type.toLowerCase().includes(query),
         );
       case 'immunizations':
         return immunizations.filter((immunization) =>
-          immunization.vaccineName.toLowerCase().includes(query)
+          immunization.vaccineName.toLowerCase().includes(query),
         );
       default:
         return [];
@@ -131,17 +149,21 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Medical Records</h1>
-          <p className="text-background-400">View your complete medical history and health information</p>
+          <h1 className="text-foreground mb-2 text-3xl font-bold">
+            Medical Records
+          </h1>
+          <p className="text-background-400">
+            View your complete medical history and health information
+          </p>
         </div>
-        <div className="p-4 bg-background-900/50 border border-background-800 rounded-lg">
-          <Shield className="w-6 h-6 text-primary mb-2" />
-          <p className="text-xs text-background-500">Read-only Access</p>
+        <div className="bg-background-900/50 border-background-800 rounded-lg border p-4">
+          <Shield className="text-primary mb-2 h-6 w-6" />
+          <p className="text-background-500 text-xs">Read-only Access</p>
         </div>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
         {tabs.map((tab, index) => {
           const Icon = tab.icon;
           return (
@@ -150,23 +172,25 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-4"
+              className="bg-background-900/50 border-background-800 rounded-lg border p-4 backdrop-blur-xl"
             >
-              <div className="flex items-center justify-between mb-2">
-                <Icon className="w-5 h-5 text-primary" />
-                <span className="text-2xl font-bold text-foreground">{tab.count}</span>
+              <div className="mb-2 flex items-center justify-between">
+                <Icon className="text-primary h-5 w-5" />
+                <span className="text-foreground text-2xl font-bold">
+                  {tab.count}
+                </span>
               </div>
-              <p className="text-sm text-background-400">{tab.label}</p>
+              <p className="text-background-400 text-sm">{tab.label}</p>
             </motion.div>
           );
         })}
       </div>
 
       {/* Tabs and Search */}
-      <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-4">
-        <div className="flex flex-col lg:flex-row gap-4">
+      <div className="bg-background-900/50 border-background-800 rounded-lg border p-4 backdrop-blur-xl">
+        <div className="flex flex-col gap-4 lg:flex-row">
           {/* Tabs */}
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex flex-wrap gap-2">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -176,13 +200,13 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                     setActiveTab(tab.id);
                     setSearchQuery('');
                   }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                  className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
                     activeTab === tab.id
                       ? 'bg-primary text-background'
                       : 'bg-background-800 text-background-400 hover:text-foreground'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="h-4 w-4" />
                   {tab.label}
                 </button>
               );
@@ -190,14 +214,14 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
           </div>
 
           {/* Search */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-background-500" />
+          <div className="relative flex-1">
+            <Search className="text-background-500 absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <input
               type="text"
               placeholder={`Search ${tabs.find((t) => t.id === activeTab)?.label.toLowerCase()}...`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-background-800 border border-background-700 rounded-lg text-foreground placeholder:text-background-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="bg-background-800 border-background-700 text-foreground placeholder:text-background-500 focus:ring-primary/50 w-full rounded-lg border py-2 pr-4 pl-10 focus:ring-2 focus:outline-none"
             />
           </div>
         </div>
@@ -209,9 +233,11 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
         {activeTab === 'records' && (
           <>
             {filteredData().length === 0 ? (
-              <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
-                <FileText className="w-12 h-12 text-background-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-foreground mb-2">No records found</h3>
+              <div className="bg-background-900/50 border-background-800 rounded-lg border p-12 text-center backdrop-blur-xl">
+                <FileText className="text-background-600 mx-auto mb-4 h-12 w-12" />
+                <h3 className="text-foreground mb-2 text-lg font-semibold">
+                  No records found
+                </h3>
                 <p className="text-background-400">
                   {searchQuery
                     ? 'Try adjusting your search criteria'
@@ -225,41 +251,44 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
+                  className="bg-background-900/50 border-background-800 rounded-lg border p-6 backdrop-blur-xl"
                 >
                   <div className="space-y-4">
                     {/* Header */}
                     <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3 flex-1">
-                        <FileText className="w-5 h-5 text-primary shrink-0 mt-1" />
+                      <div className="flex flex-1 items-start gap-3">
+                        <FileText className="text-primary mt-1 h-5 w-5 shrink-0" />
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="text-lg font-semibold text-foreground">
+                          <div className="mb-1 flex items-center gap-2">
+                            <h3 className="text-foreground text-lg font-semibold">
                               Record #{record.recordId}
                             </h3>
                             {record.isFinalized && (
-                              <span className="px-2 py-1 bg-green-500/20 text-green-500 border border-green-500/20 rounded text-xs font-medium">
-                                <CheckCircle className="w-3 h-3 inline mr-1" />
+                              <span className="rounded border border-green-500/20 bg-green-500/20 px-2 py-1 text-xs font-medium text-green-500">
+                                <CheckCircle className="mr-1 inline h-3 w-3" />
                                 Finalized
                               </span>
                             )}
                           </div>
-                          <div className="flex flex-wrap items-center gap-2 text-sm text-background-400">
+                          <div className="text-background-400 flex flex-wrap items-center gap-2 text-sm">
                             <span>Dr. {record.doctor.user.name}</span>
                             <span>•</span>
                             <span>
-                              {new Date(record.visitDate).toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric',
-                              })}
+                              {new Date(record.visitDate).toLocaleDateString(
+                                'en-US',
+                                {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                },
+                              )}
                             </span>
                           </div>
                         </div>
                       </div>
                       <Link href={`/dashboard/medical-records/${record.id}`}>
                         <Button variant="outline" size="sm" className="gap-2">
-                          <Eye className="w-4 h-4" />
+                          <Eye className="h-4 w-4" />
                           Details
                         </Button>
                       </Link>
@@ -267,25 +296,29 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
 
                     {/* Diagnoses */}
                     {record.diagnoses.length > 0 && (
-                      <div className="p-4 bg-background-800/50 rounded-lg">
-                        <h4 className="text-sm font-semibold text-primary mb-3">Diagnoses</h4>
+                      <div className="bg-background-800/50 rounded-lg p-4">
+                        <h4 className="text-primary mb-3 text-sm font-semibold">
+                          Diagnoses
+                        </h4>
                         <div className="space-y-2">
                           {record.diagnoses.map((diagnosis) => (
                             <div
                               key={diagnosis.id}
-                              className="flex items-start justify-between gap-4 p-3 bg-background-900/50 rounded"
+                              className="bg-background-900/50 flex items-start justify-between gap-4 rounded p-3"
                             >
                               <div className="flex-1">
-                                <p className="text-foreground font-medium">{diagnosis.description}</p>
-                                <p className="text-xs text-background-500 font-mono mt-1">
+                                <p className="text-foreground font-medium">
+                                  {diagnosis.description}
+                                </p>
+                                <p className="text-background-500 mt-1 font-mono text-xs">
                                   ICD-10: {diagnosis.icd10Code}
                                 </p>
                               </div>
                               <span
-                                className={`px-2 py-1 rounded text-xs font-medium border shrink-0 ${
+                                className={`shrink-0 rounded border px-2 py-1 text-xs font-medium ${
                                   diagnosis.isActive
-                                    ? 'bg-red-500/20 text-red-500 border-red-500/20'
-                                    : 'bg-green-500/20 text-green-500 border-green-500/20'
+                                    ? 'border-red-500/20 bg-red-500/20 text-red-500'
+                                    : 'border-green-500/20 bg-green-500/20 text-green-500'
                                 }`}
                               >
                                 {diagnosis.isActive ? 'Active' : 'Resolved'}
@@ -297,30 +330,49 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                     )}
 
                     {/* SOAP Notes */}
-                    {(record.chiefComplaint || record.physicalExam || record.assessment || record.plan) && (
-                      <div className="grid md:grid-cols-2 gap-4">
+                    {(record.chiefComplaint ||
+                      record.physicalExam ||
+                      record.assessment ||
+                      record.plan) && (
+                      <div className="grid gap-4 md:grid-cols-2">
                         {record.chiefComplaint && (
-                          <div className="p-4 bg-background-800/50 rounded-lg">
-                            <h4 className="text-sm font-semibold text-primary mb-2">S - Subjective</h4>
-                            <p className="text-sm text-background-300">{record.chiefComplaint}</p>
+                          <div className="bg-background-800/50 rounded-lg p-4">
+                            <h4 className="text-primary mb-2 text-sm font-semibold">
+                              S - Subjective
+                            </h4>
+                            <p className="text-background-300 text-sm">
+                              {record.chiefComplaint}
+                            </p>
                           </div>
                         )}
                         {record.physicalExam && (
-                          <div className="p-4 bg-background-800/50 rounded-lg">
-                            <h4 className="text-sm font-semibold text-primary mb-2">O - Objective</h4>
-                            <p className="text-sm text-background-300">{record.physicalExam}</p>
+                          <div className="bg-background-800/50 rounded-lg p-4">
+                            <h4 className="text-primary mb-2 text-sm font-semibold">
+                              O - Objective
+                            </h4>
+                            <p className="text-background-300 text-sm">
+                              {record.physicalExam}
+                            </p>
                           </div>
                         )}
                         {record.assessment && (
-                          <div className="p-4 bg-background-800/50 rounded-lg">
-                            <h4 className="text-sm font-semibold text-primary mb-2">A - Assessment</h4>
-                            <p className="text-sm text-background-300">{record.assessment}</p>
+                          <div className="bg-background-800/50 rounded-lg p-4">
+                            <h4 className="text-primary mb-2 text-sm font-semibold">
+                              A - Assessment
+                            </h4>
+                            <p className="text-background-300 text-sm">
+                              {record.assessment}
+                            </p>
                           </div>
                         )}
                         {record.plan && (
-                          <div className="p-4 bg-background-800/50 rounded-lg">
-                            <h4 className="text-sm font-semibold text-primary mb-2">P - Plan</h4>
-                            <p className="text-sm text-background-300">{record.plan}</p>
+                          <div className="bg-background-800/50 rounded-lg p-4">
+                            <h4 className="text-primary mb-2 text-sm font-semibold">
+                              P - Plan
+                            </h4>
+                            <p className="text-background-300 text-sm">
+                              {record.plan}
+                            </p>
                           </div>
                         )}
                       </div>
@@ -336,48 +388,55 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
         {activeTab === 'allergies' && (
           <>
             {allergies.length > 0 && (
-              <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3 mb-4">
-                <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+              <div className="mb-4 flex items-start gap-3 rounded-lg border border-red-500/20 bg-red-500/10 p-4">
+                <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
                 <div>
-                  <p className="text-sm font-semibold text-red-400 mb-1">
+                  <p className="mb-1 text-sm font-semibold text-red-400">
                     Active Allergies - Critical Information
                   </p>
                   <p className="text-xs text-red-400/80">
-                    Healthcare providers must review this list before prescribing medications or treatments.
+                    Healthcare providers must review this list before
+                    prescribing medications or treatments.
                   </p>
                 </div>
               </div>
             )}
             {filteredData().length === 0 ? (
-              <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
-                <AlertTriangle className="w-12 h-12 text-background-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-foreground mb-2">No allergies found</h3>
+              <div className="bg-background-900/50 border-background-800 rounded-lg border p-12 text-center backdrop-blur-xl">
+                <AlertTriangle className="text-background-600 mx-auto mb-4 h-12 w-12" />
+                <h3 className="text-foreground mb-2 text-lg font-semibold">
+                  No allergies found
+                </h3>
                 <p className="text-background-400">
-                  {searchQuery ? 'Try adjusting your search criteria' : 'No known allergies recorded'}
+                  {searchQuery
+                    ? 'Try adjusting your search criteria'
+                    : 'No known allergies recorded'}
                 </p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid gap-4 md:grid-cols-2">
                 {(filteredData() as Allergy[]).map((allergy, index) => (
                   <motion.div
                     key={allergy.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
+                    className="bg-background-900/50 border-background-800 rounded-lg border p-6 backdrop-blur-xl"
                   >
-                    <div className="flex items-start gap-3 mb-3">
-                      <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-1" />
+                    <div className="mb-3 flex items-start gap-3">
+                      <AlertTriangle className="mt-1 h-5 w-5 shrink-0 text-red-500" />
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-foreground mb-2">{allergy.allergen}</h3>
-                        <div className="flex flex-wrap items-center gap-2 mb-3">
-                          <span className="px-2 py-1 bg-background-800 text-background-300 rounded text-xs font-medium">
+                        <h3 className="text-foreground mb-2 text-lg font-semibold">
+                          {allergy.allergen}
+                        </h3>
+                        <div className="mb-3 flex flex-wrap items-center gap-2">
+                          <span className="bg-background-800 text-background-300 rounded px-2 py-1 text-xs font-medium">
                             {allergy.type}
                           </span>
                           {allergy.severity && (
                             <span
-                              className={`px-2 py-1 rounded text-xs font-medium border ${getSeverityColor(
-                                allergy.severity
+                              className={`rounded border px-2 py-1 text-xs font-medium ${getSeverityColor(
+                                allergy.severity,
                               )}`}
                             >
                               {allergy.severity}
@@ -385,22 +444,26 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                           )}
                         </div>
                         {allergy.reaction && (
-                          <p className="text-sm text-background-400 mb-2">
-                            <span className="font-semibold">Reaction:</span> {allergy.reaction}
+                          <p className="text-background-400 mb-2 text-sm">
+                            <span className="font-semibold">Reaction:</span>{' '}
+                            {allergy.reaction}
                           </p>
                         )}
                         {allergy.diagnosedAt && (
-                          <p className="text-xs text-background-500">
+                          <p className="text-background-500 text-xs">
                             Diagnosed:{' '}
-                            {new Date(allergy.diagnosedAt).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric',
-                            })}
+                            {new Date(allergy.diagnosedAt).toLocaleDateString(
+                              'en-US',
+                              {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                              },
+                            )}
                           </p>
                         )}
                         {allergy.notes && (
-                          <p className="text-xs text-background-400 mt-2 p-2 bg-background-800/50 rounded">
+                          <p className="text-background-400 bg-background-800/50 mt-2 rounded p-2 text-xs">
                             {allergy.notes}
                           </p>
                         )}
@@ -417,9 +480,11 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
         {activeTab === 'immunizations' && (
           <>
             {filteredData().length === 0 ? (
-              <div className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-12 text-center">
-                <Syringe className="w-12 h-12 text-background-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-foreground mb-2">No immunizations found</h3>
+              <div className="bg-background-900/50 border-background-800 rounded-lg border p-12 text-center backdrop-blur-xl">
+                <Syringe className="text-background-600 mx-auto mb-4 h-12 w-12" />
+                <h3 className="text-foreground mb-2 text-lg font-semibold">
+                  No immunizations found
+                </h3>
                 <p className="text-background-400">
                   {searchQuery
                     ? 'Try adjusting your search criteria'
@@ -433,38 +498,45 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-background-900/50 backdrop-blur-xl border border-background-800 rounded-lg p-6"
+                  className="bg-background-900/50 border-background-800 rounded-lg border p-6 backdrop-blur-xl"
                 >
                   <div className="flex items-start gap-3">
-                    <Syringe className="w-5 h-5 text-primary shrink-0 mt-1" />
+                    <Syringe className="text-primary mt-1 h-5 w-5 shrink-0" />
                     <div className="flex-1">
-                      <div className="flex items-start justify-between mb-3">
+                      <div className="mb-3 flex items-start justify-between">
                         <div>
-                          <h3 className="text-lg font-semibold text-foreground mb-1">
+                          <h3 className="text-foreground mb-1 text-lg font-semibold">
                             {immunization.vaccineName}
                           </h3>
                           {immunization.doseNumber && (
-                            <p className="text-sm text-background-400">Dose #{immunization.doseNumber}</p>
+                            <p className="text-background-400 text-sm">
+                              Dose #{immunization.doseNumber}
+                            </p>
                           )}
                         </div>
-                        {immunization.nextDueDate && new Date(immunization.nextDueDate) > new Date() && (
-                          <span className="px-2 py-1 bg-yellow-500/20 text-yellow-500 border border-yellow-500/20 rounded text-xs font-medium">
-                            Next Due:{' '}
-                            {new Date(immunization.nextDueDate).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric',
-                            })}
-                          </span>
-                        )}
+                        {immunization.nextDueDate &&
+                          new Date(immunization.nextDueDate) > new Date() && (
+                            <span className="rounded border border-yellow-500/20 bg-yellow-500/20 px-2 py-1 text-xs font-medium text-yellow-500">
+                              Next Due:{' '}
+                              {new Date(
+                                immunization.nextDueDate,
+                              ).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                              })}
+                            </span>
+                          )}
                       </div>
-                      <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                      <div className="grid gap-3 text-sm sm:grid-cols-2">
                         <div>
                           <p className="text-background-500">Administered</p>
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-background-500" />
+                            <Calendar className="text-background-500 h-4 w-4" />
                             <p className="text-foreground">
-                              {new Date(immunization.dateAdministered).toLocaleDateString('en-US', {
+                              {new Date(
+                                immunization.dateAdministered,
+                              ).toLocaleDateString('en-US', {
                                 month: 'long',
                                 day: 'numeric',
                                 year: 'numeric',
@@ -474,28 +546,36 @@ export function MedicalRecordsPage({ medicalRecords, allergies, immunizations }:
                         </div>
                         {immunization.administeredBy && (
                           <div>
-                            <p className="text-background-500">Administered By</p>
+                            <p className="text-background-500">
+                              Administered By
+                            </p>
                             <div className="flex items-center gap-2">
-                              <User className="w-4 h-4 text-background-500" />
-                              <p className="text-foreground">{immunization.administeredBy}</p>
+                              <User className="text-background-500 h-4 w-4" />
+                              <p className="text-foreground">
+                                {immunization.administeredBy}
+                              </p>
                             </div>
                           </div>
                         )}
                         {immunization.site && (
                           <div>
                             <p className="text-background-500">Site</p>
-                            <p className="text-foreground">{immunization.site}</p>
+                            <p className="text-foreground">
+                              {immunization.site}
+                            </p>
                           </div>
                         )}
                         {immunization.lotNumber && (
                           <div>
                             <p className="text-background-500">Lot Number</p>
-                            <p className="text-foreground font-mono text-xs">{immunization.lotNumber}</p>
+                            <p className="text-foreground font-mono text-xs">
+                              {immunization.lotNumber}
+                            </p>
                           </div>
                         )}
                       </div>
                       {immunization.notes && (
-                        <p className="text-sm text-background-400 mt-3 p-3 bg-background-800/50 rounded">
+                        <p className="text-background-400 bg-background-800/50 mt-3 rounded p-3 text-sm">
                           {immunization.notes}
                         </p>
                       )}

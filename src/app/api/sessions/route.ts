@@ -1,15 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 },
+      );
     }
 
     const { user } = session;
@@ -20,7 +23,10 @@ export async function GET(req: NextRequest) {
     });
 
     if (!doctor) {
-      return NextResponse.json({ success: false, error: 'Doctor not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Doctor not found' },
+        { status: 404 },
+      );
     }
 
     // Fetch sessions with related data
@@ -74,7 +80,7 @@ export async function GET(req: NextRequest) {
     console.error('Error fetching sessions:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch sessions' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

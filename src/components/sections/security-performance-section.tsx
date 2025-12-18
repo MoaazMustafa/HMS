@@ -67,46 +67,47 @@ export function SecurityPerformanceSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-linear-to-b from-muted/30 to-background flex flex-col items-center justify-center relative overflow-hidden">
+    <section className="from-muted/30 to-background relative flex flex-col items-center justify-center overflow-hidden bg-linear-to-b py-24 md:py-32">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--primary)_0%,_transparent_70%)] opacity-5" />
-      
-      <div className="container px-6 relative">
+
+      <div className="relative container px-6">
         <ScrollReveal>
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="mx-auto mb-16 max-w-3xl text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6"
+              className="bg-primary/10 border-primary/20 text-primary mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium"
             >
               Security & Performance
             </motion.div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            <h2 className="mb-4 text-3xl font-bold md:text-4xl lg:text-5xl">
               Enterprise-Grade
-              <span className="block text-primary mt-2">Security & Speed</span>
+              <span className="text-primary mt-2 block">Security & Speed</span>
             </h2>
-            <p className="text-lg text-muted-foreground">
-              Built with security, compliance, and performance as foundational principles
+            <p className="text-muted-foreground text-lg">
+              Built with security, compliance, and performance as foundational
+              principles
             </p>
           </div>
         </ScrollReveal>
 
         {/* Security Features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {securityFeatures.map((feature, index) => {
             const Icon = feature.icon;
             return (
               <ScrollReveal key={index} delay={index * 0.1}>
-                <Card className="group relative overflow-hidden p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  
+                <Card className="group relative overflow-hidden p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <div className="from-primary/5 to-primary/0 absolute inset-0 bg-linear-to-br opacity-0 transition-opacity group-hover:opacity-100" />
+
                   <div className="relative">
-                    <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 inline-flex mb-4 group-hover:scale-110 transition-transform">
-                      <Icon className="w-6 h-6 text-primary" />
+                    <div className="bg-primary/10 border-primary/20 mb-4 inline-flex rounded-xl border p-3 transition-transform group-hover:scale-110">
+                      <Icon className="text-primary h-6 w-6" />
                     </div>
-                    <h3 className="font-bold mb-2 text-lg">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <h3 className="mb-2 text-lg font-bold">{feature.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -118,17 +119,18 @@ export function SecurityPerformanceSection() {
 
         {/* Performance Metrics */}
         <ScrollReveal delay={0.4}>
-          <div className="bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-8 md:p-12">
-            <div className="text-center mb-12">
-              <h3 className="text-2xl md:text-3xl font-bold mb-3">
+          <div className="bg-card/50 border-border rounded-2xl border p-8 backdrop-blur-sm md:p-12">
+            <div className="mb-12 text-center">
+              <h3 className="mb-3 text-2xl font-bold md:text-3xl">
                 Performance That Matters
               </h3>
               <p className="text-muted-foreground">
-                Optimized for speed and reliability in critical healthcare environments
+                Optimized for speed and reliability in critical healthcare
+                environments
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
               {performanceMetrics.map((metric, index) => {
                 const Icon = metric.icon;
                 return (
@@ -138,16 +140,16 @@ export function SecurityPerformanceSection() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
-                    className="text-center group"
+                    className="group text-center"
                   >
-                    <div className="inline-flex p-4 rounded-full bg-primary/10 border border-primary/20 mb-4 group-hover:scale-110 transition-transform">
-                      <Icon className="w-8 h-8 text-primary" />
+                    <div className="bg-primary/10 border-primary/20 mb-4 inline-flex rounded-full border p-4 transition-transform group-hover:scale-110">
+                      <Icon className="text-primary h-8 w-8" />
                     </div>
-                    <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                    <div className="text-primary mb-2 text-3xl font-bold md:text-4xl">
                       {metric.value}
                     </div>
-                    <div className="font-semibold mb-1">{metric.label}</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="mb-1 font-semibold">{metric.label}</div>
+                    <div className="text-muted-foreground text-sm">
                       {metric.description}
                     </div>
                   </motion.div>
@@ -174,9 +176,9 @@ export function SecurityPerformanceSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.7 + index * 0.1 }}
-                  className="flex items-center gap-3 px-6 py-3 rounded-full bg-muted/50 border border-border hover:border-primary/50 transition-all"
+                  className="bg-muted/50 border-border hover:border-primary/50 flex items-center gap-3 rounded-full border px-6 py-3 transition-all"
                 >
-                  <Icon className="w-5 h-5 text-primary" />
+                  <Icon className="text-primary h-5 w-5" />
                   <span className="text-sm font-medium">{badge.label}</span>
                 </motion.div>
               );

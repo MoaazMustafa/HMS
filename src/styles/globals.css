@@ -42,14 +42,14 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-primary: #800000;
- --color-primary-50: #F17474;
-  --color-primary-100: #F15B5B;
-  --color-primary-200: #F14242;
-  --color-primary-300: #F12828;
-  --color-primary-400: #F20D0D;
-  --color-primary-500: #DD0909;
-  --color-primary-600: #C60606;
-  --color-primary-700: #AF0404;
+  --color-primary-50: #f17474;
+  --color-primary-100: #f15b5b;
+  --color-primary-200: #f14242;
+  --color-primary-300: #f12828;
+  --color-primary-400: #f20d0d;
+  --color-primary-500: #dd0909;
+  --color-primary-600: #c60606;
+  --color-primary-700: #af0404;
   --color-primary-800: #980202;
   --color-primary-900: #800000;
 }
@@ -130,36 +130,36 @@
     scrollbar-width: thin;
     scrollbar-color: var(--color-primary-600) transparent;
   }
-  
+
   /* Custom scrollbar for webkit browsers */
   *::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-  
+
   *::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   *::-webkit-scrollbar-thumb {
     background: var(--color-primary-600);
     border-radius: 4px;
   }
-  
+
   *::-webkit-scrollbar-thumb:hover {
     background: var(--color-primary-500);
   }
-  
+
   body {
     @apply bg-background text-foreground;
     overscroll-behavior: none;
   }
-  
+
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
   }
-  
+
   /* Prevent layout shift */
   body::-webkit-scrollbar {
     width: 8px;

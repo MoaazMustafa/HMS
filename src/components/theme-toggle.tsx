@@ -8,8 +8,7 @@ import { cn } from '@/lib/utils';
 
 import { Button } from './ui/button';
 
-interface AnimatedThemeTogglerProps
-  extends React.ComponentPropsWithoutRef<'button'> {
+interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<'button'> {
   duration?: number;
 }
 

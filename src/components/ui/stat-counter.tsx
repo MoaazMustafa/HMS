@@ -39,12 +39,12 @@ export function StatCounter({
       transition={{ duration: 0.5, delay }}
       className="text-center"
     >
-      <div className="mb-2 text-4xl font-bold text-primary md:text-5xl">
+      <div className="text-primary mb-2 text-4xl font-bold md:text-5xl">
         {prefix}
         <motion.span>{rounded}</motion.span>
         {suffix}
       </div>
-      <div className="text-sm font-medium text-muted-foreground md:text-base">
+      <div className="text-muted-foreground text-sm font-medium md:text-base">
         {label}
       </div>
     </motion.div>

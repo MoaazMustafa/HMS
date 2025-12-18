@@ -39,7 +39,10 @@ export async function PATCH(request: NextRequest) {
     });
 
     if (!user?.patient) {
-      return NextResponse.json({ error: 'Patient record not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Patient record not found' },
+        { status: 404 },
+      );
     }
 
     // Update user and patient data in a transaction
@@ -86,9 +89,12 @@ export async function PATCH(request: NextRequest) {
         message: 'Profile updated successfully',
         user: updatedUser,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch {
-    return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to update profile' },
+      { status: 500 },
+    );
   }
 }

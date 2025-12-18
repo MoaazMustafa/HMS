@@ -134,7 +134,7 @@ export default function DoctorMedicalRecordsPage() {
           record.patient.patientId.toLowerCase().includes(query) ||
           record.recordId.toLowerCase().includes(query) ||
           record.chiefComplaint?.toLowerCase().includes(query) ||
-          record.assessment?.toLowerCase().includes(query)
+          record.assessment?.toLowerCase().includes(query),
       );
     }
 
@@ -188,7 +188,12 @@ export default function DoctorMedicalRecordsPage() {
       const response = await fetch('/api/doctor/patients');
       const result = await response.json();
       if (result.success) {
-        setPatients(result.data.filter((p: { assignment: { status: string } }) => p.assignment.status === 'ACTIVE'));
+        setPatients(
+          result.data.filter(
+            (p: { assignment: { status: string } }) =>
+              p.assignment.status === 'ACTIVE',
+          ),
+        );
       }
     } catch {
       toast.error('Failed to load patients');
@@ -259,7 +264,9 @@ export default function DoctorMedicalRecordsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Medical Records</h1>
-          <p className="text-muted-foreground mt-1">Create and manage patient medical records</p>
+          <p className="text-muted-foreground mt-1">
+            Create and manage patient medical records
+          </p>
         </div>
         <Button onClick={handleOpenCreateDialog} className="gap-2">
           <Plus className="h-4 w-4" />
@@ -268,21 +275,23 @@ export default function DoctorMedicalRecordsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Total Records</p>
+              <p className="text-muted-foreground text-sm">Total Records</p>
               <p className="text-2xl font-bold">{records.length}</p>
             </div>
-            <FileText className="h-8 w-8 text-muted-foreground" />
+            <FileText className="text-muted-foreground h-8 w-8" />
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Finalized</p>
-              <p className="text-2xl font-bold">{records.filter((r) => r.isFinalized).length}</p>
+              <p className="text-muted-foreground text-sm">Finalized</p>
+              <p className="text-2xl font-bold">
+                {records.filter((r) => r.isFinalized).length}
+              </p>
             </div>
             <FileText className="h-8 w-8 text-green-500" />
           </div>
@@ -290,8 +299,10 @@ export default function DoctorMedicalRecordsPage() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Draft</p>
-              <p className="text-2xl font-bold">{records.filter((r) => !r.isFinalized).length}</p>
+              <p className="text-muted-foreground text-sm">Draft</p>
+              <p className="text-2xl font-bold">
+                {records.filter((r) => !r.isFinalized).length}
+              </p>
             </div>
             <FileText className="h-8 w-8 text-yellow-500" />
           </div>
@@ -299,8 +310,10 @@ export default function DoctorMedicalRecordsPage() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Signed</p>
-              <p className="text-2xl font-bold">{records.filter((r) => r.isSigned).length}</p>
+              <p className="text-muted-foreground text-sm">Signed</p>
+              <p className="text-2xl font-bold">
+                {records.filter((r) => r.isSigned).length}
+              </p>
             </div>
             <FileText className="h-8 w-8 text-blue-500" />
           </div>
@@ -311,20 +324,20 @@ export default function DoctorMedicalRecordsPage() {
       <Card className="p-4">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-muted-foreground" />
+            <Filter className="text-muted-foreground h-4 w-4" />
             <h3 className="font-semibold">Filters</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search records..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border py-2 pr-3 pl-10 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
@@ -368,10 +381,10 @@ export default function DoctorMedicalRecordsPage() {
       <div className="space-y-3">
         {filteredRecords.length === 0 ? (
           <Card className="p-8">
-            <div className="text-center space-y-2">
-              <FileText className="h-12 w-12 text-muted-foreground mx-auto" />
+            <div className="space-y-2 text-center">
+              <FileText className="text-muted-foreground mx-auto h-12 w-12" />
               <h3 className="text-lg font-semibold">No records found</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {searchQuery || statusFilter !== 'all' || dateFilter !== 'all'
                   ? 'Try adjusting your filters'
                   : 'Create your first medical record'}
@@ -380,39 +393,54 @@ export default function DoctorMedicalRecordsPage() {
           </Card>
         ) : (
           filteredRecords.map((record) => (
-            <Card key={record.id} className="p-4 hover:shadow-md transition-shadow">
+            <Card
+              key={record.id}
+              className="p-4 transition-shadow hover:shadow-md"
+            >
               <div className="flex items-start justify-between gap-4">
                 {/* Left: Patient Info */}
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-5 w-5 text-primary" />
+                    <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
+                      <User className="text-primary h-5 w-5" />
                     </div>
                     <div>
-                      <h3 className="font-semibold">{record.patient.user.name}</h3>
-                      <p className="text-sm text-muted-foreground">{record.patient.patientId}</p>
+                      <h3 className="font-semibold">
+                        {record.patient.user.name}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {record.patient.patientId}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="pl-13 space-y-1">
+                  <div className="space-y-1 pl-13">
                     <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span>{format(new Date(record.visitDate), 'MMM d, yyyy')}</span>
+                      <Calendar className="text-muted-foreground h-4 w-4" />
+                      <span>
+                        {format(new Date(record.visitDate), 'MMM d, yyyy')}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
-                      <FileText className="h-4 w-4 text-muted-foreground" />
+                      <FileText className="text-muted-foreground h-4 w-4" />
                       <span className="font-medium">Chief Complaint:</span>
-                      <span className="text-muted-foreground">{record.chiefComplaint}</span>
+                      <span className="text-muted-foreground">
+                        {record.chiefComplaint}
+                      </span>
                     </div>
                   </div>
 
                   {/* Diagnoses */}
                   {record.diagnoses.length > 0 && (
                     <div className="pl-13">
-                      <p className="text-sm font-medium mb-1">Diagnoses:</p>
+                      <p className="mb-1 text-sm font-medium">Diagnoses:</p>
                       <div className="flex flex-wrap gap-2">
                         {record.diagnoses.slice(0, 3).map((diagnosis, idx) => (
-                          <Badge key={idx} variant="outline" className="text-xs">
+                          <Badge
+                            key={idx}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {diagnosis.description} ({diagnosis.icd10Code})
                           </Badge>
                         ))}
@@ -430,16 +458,16 @@ export default function DoctorMedicalRecordsPage() {
                 <div className="flex flex-col items-end gap-2">
                   <div className="flex gap-2">
                     {record.isSigned ? (
-                      <Badge className="bg-green-500/10 text-green-500 border-green-500/20 border">
+                      <Badge className="border border-green-500/20 bg-green-500/10 text-green-500">
                         Finalized
                       </Badge>
                     ) : (
-                      <Badge className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20 border">
+                      <Badge className="border border-yellow-500/20 bg-yellow-500/10 text-yellow-500">
                         Draft
                       </Badge>
                     )}
                     {record.isSigned && (
-                      <Badge className="bg-blue-500/10 text-blue-500 border-blue-500/20 border">
+                      <Badge className="border border-blue-500/20 bg-blue-500/10 text-blue-500">
                         Signed
                       </Badge>
                     )}
@@ -452,7 +480,7 @@ export default function DoctorMedicalRecordsPage() {
                     </Link>
                   </Button>
 
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     ID: {record.recordId}
                   </p>
                 </div>
@@ -464,11 +492,12 @@ export default function DoctorMedicalRecordsPage() {
 
       {/* Create Record Dialog */}
       <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create New Medical Record</DialogTitle>
             <DialogDescription>
-              Document a patient visit using SOAP format (Subjective, Objective, Assessment, Plan)
+              Document a patient visit using SOAP format (Subjective, Objective,
+              Assessment, Plan)
             </DialogDescription>
           </DialogHeader>
 
@@ -478,7 +507,9 @@ export default function DoctorMedicalRecordsPage() {
               <label className="text-sm font-medium">Patient *</label>
               <Select
                 value={formData.patientId}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, patientId: value }))}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, patientId: value }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a patient" />
@@ -492,7 +523,7 @@ export default function DoctorMedicalRecordsPage() {
                 </SelectContent>
               </Select>
               {patients.length === 0 && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   No assigned patients found. Complete an appointment first.
                 </p>
               )}
@@ -505,10 +536,13 @@ export default function DoctorMedicalRecordsPage() {
                 type="date"
                 value={formData.visitDate}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, visitDate: e.target.value }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    visitDate: e.target.value,
+                  }))
                 }
                 max={new Date().toISOString().split('T')[0]}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
@@ -519,55 +553,83 @@ export default function DoctorMedicalRecordsPage() {
                 type="text"
                 value={formData.chiefComplaint}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, chiefComplaint: e.target.value }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    chiefComplaint: e.target.value,
+                  }))
                 }
                 placeholder="e.g., Headache for 3 days"
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
             {/* SOAP Notes */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Subjective (Patient&apos;s Description)</label>
+              <label className="text-sm font-medium">
+                Subjective (Patient&apos;s Description)
+              </label>
               <textarea
                 value={formData.subjective}
-                onChange={(e) => setFormData((prev) => ({ ...prev, subjective: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    subjective: e.target.value,
+                  }))
+                }
                 placeholder="What the patient reports..."
                 rows={3}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Objective (Clinical Findings)</label>
+              <label className="text-sm font-medium">
+                Objective (Clinical Findings)
+              </label>
               <textarea
                 value={formData.objective}
-                onChange={(e) => setFormData((prev) => ({ ...prev, objective: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    objective: e.target.value,
+                  }))
+                }
                 placeholder="Physical examination findings, vital signs, lab results..."
                 rows={3}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Assessment (Diagnosis)</label>
+              <label className="text-sm font-medium">
+                Assessment (Diagnosis)
+              </label>
               <textarea
                 value={formData.assessment}
-                onChange={(e) => setFormData((prev) => ({ ...prev, assessment: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    assessment: e.target.value,
+                  }))
+                }
                 placeholder="Clinical impression, diagnoses..."
                 rows={3}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Plan (Treatment Plan)</label>
+              <label className="text-sm font-medium">
+                Plan (Treatment Plan)
+              </label>
               <textarea
                 value={formData.plan}
-                onChange={(e) => setFormData((prev) => ({ ...prev, plan: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, plan: e.target.value }))
+                }
                 placeholder="Treatment plan, medications, follow-up..."
                 rows={3}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
           </div>
@@ -582,11 +644,13 @@ export default function DoctorMedicalRecordsPage() {
             </Button>
             <Button
               onClick={handleCreateRecord}
-              disabled={creating || !formData.patientId || !formData.chiefComplaint}
+              disabled={
+                creating || !formData.patientId || !formData.chiefComplaint
+              }
             >
               {creating ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Creating...
                 </>
               ) : (

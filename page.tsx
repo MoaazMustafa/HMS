@@ -54,7 +54,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-background-900 via-primary-900/60 to-background-900">
+    <div className="from-background-900 via-primary-900/60 to-background-900 flex min-h-screen items-center justify-center bg-linear-to-br">
       <div className="absolute inset-0 bg-[url('/img/truck-pattern.png')] opacity-5"></div>
 
       <motion.div
@@ -63,7 +63,7 @@ export default function AdminLoginPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="rounded-3xl border border-foreground/20 bg-foreground/10 p-8 shadow-2xl backdrop-blur-lg">
+        <div className="border-foreground/20 bg-foreground/10 rounded-3xl border p-8 shadow-2xl backdrop-blur-lg">
           {/* Header */}
           <motion.div
             className="mb-8 text-center"
@@ -72,15 +72,15 @@ export default function AdminLoginPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <motion.div
-              className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-r from-primary-500 to-green-600"
+              className="from-primary-500 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-r to-green-600"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <Shield className="h-8 w-8 text-foreground" />
+              <Shield className="text-foreground h-8 w-8" />
             </motion.div>
 
-            <h1 className="text-3xl font-bold text-foreground">Admin Portal</h1>
-            <p className="mt-2 text-muted-300">Divine Dispatch Management</p>
+            <h1 className="text-foreground text-3xl font-bold">Admin Portal</h1>
+            <p className="text-muted-300 mt-2">Divine Dispatch Management</p>
           </motion.div>
 
           {/* Login Form */}
@@ -95,12 +95,12 @@ export default function AdminLoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className="mb-2 block text-sm font-medium text-muted-300"
+                className="text-muted-300 mb-2 block text-sm font-medium"
               >
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-400" />
+                <Mail className="text-muted-400 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                 <input
                   type="email"
                   id="email"
@@ -108,7 +108,7 @@ export default function AdminLoginPage() {
                   required
                   value={credentials.email}
                   onChange={handleInputChange}
-                  className="w-full rounded-xl border border-foreground/20 bg-foreground/10 px-12 py-3 text-foreground placeholder-muted-400 backdrop-blur-sm focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 focus:outline-none"
+                  className="border-foreground/20 bg-foreground/10 text-foreground placeholder-muted-400 focus:border-primary-400 focus:ring-primary-400/20 w-full rounded-xl border px-12 py-3 backdrop-blur-sm focus:ring-2 focus:outline-none"
                   placeholder="Enter your email"
                 />
               </div>
@@ -118,12 +118,12 @@ export default function AdminLoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="mb-2 block text-sm font-medium text-muted-300"
+                className="text-muted-300 mb-2 block text-sm font-medium"
               >
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-muted-400" />
+                <Lock className="text-muted-400 absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
@@ -131,13 +131,13 @@ export default function AdminLoginPage() {
                   required
                   value={credentials.password}
                   onChange={handleInputChange}
-                  className="w-full rounded-xl border border-foreground/20 bg-foreground/10 px-12 py-3 pr-12 text-foreground placeholder-muted-400 backdrop-blur-sm focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 focus:outline-none"
+                  className="border-foreground/20 bg-foreground/10 text-foreground placeholder-muted-400 focus:border-primary-400 focus:ring-primary-400/20 w-full rounded-xl border px-12 py-3 pr-12 backdrop-blur-sm focus:ring-2 focus:outline-none"
                   placeholder="Enter your password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-400 hover:text-muted-300"
+                  className="text-muted-400 hover:text-muted-300 absolute top-1/2 right-3 -translate-y-1/2"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -164,13 +164,13 @@ export default function AdminLoginPage() {
             <motion.button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-xl bg-linear-to-r from-primary-500 to-green-600 px-6 py-3 font-semibold text-foreground transition-all duration-300 hover:from-primary-600 hover:to-green-700 focus:ring-2 focus:ring-primary-400/50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="from-primary-500 text-foreground hover:from-primary-600 focus:ring-primary-400/50 w-full rounded-xl bg-linear-to-r to-green-600 px-6 py-3 font-semibold transition-all duration-300 hover:to-green-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               {isLoading ? (
                 <div className="flex items-center justify-center space-x-2">
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-foreground border-t-transparent"></div>
+                  <div className="border-foreground h-5 w-5 animate-spin rounded-full border-2 border-t-transparent"></div>
                   <span>Signing In...</span>
                 </div>
               ) : (
@@ -186,7 +186,7 @@ export default function AdminLoginPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <p className="text-sm text-muted-400">
+            <p className="text-muted-400 text-sm">
               Secure admin access for Divine Dispatch management
             </p>
           </motion.div>

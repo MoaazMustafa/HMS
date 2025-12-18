@@ -17,8 +17,11 @@ export default async function DashboardPatientDetailPage({
     redirect('/login');
   }
 
-  // Only doctors can view patient details
-  if (session.user.role !== UserRole.DOCTOR) {
+  // Only doctors and nurses can view patient details
+  if (
+    session.user.role !== UserRole.DOCTOR &&
+    session.user.role !== UserRole.NURSE
+  ) {
     redirect('/dashboard');
   }
 
@@ -106,6 +109,12 @@ export default async function DashboardPatientDetailPage({
         },
         take: 5,
       },
+      vitalSigns: {
+        orderBy: {
+          recordedAt: 'desc',
+        },
+        take: 10,
+      },
     },
   });
 
@@ -113,7 +122,12 @@ export default async function DashboardPatientDetailPage({
     redirect('/dashboard/patients');
   }
 
-  // Verify doctor has access to this patient
+  // Nurses have full access to all patient details
+  if (session.user.role === UserRole.NURSE) {
+    return <PatientDetailPage patient={patient} userRole={session.user.role} />;
+  }
+
+  // For doctors, verify they have access to this patient
   const doctor = await prisma.doctor.findUnique({
     where: { userId: session.user.id },
   });
@@ -144,5 +158,5 @@ export default async function DashboardPatientDetailPage({
     redirect('/dashboard/patients');
   }
 
-  return <PatientDetailPage patient={patient} />;
+  return <PatientDetailPage patient={patient} userRole={session.user.role} />;
 }

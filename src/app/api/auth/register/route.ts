@@ -6,17 +6,24 @@ import { NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
 
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password, firstName, lastName, phone, dateOfBirth, gender } = body;
+    const { email, password, firstName, lastName, phone, dateOfBirth, gender } =
+      body;
 
     // Validation
-    if (!email || !password || !firstName || !lastName || !phone || !dateOfBirth) {
+    if (
+      !email ||
+      !password ||
+      !firstName ||
+      !lastName ||
+      !phone ||
+      !dateOfBirth
+    ) {
       return NextResponse.json(
         { error: 'Missing required fields' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -28,7 +35,7 @@ export async function POST(request: Request) {
     if (existingUser) {
       return NextResponse.json(
         { error: 'Email already registered' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -71,12 +78,12 @@ export async function POST(request: Request) {
           role: user.role,
         },
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch {
     return NextResponse.json(
       { error: 'Registration failed. Please try again.' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

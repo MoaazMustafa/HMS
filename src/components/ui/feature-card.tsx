@@ -23,16 +23,14 @@ export function FeatureCard({
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5, delay }}
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-sm transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
+      className="group border-border/50 bg-card/50 hover:border-primary/50 hover:shadow-primary/10 relative overflow-hidden rounded-2xl border p-6 backdrop-blur-sm transition-all hover:shadow-lg"
     >
-      <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="from-primary/5 absolute inset-0 bg-linear-to-br via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <div className="relative">
-        <div className="mb-4 inline-flex rounded-xl bg-primary/10 p-3 text-primary transition-transform duration-300 group-hover:scale-110">
+        <div className="bg-primary/10 text-primary mb-4 inline-flex rounded-xl p-3 transition-transform duration-300 group-hover:scale-110">
           <Icon className="h-6 w-6" />
         </div>
-        <h3 className="mb-2 text-xl font-semibold text-foreground">
-          {title}
-        </h3>
+        <h3 className="text-foreground mb-2 text-xl font-semibold">{title}</h3>
         <p className="text-muted-foreground leading-relaxed">{description}</p>
       </div>
     </motion.div>

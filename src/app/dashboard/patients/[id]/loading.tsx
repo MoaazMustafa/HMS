@@ -16,7 +16,7 @@ export default function Loading() {
       <Skeleton className="h-48" />
 
       {/* Medical History & Emergency Contact */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Skeleton className="h-64" />
         <Skeleton className="h-64" />
       </div>
@@ -25,7 +25,7 @@ export default function Loading() {
       <Skeleton className="h-96" />
 
       {/* Prescriptions & Lab Tests */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Skeleton className="h-64" />
         <Skeleton className="h-64" />
       </div>

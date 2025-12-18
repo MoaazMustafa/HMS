@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth/next';
 
 import { DoctorProfilePage } from '@/components/dashboard/doctor-profile-page';
+import NurseProfilePage from '@/components/dashboard/nurse-profile-page';
 import { ProfilePage } from '@/components/dashboard/profile-page';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -59,6 +60,11 @@ export default async function DashboardProfilePage() {
     }
 
     return <DoctorProfilePage />;
+  }
+
+  // Nurse Profile
+  if (session.user.role === UserRole.NURSE) {
+    return <NurseProfilePage />;
   }
 
   // Other roles - redirect for now

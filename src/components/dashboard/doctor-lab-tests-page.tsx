@@ -122,7 +122,7 @@ export default function DoctorLabTestsPage() {
           test.patient.user.email.toLowerCase().includes(query) ||
           test.patient.patientId.toLowerCase().includes(query) ||
           test.testId.toLowerCase().includes(query) ||
-          test.testName.toLowerCase().includes(query)
+          test.testName.toLowerCase().includes(query),
       );
     }
 
@@ -155,7 +155,12 @@ export default function DoctorLabTestsPage() {
       const response = await fetch('/api/doctor/patients');
       const result = await response.json();
       if (result.success) {
-        setPatients(result.data.filter((p: { assignment: { status: string } }) => p.assignment.status === 'ACTIVE'));
+        setPatients(
+          result.data.filter(
+            (p: { assignment: { status: string } }) =>
+              p.assignment.status === 'ACTIVE',
+          ),
+        );
       }
     } catch {
       toast.error('Failed to load patients');
@@ -236,8 +241,12 @@ export default function DoctorLabTestsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Lab Tests & Orders</h1>
-          <p className="text-muted-foreground mt-1">Order and manage patient laboratory tests</p>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Lab Tests & Orders
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Order and manage patient laboratory tests
+          </p>
         </div>
         <Button onClick={handleOpenCreateDialog} className="gap-2">
           <Plus className="h-4 w-4" />
@@ -246,21 +255,23 @@ export default function DoctorLabTestsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Total Tests</p>
+              <p className="text-muted-foreground text-sm">Total Tests</p>
               <p className="text-2xl font-bold">{tests.length}</p>
             </div>
-            <FlaskConical className="h-8 w-8 text-muted-foreground" />
+            <FlaskConical className="text-muted-foreground h-8 w-8" />
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Ordered</p>
-              <p className="text-2xl font-bold">{tests.filter((t) => t.status === 'ORDERED').length}</p>
+              <p className="text-muted-foreground text-sm">Ordered</p>
+              <p className="text-2xl font-bold">
+                {tests.filter((t) => t.status === 'ORDERED').length}
+              </p>
             </div>
             <FlaskConical className="h-8 w-8 text-yellow-500" />
           </div>
@@ -268,8 +279,10 @@ export default function DoctorLabTestsPage() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Completed</p>
-              <p className="text-2xl font-bold">{tests.filter((t) => t.status === 'COMPLETED').length}</p>
+              <p className="text-muted-foreground text-sm">Completed</p>
+              <p className="text-2xl font-bold">
+                {tests.filter((t) => t.status === 'COMPLETED').length}
+              </p>
             </div>
             <FlaskConical className="h-8 w-8 text-green-500" />
           </div>
@@ -277,8 +290,10 @@ export default function DoctorLabTestsPage() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Critical</p>
-              <p className="text-2xl font-bold">{tests.filter((t) => t.isCritical).length}</p>
+              <p className="text-muted-foreground text-sm">Critical</p>
+              <p className="text-2xl font-bold">
+                {tests.filter((t) => t.isCritical).length}
+              </p>
             </div>
             <AlertCircle className="h-8 w-8 text-red-500" />
           </div>
@@ -289,20 +304,20 @@ export default function DoctorLabTestsPage() {
       <Card className="p-4">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-muted-foreground" />
+            <Filter className="text-muted-foreground h-4 w-4" />
             <h3 className="font-semibold">Filters</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search tests..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border py-2 pr-3 pl-10 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
@@ -346,11 +361,13 @@ export default function DoctorLabTestsPage() {
       <div className="space-y-3">
         {filteredTests.length === 0 ? (
           <Card className="p-8">
-            <div className="text-center space-y-2">
-              <FlaskConical className="h-12 w-12 text-muted-foreground mx-auto" />
+            <div className="space-y-2 text-center">
+              <FlaskConical className="text-muted-foreground mx-auto h-12 w-12" />
               <h3 className="text-lg font-semibold">No lab tests found</h3>
-              <p className="text-sm text-muted-foreground">
-                {searchQuery || statusFilter !== 'all' || criticalFilter !== 'all'
+              <p className="text-muted-foreground text-sm">
+                {searchQuery ||
+                statusFilter !== 'all' ||
+                criticalFilter !== 'all'
                   ? 'Try adjusting your filters'
                   : 'Order your first lab test'}
               </p>
@@ -358,44 +375,59 @@ export default function DoctorLabTestsPage() {
           </Card>
         ) : (
           filteredTests.map((test) => (
-            <Card key={test.id} className="p-4 hover:shadow-md transition-shadow">
+            <Card
+              key={test.id}
+              className="p-4 transition-shadow hover:shadow-md"
+            >
               <div className="flex items-start justify-between gap-4">
                 {/* Left: Patient & Test Info */}
                 <div className="flex-1 space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-5 w-5 text-primary" />
+                    <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
+                      <User className="text-primary h-5 w-5" />
                     </div>
                     <div>
-                      <h3 className="font-semibold">{test.patient.user.name}</h3>
-                      <p className="text-sm text-muted-foreground">{test.patient.patientId}</p>
+                      <h3 className="font-semibold">
+                        {test.patient.user.name}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {test.patient.patientId}
+                      </p>
                     </div>
                     {test.isCritical && (
-                      <Badge className="bg-red-500/10 text-red-500 border-red-500/20 border">
-                        <AlertCircle className="h-3 w-3 mr-1" />
+                      <Badge className="border border-red-500/20 bg-red-500/10 text-red-500">
+                        <AlertCircle className="mr-1 h-3 w-3" />
                         Critical
                       </Badge>
                     )}
                   </div>
 
-                  <div className="pl-13 space-y-2">
+                  <div className="space-y-2 pl-13">
                     <div className="flex items-start gap-2">
-                      <FlaskConical className="h-4 w-4 text-muted-foreground mt-0.5" />
+                      <FlaskConical className="text-muted-foreground mt-0.5 h-4 w-4" />
                       <div className="flex-1">
                         <p className="font-medium">{test.testName}</p>
-                        <p className="text-sm text-muted-foreground">Type: {test.testType}</p>
+                        <p className="text-muted-foreground text-sm">
+                          Type: {test.testType}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground pl-6">
+                    <div className="text-muted-foreground flex items-center gap-4 pl-6 text-sm">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
-                        <span>Ordered: {format(new Date(test.orderedAt), 'MMM d, yyyy')}</span>
+                        <span>
+                          Ordered:{' '}
+                          {format(new Date(test.orderedAt), 'MMM d, yyyy')}
+                        </span>
                       </div>
                       {test.completedAt && (
                         <div className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
-                          <span>Completed: {format(new Date(test.completedAt), 'MMM d, yyyy')}</span>
+                          <span>
+                            Completed:{' '}
+                            {format(new Date(test.completedAt), 'MMM d, yyyy')}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -403,15 +435,17 @@ export default function DoctorLabTestsPage() {
                     {test.notes && (
                       <div className="pl-6 text-sm">
                         <span className="font-medium">Notes:</span>{' '}
-                        <span className="text-muted-foreground">{test.notes}</span>
+                        <span className="text-muted-foreground">
+                          {test.notes}
+                        </span>
                       </div>
                     )}
 
                     {test.results && test.status === 'COMPLETED' && (
                       <div className="pl-6">
-                        <div className="mt-2 p-3 bg-muted rounded-md">
-                          <p className="text-sm font-medium mb-1">Results:</p>
-                          <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                        <div className="bg-muted mt-2 rounded-md p-3">
+                          <p className="mb-1 text-sm font-medium">Results:</p>
+                          <p className="text-muted-foreground text-sm whitespace-pre-wrap">
                             {test.results}
                           </p>
                         </div>
@@ -422,7 +456,9 @@ export default function DoctorLabTestsPage() {
 
                 {/* Right: Status & Actions */}
                 <div className="flex flex-col items-end gap-2">
-                  <Badge className={`${getStatusColor(test.status)} border flex items-center gap-1`}>
+                  <Badge
+                    className={`${getStatusColor(test.status)} flex items-center gap-1 border`}
+                  >
                     {getStatusIcon(test.status)}
                     {test.status}
                   </Badge>
@@ -434,7 +470,7 @@ export default function DoctorLabTestsPage() {
                     </Button>
                   </Link>
 
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     ID: {test.testId}
                   </p>
                 </div>
@@ -450,7 +486,8 @@ export default function DoctorLabTestsPage() {
           <DialogHeader>
             <DialogTitle>Order Lab Test</DialogTitle>
             <DialogDescription>
-              Order a laboratory test for a patient. Results will be available once completed.
+              Order a laboratory test for a patient. Results will be available
+              once completed.
             </DialogDescription>
           </DialogHeader>
 
@@ -460,7 +497,9 @@ export default function DoctorLabTestsPage() {
               <label className="text-sm font-medium">Patient *</label>
               <Select
                 value={formData.patientId}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, patientId: value }))}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, patientId: value }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a patient" />
@@ -481,9 +520,11 @@ export default function DoctorLabTestsPage() {
               <input
                 type="text"
                 value={formData.testName}
-                onChange={(e) => setFormData((prev) => ({ ...prev, testName: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, testName: e.target.value }))
+                }
                 placeholder="e.g., Complete Blood Count"
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
 
@@ -492,7 +533,9 @@ export default function DoctorLabTestsPage() {
               <label className="text-sm font-medium">Test Type *</label>
               <Select
                 value={formData.testType}
-                onValueChange={(value) => setFormData((prev) => ({ ...prev, testType: value }))}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, testType: value }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select test type" />
@@ -500,7 +543,9 @@ export default function DoctorLabTestsPage() {
                 <SelectContent>
                   <SelectItem value="BLOOD">Blood Test</SelectItem>
                   <SelectItem value="URINE">Urine Test</SelectItem>
-                  <SelectItem value="IMAGING">Imaging (X-Ray, MRI, CT)</SelectItem>
+                  <SelectItem value="IMAGING">
+                    Imaging (X-Ray, MRI, CT)
+                  </SelectItem>
                   <SelectItem value="BIOPSY">Biopsy</SelectItem>
                   <SelectItem value="CULTURE">Culture</SelectItem>
                   <SelectItem value="OTHER">Other</SelectItem>
@@ -510,13 +555,17 @@ export default function DoctorLabTestsPage() {
 
             {/* Notes */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Special Instructions (Optional)</label>
+              <label className="text-sm font-medium">
+                Special Instructions (Optional)
+              </label>
               <textarea
                 value={formData.notes}
-                onChange={(e) => setFormData((prev) => ({ ...prev, notes: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, notes: e.target.value }))
+                }
                 placeholder="Any special instructions for the lab..."
                 rows={3}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                className="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
               />
             </div>
           </div>
@@ -531,11 +580,16 @@ export default function DoctorLabTestsPage() {
             </Button>
             <Button
               onClick={handleCreateTest}
-              disabled={creating || !formData.patientId || !formData.testName || !formData.testType}
+              disabled={
+                creating ||
+                !formData.patientId ||
+                !formData.testName ||
+                !formData.testType
+              }
             >
               {creating ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Ordering...
                 </>
               ) : (

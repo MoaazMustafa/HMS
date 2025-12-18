@@ -170,6 +170,9 @@ export async function GET() {
       // eslint-disable-next-line no-console
       console.error('Error fetching doctor stats:', error.message);
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }
