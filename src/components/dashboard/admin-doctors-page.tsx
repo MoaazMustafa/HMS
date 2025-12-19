@@ -13,12 +13,17 @@ import {
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { useAlert } from '@/hooks/use-toast-alert';
+import { useConfirm } from '@/hooks/use-confirm';
 import { exportData } from '@/lib/export';
 
 export function AdminDoctorsPage() {
   const [doctors, setDoctors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const { confirm, ConfirmDialog } = useConfirm();
+  const { alert, AlertDialog } = useAlert();
 
   useEffect(() => {
     fetchDoctors();
@@ -50,7 +55,11 @@ export function AdminDoctorsPage() {
 
   const handleExport = (format: 'csv' | 'excel' | 'pdf') => {
     if (filteredDoctors.length === 0) {
-      alert('No doctors to export');
+      alert({
+        type: 'warning',
+        title: 'No Data',
+        message: 'No doctors available to export',
+      });
       return;
     }
 
@@ -77,6 +86,9 @@ export function AdminDoctorsPage() {
 
   return (
     <div className="space-y-6">
+      <ConfirmDialog />
+      <AlertDialog />
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -195,9 +207,18 @@ export function AdminDoctorsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => {
-                    if (confirm(`Edit Dr. ${doctor.name}?`)) {
-                      alert('Edit functionality - Connect to edit modal or form');
+                  onClick={async () => {
+                    const confirmed = await confirm({
+                      title: 'Edit Doctor',
+                      description: `Edit Dr. ${doctor.name}?`,
+                      confirmText: 'Edit',
+                    });
+                    if (confirmed) {
+                      alert({
+                        type: 'info',
+                        title: 'Coming Soon',
+                        message: 'Edit functionality - Connect to edit modal or form',
+                      });
                     }
                   }}
                 >
@@ -207,19 +228,38 @@ export function AdminDoctorsPage() {
                   variant="outline"
                   size="sm"
                   onClick={async () => {
-                    if (confirm(`Are you sure you want to delete Dr. ${doctor.name}? This action cannot be undone.`)) {
+                    const confirmed = await confirm({
+                      title: 'Delete Doctor',
+                      description: `Are you sure you want to delete Dr. ${doctor.name}? This action cannot be undone.`,
+                      confirmText: 'Delete',
+                      variant: 'destructive',
+                    });
+                    
+                    if (confirmed) {
                       try {
                         const response = await fetch(`/api/admin/users/${doctor.id}`, {
                           method: 'DELETE',
                         });
                         if (response.ok) {
-                          alert('Doctor deleted successfully');
+                          alert({
+                            type: 'success',
+                            title: 'Success',
+                            message: 'Doctor deleted successfully',
+                          });
                           fetchDoctors();
                         } else {
-                          alert('Failed to delete doctor');
+                          alert({
+                            type: 'error',
+                            title: 'Error',
+                            message: 'Failed to delete doctor',
+                          });
                         }
                       } catch {
-                        alert('Error deleting doctor');
+                        alert({
+                          type: 'error',
+                          title: 'Error',
+                          message: 'An error occurred while deleting',
+                        });
                       }
                     }
                   }}

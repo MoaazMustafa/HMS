@@ -13,12 +13,17 @@ import {
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { useAlert } from '@/hooks/use-toast-alert';
+import { useConfirm } from '@/hooks/use-confirm';
 import { exportData } from '@/lib/export';
 
 export function AdminNursesPage() {
   const [nurses, setNurses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const { confirm, ConfirmDialog } = useConfirm();
+  const { alert, AlertDialog } = useAlert();
 
   useEffect(() => {
     fetchNurses();
@@ -48,7 +53,11 @@ export function AdminNursesPage() {
 
   const handleExport = (format: 'csv' | 'excel' | 'pdf') => {
     if (filteredNurses.length === 0) {
-      alert('No nurses to export');
+      alert({
+        type: 'warning',
+        title: 'No Data',
+        message: 'No nurses available to export',
+      });
       return;
     }
 
@@ -75,6 +84,9 @@ export function AdminNursesPage() {
 
   return (
     <div className="space-y-6">
+      <ConfirmDialog />
+      <AlertDialog />
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

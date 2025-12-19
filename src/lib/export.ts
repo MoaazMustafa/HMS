@@ -110,6 +110,7 @@ export function exportToPDF(content: string, filename: string): void {
   }
 
   const timestamp = new Date().toISOString().split('T')[0];
+  const currentDateTime = new Date().toLocaleString();
 
   printWindow.document.write(`
     <!DOCTYPE html>
@@ -117,56 +118,198 @@ export function exportToPDF(content: string, filename: string): void {
       <head>
         <title>${filename}</title>
         <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
           body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 30px;
+            color: #1a1a1a;
+            background: #fff;
+          }
+          .brand-header {
+            background: linear-gradient(135deg, #800000 0%, #a00000 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(128, 0, 0, 0.1);
+          }
+          .brand-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+          }
+          .brand-header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 400;
+          }
+          .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+          }
+          .logo-icon {
+            width: 60px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+          }
+          .document-info {
+            display: flex;
+            justify-content: space-between;
             padding: 20px;
-            color: #000;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #800000;
+          }
+          .document-info div {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+          }
+          .document-info label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+          }
+          .document-info value {
+            font-size: 14px;
+            color: #1a1a1a;
+            font-weight: 500;
           }
           table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-          }
-          th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
           }
           th {
-            background-color: #f4f4f4;
-            font-weight: bold;
+            background: #800000;
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
           }
-          .header {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #333;
+          td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+            color: #374151;
+          }
+          tr:last-child td {
+            border-bottom: none;
+          }
+          tr:nth-child(even) {
+            background: #f9fafb;
           }
           .footer {
-            margin-top: 30px;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            text-align: center;
+            color: #6b7280;
+          }
+          .footer-brand {
+            font-size: 14px;
+            font-weight: 600;
+            color: #800000;
+            margin-bottom: 8px;
+          }
+          .footer-text {
             font-size: 12px;
-            color: #666;
+            line-height: 1.6;
+          }
+          .confidential {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #92400e;
           }
           @media print {
-            body { padding: 0; }
-            .no-print { display: none; }
+            body { 
+              padding: 20px;
+            }
+            .brand-header {
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+            }
+            th {
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+            }
+            .no-print { 
+              display: none; 
+            }
           }
         </style>
       </head>
       <body>
-        <div class="header">
-          <h1>${filename}</h1>
-          <p>Generated on: ${timestamp}</p>
+        <div class="brand-header">
+          <div class="brand-logo">
+            <div class="logo-icon">HMS</div>
+            <div>
+              <h1>Health Management System</h1>
+              <div class="subtitle">Professional Healthcare Documentation</div>
+            </div>
+          </div>
         </div>
+
+        <div class="document-info">
+          <div>
+            <label>Document Name</label>
+            <value>${filename.replace(/-/g, ' ').toUpperCase()}</value>
+          </div>
+          <div>
+            <label>Generated On</label>
+            <value>${currentDateTime}</value>
+          </div>
+          <div>
+            <label>Document ID</label>
+            <value>#DOC-${Date.now().toString().slice(-8)}</value>
+          </div>
+        </div>
+
         ${content}
-        <div class="footer">
-          <p>Health Management System - Generated Report</p>
+
+        <div class="confidential">
+          <strong>⚠️ CONFIDENTIAL INFORMATION</strong><br>
+          This document contains protected health information. Handle according to HIPAA regulations. 
+          Unauthorized access, use, or disclosure is strictly prohibited.
         </div>
+
+        <div class="footer">
+          <div class="footer-brand">HMS - Health Management System</div>
+          <div class="footer-text">
+            © ${new Date().getFullYear()} Health Management System. All rights reserved.<br>
+            For support, contact: support@hms.healthcare | www.hms.healthcare
+          </div>
+        </div>
+
         <script>
           window.onload = function() {
             window.print();
-            // Close after printing (user can cancel)
             window.onafterprint = function() {
               window.close();
             };

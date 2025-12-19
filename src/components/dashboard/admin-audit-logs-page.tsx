@@ -12,6 +12,7 @@ import {
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { useAlert } from '@/hooks/use-toast-alert';
 import { exportData } from '@/lib/export';
 
 interface AuditLog {
@@ -39,6 +40,8 @@ export function AdminAuditLogsPage() {
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const { alert, AlertDialog } = useAlert();
 
   useEffect(() => {
     fetchLogs();
@@ -81,7 +84,11 @@ export function AdminAuditLogsPage() {
 
   const handleExport = (format: 'csv' | 'excel' | 'pdf') => {
     if (logs.length === 0) {
-      alert('No logs to export');
+      alert({
+        type: 'warning',
+        title: 'No Data',
+        message: 'No audit logs available to export',
+      });
       return;
     }
 
@@ -108,6 +115,8 @@ export function AdminAuditLogsPage() {
 
   return (
     <div className="space-y-6">
+      <AlertDialog />
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

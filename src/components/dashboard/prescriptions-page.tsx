@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { useAlert } from '@/hooks/use-toast-alert';
 import { exportData, exportToPDF } from '@/lib/export';
 
 type Prescription = {
@@ -50,6 +51,8 @@ type Props = {
 export function PrescriptionsPage({ prescriptions }: Props) {
   const [filter, setFilter] = useState<'all' | 'active' | 'expired'>('active');
   const [searchQuery, setSearchQuery] = useState('');
+
+  const { alert, AlertDialog } = useAlert();
 
   const filteredPrescriptions = prescriptions.filter((rx) => {
     // Filter by status
@@ -87,7 +90,11 @@ export function PrescriptionsPage({ prescriptions }: Props) {
   const handleDownloadPDF = (prescriptionId: string, format: 'csv' | 'excel' | 'pdf' = 'pdf') => {
     const prescription = prescriptions.find((p) => p.id === prescriptionId);
     if (!prescription) {
-      alert('Prescription not found');
+      alert({
+        type: 'error',
+        title: 'Not Found',
+        message: 'Prescription not found',
+      });
       return;
     }
 
@@ -183,7 +190,11 @@ export function PrescriptionsPage({ prescriptions }: Props) {
 
   const handleExportAll = (format: 'csv' | 'excel' | 'pdf') => {
     if (filteredPrescriptions.length === 0) {
-      alert('No prescriptions to export');
+      alert({
+        type: 'warning',
+        title: 'No Data',
+        message: 'No prescriptions available to export',
+      });
       return;
     }
 
@@ -224,6 +235,8 @@ export function PrescriptionsPage({ prescriptions }: Props) {
 
   return (
     <div className="space-y-6">
+      <AlertDialog />
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
