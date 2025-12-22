@@ -1,5 +1,4 @@
-import type { Gender } from '@prisma/client';
-import { UserRole } from '@prisma/client';
+import { type Gender, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
 
@@ -42,9 +41,22 @@ export async function POST(request: Request) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Generate patient ID
-    const patientCount = await prisma.patient.count();
-    const patientId = `PAT-${String(patientCount + 1).padStart(3, '0')}`;
+    // Generate unique patient ID by finding the highest existing ID
+    const lastPatient = await prisma.patient.findFirst({
+      orderBy: { patientId: 'desc' },
+      select: { patientId: true },
+    });
+
+    let nextPatientNumber = 1;
+    if (lastPatient?.patientId) {
+      // Extract the numeric part from PAT-XXX format
+      const match = lastPatient.patientId.match(/PAT-(\d+)/);
+      if (match) {
+        nextPatientNumber = parseInt(match[1], 10) + 1;
+      }
+    }
+
+    const patientId = `PAT-${String(nextPatientNumber).padStart(3, '0')}`;
 
     // Create user with patient profile (email NOT verified yet)
     const user = await prisma.user.create({
