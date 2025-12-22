@@ -14,8 +14,8 @@ import {
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { useAlert } from '@/hooks/use-toast-alert';
 import { useConfirm } from '@/hooks/use-confirm';
+import { useAlert } from '@/hooks/use-toast-alert';
 import { exportData } from '@/lib/export';
 
 export function AdminPatientsPage() {
@@ -223,8 +223,8 @@ export function AdminPatientsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => {
-                    if (confirm(`Edit ${patient.name}?`)) {
+                  onClick={async () => {
+                    if (await confirm({ title: `Edit ${patient.name}?`, description: 'Edit patient functionality coming soon' })) {
                       alert('Edit functionality - Connect to edit modal or form');
                     }
                   }}
@@ -235,7 +235,7 @@ export function AdminPatientsPage() {
                   variant="outline"
                   size="sm"
                   onClick={async () => {
-                    if (confirm(`Are you sure you want to delete ${patient.name}? This action cannot be undone.`)) {
+                    if (await confirm({ title: 'Delete Patient', description: `Are you sure you want to delete ${patient.name}? This action cannot be undone.`, variant: 'destructive' })) {
                       try {
                         const response = await fetch(`/api/admin/users/${patient.id}`, {
                           method: 'DELETE',
