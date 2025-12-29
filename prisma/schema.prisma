@@ -757,3 +757,70 @@ model EmailVerificationToken {
   @@index([otp])
   @@map("email_verification_tokens")
 }
+
+// ==================== ANALYTICS TABLES ====================
+
+model DailyAnalytics {
+  id                    String   @id @default(cuid())
+  date                  DateTime @unique
+  totalAppointments     Int      @default(0)
+  completedAppointments Int      @default(0)
+  cancelledAppointments Int      @default(0)
+  newPatients           Int      @default(0)
+  totalUsers            Int      @default(0)
+  activePrescriptions   Int      @default(0)
+  newPrescriptions      Int      @default(0)
+  labTestsOrdered       Int      @default(0)
+  labTestsCompleted     Int      @default(0)
+  totalRevenue          Decimal  @default(0) @db.Decimal(12, 2)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([date])
+  @@map("daily_analytics")
+}
+
+model DepartmentAnalytics {
+  id                String   @id @default(cuid())
+  date              DateTime
+  departmentName    String
+  totalPatients     Int      @default(0)
+  totalAppointments Int      @default(0)
+  completedSessions Int      @default(0)
+  revenue           Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([date, departmentName])
+  @@index([date])
+  @@index([departmentName])
+  @@map("department_analytics")
+}
+
+model MedicationAnalytics {
+  id              String   @id @default(cuid())
+  date            DateTime
+  medicationName  String
+  prescriptionCount Int    @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([date, medicationName])
+  @@index([date])
+  @@index([medicationName])
+  @@map("medication_analytics")
+}
+
+model DiagnosisAnalytics {
+  id              String   @id @default(cuid())
+  date            DateTime
+  diagnosisName   String
+  count           Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([date, diagnosisName])
+  @@index([date])
+  @@index([diagnosisName])
+  @@map("diagnosis_analytics")
+}
