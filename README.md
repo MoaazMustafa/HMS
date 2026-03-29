@@ -1,43 +1,45 @@
-<!-- README-AI-SIGNATURE:20260328002113 -->
+<!-- README-AI-SIGNATURE:20260329025259 -->
 # HMS
 
-HMS (Health Management System) is a comprehensive application designed to streamline healthcare management processes. Built with TypeScript and Next.js, it offers a robust framework for developing scalable and efficient health management solutions.
+HMS (Health Management System) is a comprehensive application designed to streamline healthcare management processes. Built with TypeScript and Next.js, it offers a robust framework for managing various aspects of health administration efficiently.
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
 
 ## ✨ Key Features
 
 ### 📊 Data Management
-- Utilizes Prisma for seamless database interactions.
-- Supports data seeding and migrations for efficient database management.
+- Efficiently manage patient records and health data.
+- Utilize Prisma for seamless database interactions.
 
-### 🛠️ Development Tools
-- Integrated ESLint and Prettier for code quality and formatting.
-- Scripts for linting, formatting, and type-checking to maintain code standards.
+### 📧 Email Notifications
+- Integrated email setup for notifications using Nodemailer.
+- Support for free SMTP services.
 
-### 📧 Email Functionality
-- Configured with Nodemailer for email notifications and communications.
-- Includes guides for setting up SMTP services.
+### 🛠️ Admin Dashboard
+- Comprehensive admin dashboard for monitoring and managing system operations.
+- Quick start and detailed guides available for administrators.
+
+### 📅 Scheduling
+- Features for scheduling appointments and managing nurse panels.
+- Quick reference guides for nurses to enhance workflow.
 
 ## 🏗️ Project Structure
 
 ```
 HMS/
 ├── .github/
-│   └── copilot-instructions.md
 ├── prisma/
 │   ├── schema.prisma
 │   └── seed.ts
+├── public/
+│   └── *.svg
 ├── src/
 │   ├── app/
 │   ├── components/
 │   ├── hooks/
 │   ├── lib/
-│   ├── middleware.ts
-│   └── styles/
-├── public/
-│   ├── file.svg
-│   └── globe.svg
+│   ├── styles/
+│   └── types/
 ├── .gitignore
 ├── package.json
 └── README.md
@@ -48,20 +50,22 @@ HMS/
 To get started with the HMS project, follow these steps:
 
 1. Clone the repository:
-   ```bash
+   ```
    git clone https://github.com/MoaazMustafa/HMS.git
    cd HMS
    ```
 
 2. Install dependencies:
-   ```bash
+   ```
    npm install
    ```
 
 3. Run the development server:
-   ```bash
+   ```
    npm run dev
    ```
+
+4. Access the application at `http://localhost:3000`.
 
 ## 📜 Scripts
 
@@ -69,8 +73,9 @@ The following scripts are available for managing the project:
 
 - **Development**: `npm run dev` - Start the development server.
 - **Build**: `npm run build` - Build the application for production.
+- **Start**: `npm run start` - Start the production server.
 - **Lint**: `npm run lint` - Lint the codebase.
-- **Format**: `npm run format` - Format the codebase using Prettier.
+- **Format**: `npm run format` - Format the code using Prettier.
 - **Database Operations**:
   - `npm run db:generate` - Generate Prisma client.
   - `npm run db:migrate` - Run database migrations.
