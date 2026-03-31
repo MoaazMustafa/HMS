@@ -1,9 +1,9 @@
-<!-- README-AI-SIGNATURE:20260330025651 -->
+<!-- README-AI-SIGNATURE:20260331024847 -->
 # HMS
 
 HMS (Health Management System) is a comprehensive application designed to streamline healthcare management processes. Built with TypeScript and Next.js, it offers a robust framework for managing various healthcare-related tasks efficiently.
 
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white)
 
 ## ✨ Key Features
 
@@ -13,13 +13,13 @@ HMS (Health Management System) is a comprehensive application designed to stream
 
 ### 📧 Email Setup
 - Integrated email functionality for notifications and communications.
-- Supports free SMTP setup for easy configuration.
+- Supports free SMTP setup for seamless email delivery.
 
 ### 📊 Data Export Functionality
 - Ability to export data for reporting and analysis.
-- Streamlined processes for data management.
+- Supports various formats to meet user needs.
 
-### 🩺 Nurse Panel
+### 🧑‍⚕️ Nurse Panel
 - Dedicated panel for nurses to manage patient information.
 - Quick reference guides and testing checklists available.
 
@@ -68,17 +68,17 @@ To get started with the HMS project, follow these steps:
 
 The following scripts are available for managing the project:
 
-- **Development**: `npm run dev` - Start the development server.
-- **Build**: `npm run build` - Build the application for production.
-- **Start**: `npm run start` - Start the production server.
-- **Lint**: `npm run lint` - Run ESLint to check for code quality.
-- **Format**: `npm run format` - Format the code using Prettier.
-- **Database Migrate**: `npm run db:migrate` - Apply database migrations.
+- Start the development server: `npm run dev`
+- Build the project: `npm run build`
+- Start the production server: `npm run start`
+- Lint the code: `npm run lint`
+- Format the code: `npm run format`
+- Run database migrations: `npm run db:migrate`
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to contribute to this project.
+Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
