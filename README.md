@@ -1,27 +1,23 @@
-<!-- README-AI-SIGNATURE:20260331024847 -->
+<!-- README-AI-SIGNATURE:20260401032013 -->
 # HMS
 
-HMS (Health Management System) is a comprehensive application designed to streamline healthcare management processes. Built with TypeScript and Next.js, it offers a robust framework for managing various healthcare-related tasks efficiently.
+HMS (Health Management System) is a comprehensive application designed to streamline healthcare management processes. Built with TypeScript and Next.js, it offers a robust platform for managing various healthcare-related tasks efficiently.
 
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
 
 ## ✨ Key Features
 
-### 🏥 Admin Dashboard
-- Comprehensive dashboard for managing healthcare operations.
-- User-friendly interface for quick access to essential features.
+### 📊 Data Management
+- Utilize Prisma for seamless database interactions.
+- Implement data seeding for analytics and testing.
 
-### 📧 Email Setup
-- Integrated email functionality for notifications and communications.
-- Supports free SMTP setup for seamless email delivery.
+### 🛠️ Admin Dashboard
+- Comprehensive admin dashboard for managing users and data.
+- Quick start and guide documentation for easy onboarding.
 
-### 📊 Data Export Functionality
-- Ability to export data for reporting and analysis.
-- Supports various formats to meet user needs.
-
-### 🧑‍⚕️ Nurse Panel
-- Dedicated panel for nurses to manage patient information.
-- Quick reference guides and testing checklists available.
+### 📧 Email Functionality
+- Integrated email setup using Nodemailer for notifications and alerts.
+- Free SMTP guide for configuring email services.
 
 ## 🏗️ Project Structure
 
@@ -70,7 +66,6 @@ The following scripts are available for managing the project:
 
 - Start the development server: `npm run dev`
 - Build the project: `npm run build`
-- Start the production server: `npm run start`
 - Lint the code: `npm run lint`
 - Format the code: `npm run format`
 - Run database migrations: `npm run db:migrate`
