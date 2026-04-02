@@ -1,4 +1,4 @@
-<!-- README-AI-SIGNATURE:20260401032013 -->
+<!-- README-AI-SIGNATURE:20260402024502 -->
 # HMS
 
 HMS (Health Management System) is a comprehensive application designed to streamline healthcare management processes. Built with TypeScript and Next.js, it offers a robust platform for managing various healthcare-related tasks efficiently.
@@ -7,17 +7,21 @@ HMS (Health Management System) is a comprehensive application designed to stream
 
 ## ✨ Key Features
 
+### 🏥 Admin Dashboard
+- Comprehensive dashboard for managing healthcare operations.
+- User-friendly interface for quick access to essential features.
+
+### 📧 Email Setup
+- Integrated email functionality using Nodemailer for notifications and alerts.
+- Support for free SMTP services to facilitate email communication.
+
 ### 📊 Data Management
-- Utilize Prisma for seamless database interactions.
-- Implement data seeding for analytics and testing.
+- Efficient data handling with Prisma for database interactions.
+- Easy database migrations and seeding for development and production environments.
 
-### 🛠️ Admin Dashboard
-- Comprehensive admin dashboard for managing users and data.
-- Quick start and guide documentation for easy onboarding.
-
-### 📧 Email Functionality
-- Integrated email setup using Nodemailer for notifications and alerts.
-- Free SMTP guide for configuring email services.
+### 🛠️ Quick Start Guides
+- Detailed documentation for quick setup and deployment.
+- Step-by-step guides for both admin and nurse panels.
 
 ## 🏗️ Project Structure
 
@@ -28,13 +32,14 @@ HMS/
 │   ├── schema.prisma
 │   └── seed.ts
 ├── public/
-│   ├── file.svg
-│   └── globe.svg
+│   └── *.svg
 ├── src/
 │   ├── app/
 │   ├── components/
 │   ├── hooks/
-│   └── styles/
+│   ├── lib/
+│   ├── styles/
+│   └── types/
 ├── .gitignore
 ├── package.json
 └── README.md
@@ -60,15 +65,18 @@ To get started with the HMS project, follow these steps:
    npm run dev
    ```
 
+4. Access the application at `http://localhost:3000`.
+
 ## 📜 Scripts
 
 The following scripts are available for managing the project:
 
-- Start the development server: `npm run dev`
-- Build the project: `npm run build`
-- Lint the code: `npm run lint`
-- Format the code: `npm run format`
-- Run database migrations: `npm run db:migrate`
+- **Development**: `npm run dev` - Start the development server.
+- **Build**: `npm run build` - Build the application for production.
+- **Start**: `npm run start` - Start the production server.
+- **Lint**: `npm run lint` - Run ESLint to check for code quality.
+- **Format**: `npm run format` - Format the code using Prettier.
+- **Database Migrate**: `npm run db:migrate` - Apply database migrations.
 
 ## 🤝 Contributing
 
@@ -76,4 +84,4 @@ Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) fo
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
