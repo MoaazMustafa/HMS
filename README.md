@@ -1,27 +1,27 @@
-<!-- README-AI-SIGNATURE:20260402024502 -->
+<!-- README-AI-SIGNATURE:20260403024829 -->
 # HMS
 
 HMS (Health Management System) is a comprehensive application designed to streamline healthcare management processes. Built with TypeScript and Next.js, it offers a robust platform for managing various healthcare-related tasks efficiently.
 
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
 
 ## ✨ Key Features
 
 ### 🏥 Admin Dashboard
-- Comprehensive dashboard for managing healthcare operations.
-- User-friendly interface for quick access to essential features.
+- Comprehensive management tools for administrators.
+- Quick access to user analytics and system settings.
+
+### 👩‍⚕️ Nurse Panel
+- User-friendly interface for nurses to manage patient information.
+- Quick reference guides and testing checklists for efficient workflow.
 
 ### 📧 Email Setup
 - Integrated email functionality using Nodemailer for notifications and alerts.
-- Support for free SMTP services to facilitate email communication.
+- Free SMTP guide for easy configuration.
 
-### 📊 Data Management
-- Efficient data handling with Prisma for database interactions.
-- Easy database migrations and seeding for development and production environments.
-
-### 🛠️ Quick Start Guides
-- Detailed documentation for quick setup and deployment.
-- Step-by-step guides for both admin and nurse panels.
+### 📊 Data Export Functionality
+- Ability to export data for reporting and analysis.
+- Supports various formats for flexibility in data handling.
 
 ## 🏗️ Project Structure
 
@@ -32,14 +32,13 @@ HMS/
 │   ├── schema.prisma
 │   └── seed.ts
 ├── public/
-│   └── *.svg
+│   ├── file.svg
+│   └── globe.svg
 ├── src/
 │   ├── app/
 │   ├── components/
 │   ├── hooks/
-│   ├── lib/
-│   ├── styles/
-│   └── types/
+│   └── styles/
 ├── .gitignore
 ├── package.json
 └── README.md
@@ -76,7 +75,9 @@ The following scripts are available for managing the project:
 - **Start**: `npm run start` - Start the production server.
 - **Lint**: `npm run lint` - Run ESLint to check for code quality.
 - **Format**: `npm run format` - Format the code using Prettier.
-- **Database Migrate**: `npm run db:migrate` - Apply database migrations.
+- **Database Operations**:
+  - `npm run db:generate` - Generate Prisma client.
+  - `npm run db:migrate` - Run database migrations.
 
 ## 🤝 Contributing
 
@@ -84,4 +85,4 @@ Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) fo
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
