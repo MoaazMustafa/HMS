@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="19" fill="#800000"/>
+  <rect x="51.5" y="19.2" width="25" height="62.5" rx="3" fill="white"/>
+  <rect x="32.75" y="38.7" width="62.5" height="25" rx="3" fill="white"/>
+  <text x="64" y="108.8" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="white" text-anchor="middle">HMS</text>
+</svg>

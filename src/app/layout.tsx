@@ -24,10 +24,19 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   ...defaultMetadata,
+  manifest: '/manifest.json',
   icons: {
     icon: '/favicon/favicon.ico',
     shortcut: '/favicon/favicon-16x16.png',
-    apple: '/favicon/favicon-apple.png',
+    apple: '/icons/icon-192x192.svg',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'HMS',
+  },
+  formatDetection: {
+    telephone: false,
   },
 };
 
@@ -38,10 +47,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <meta
-        name="google-site-verification"
-        content="Cg_J_jXsNPhSakRu08XjZ7PrJtxs3arXljVqb-D4QqY"
-      />
+      <head>
+        <meta
+          name="google-site-verification"
+          content="Cg_J_jXsNPhSakRu08XjZ7PrJtxs3arXljVqb-D4QqY"
+        />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="HMS" />
+        <meta name="theme-color" content="#800000" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.svg" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
