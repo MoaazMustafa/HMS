@@ -439,8 +439,8 @@ export function AdminAnalyticsPage() {
                   border: '1px solid hsl(var(--border))',
                   borderRadius: '0.5rem',
                 }}
-                formatter={(value: number | undefined) => 
-                  value !== undefined ? `$${value.toFixed(2)}` : '$0.00'
+                formatter={(value) => 
+                  typeof value === 'number' ? `$${value.toFixed(2)}` : '$0.00'
                 }
               />
               <Area
